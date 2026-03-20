@@ -16,23 +16,6 @@ import json
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-
-    
-    # ========== ТЕСТОВЫЙ МАРШРУТ (временно) ==========
-    @app.route('/')
-    def test_home():
-        return """
-        <!DOCTYPE html>
-        <html>
-        <head><title>Test</title></head>
-        <body>
-            <h1>✅ Flask работает!</h1>
-            <p>Если вы видите это сообщение, значит проблема в index.html или base.html</p>
-            <p>Текущее время: <script>document.write(new Date().toLocaleString())</script></p>
-        </body>
-        </html>
-        """
-    # ========== КОНЕЦ ТЕСТОВОГО МАРШРУТА ==========
     
     # Инициализация расширений
     db.init_app(app)
