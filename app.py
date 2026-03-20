@@ -17,20 +17,22 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-        # ========== ДИАГНОСТИКА ФАЙЛОВ ==========
-    import os
-    print("\n" + "="*50)
-    print("DIAGNOSTICS: Checking files")
-    print("="*50)
-    print(f"Current directory: {os.getcwd()}")
-    print(f"Files in current dir: {os.listdir('.')}")
-    print(f"Templates folder exists: {os.path.exists('templates')}")
-    if os.path.exists('templates'):
-        print(f"Files in templates: {os.listdir('templates')}")
-        print(f"index.html exists: {os.path.exists('templates/index.html')}")
-    else:
-        print("WARNING: templates folder NOT FOUND!")
-    print("="*50 + "\n")
+    
+    # ========== ТЕСТОВЫЙ МАРШРУТ (временно) ==========
+    @app.route('/')
+    def test_home():
+        return """
+        <!DOCTYPE html>
+        <html>
+        <head><title>Test</title></head>
+        <body>
+            <h1>✅ Flask работает!</h1>
+            <p>Если вы видите это сообщение, значит проблема в index.html или base.html</p>
+            <p>Текущее время: <script>document.write(new Date().toLocaleString())</script></p>
+        </body>
+        </html>
+        """
+    # ========== КОНЕЦ ТЕСТОВОГО МАРШРУТА ==========
     
     # Инициализация расширений
     db.init_app(app)
@@ -1204,6 +1206,7 @@ def create_app():
         return render_template('profile.html', user=current_user)
 
     return app
+    
 
 if __name__ == '__main__':
     app = create_app()
