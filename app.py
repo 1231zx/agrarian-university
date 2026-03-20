@@ -17,6 +17,21 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
+        # ========== ДИАГНОСТИКА ФАЙЛОВ ==========
+    import os
+    print("\n" + "="*50)
+    print("DIAGNOSTICS: Checking files")
+    print("="*50)
+    print(f"Current directory: {os.getcwd()}")
+    print(f"Files in current dir: {os.listdir('.')}")
+    print(f"Templates folder exists: {os.path.exists('templates')}")
+    if os.path.exists('templates'):
+        print(f"Files in templates: {os.listdir('templates')}")
+        print(f"index.html exists: {os.path.exists('templates/index.html')}")
+    else:
+        print("WARNING: templates folder NOT FOUND!")
+    print("="*50 + "\n")
+    
     # Инициализация расширений
     db.init_app(app)
     CORS(app)
