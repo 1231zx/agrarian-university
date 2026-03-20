@@ -5575,3 +5575,21 @@ footer::before {
         font-size: 1.2rem;
     }
 }
+
+/* Логотип */
+.logo img {
+    height: 50px;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.05);
+}
+
+/* Для мобильных */
+@media (max-width: 768px) {
+    .logo img {
+        height: 40px;
+    }
+}
