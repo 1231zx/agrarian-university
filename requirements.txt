@@ -6,6 +6,7 @@ Flask-Login==0.6.3
 Flask-Mail==0.10.0
 Flask-Caching==2.3.1
 psycopg2-binary==2.9.11
+pg8000==1.31.5            
 pandas==2.2.3
 pdfplumber==0.11.9
 openpyxl==3.1.5
