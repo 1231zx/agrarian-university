@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}О нас - ООО Аграрный Университет{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>О нас</h1>
+    </div>
+</section>
+
+<section class="about-content">
+    <div class="container">
+        <div class="about-text">
+            {% if content and content.content %}
+                {# Если есть контент в БД, форматируем его #}
+                {% set paragraphs = content.content.split('\n') %}
+                {% set ns = namespace(in_list=false) %}
+                
+                {% for para in paragraphs %}
+                    {% set line = para.strip() %}
+                    {% if line %}
+                        {# Заголовки #}
+                        {% if line.startswith('#') %}
+                            {% if ns.in_list %}
+                                </ul>
+                                {% set ns.in_list = false %}
+                            {% endif %}
+                            <h2>{{ line[1:].strip() }}</h2>
+                        
+                        {# Элементы списка #}
+                        {% elif line.startswith('•') or line.startswith('-') or line.startswith('*') %}
+                            {% if not ns.in_list %}
+                                <ul class="values-list">
+                                {% set ns.in_list = true %}
+                            {% endif %}
+                            
+                            {% set item_text = line[1:].strip() %}
+                            {% if ':' in item_text %}
+                                {% set parts = item_text.split(':', 1) %}
+                                <li><strong>{{ parts[0].strip() }}:</strong> {{ parts[1].strip() }}</li>
+                            {% else %}
+                                <li>{{ item_text }}</li>
+                            {% endif %}
+                        
+                        {# Обычный текст #}
+                        {% else %}
+                            {% if ns.in_list %}
+                                </ul>
+                                {% set ns.in_list = false %}
+                            {% endif %}
+                            <p>{{ line }}</p>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                
+                {% if ns.in_list %}
+                    </ul>
+                {% endif %}
+                
+            {% else %}
+                {# СТАНДАРТНОЕ СОДЕРЖИМОЕ - ЕСЛИ НЕТ ДАННЫХ В БД #}
+                <h2>История университета</h2>
+                <p>ООО Аграрный Университет был основан в 1985 году с целью подготовки высококвалифицированных специалистов в области сельского хозяйства и смежных отраслей.</p>
+                
+                <p>За годы своего существования университет выпустил более 50 000 специалистов, которые успешно работают в различных регионах страны и за рубежом.</p>
+
+                <h2>Наша миссия</h2>
+                <p>Предоставлять качественное образование в области аграрных наук, способствовать развитию инновационных технологий в сельском хозяйстве и подготовке специалистов, способных решать современные задачи агропромышленного комплекса.</p>
+
+                <h2>Наши ценности</h2>
+                <ul class="values-list">
+                    <li><strong>Качество образования</strong> - мы стремимся предоставлять образование высочайшего уровня</li>
+                    <li><strong>Инновации</strong> - внедряем современные методы обучения и исследований</li>
+                    <li><strong>Практическая направленность</strong> - обеспечиваем связь теории с практикой</li>
+                    <li><strong>Социальная ответственность</strong> - готовим специалистов, ответственных перед обществом</li>
+                </ul>
+
+                <h2>Аккредитация и партнеры</h2>
+                <p>Университет аккредитован Министерством образования и науки РФ. Мы сотрудничаем с ведущими аграрными университетами Европы, Азии и Америки, что позволяет нашим студентам участвовать в программах обмена и стажировках.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

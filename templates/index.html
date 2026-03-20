@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Главная - ООО Аграрный Университет{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>Красноярский государственный аграрный университет</h1>
+        <p class="hero-subtitle">Ведущий аграрный вуз Сибири — образование, наука, инновации</p>
+        <a href="{{ url_for('programs') }}" class="btn btn-primary">Наши программы</a>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <h2>Почему выбирают нас?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎓</div>
+                <h3>Качественное образование</h3>
+                <p>Программы аккредитованы и соответствуют международным стандартам</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔬</div>
+                <h3>Современное оборудование</h3>
+                <p>Лаборатории оснащены новейшим оборудованием</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌾</div>
+                <h3>Связь с производством</h3>
+                <p>Практика на ведущих предприятиях АПК края</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="news-preview">
+    <div class="container">
+        <h2>Последние новости</h2>
+        <div class="news-grid">
+            <div class="news-card">
+                <h3>Студенты и преподаватели помогли четвероногим друзьям</h3>
+                <p class="news-meta">
+                    <span class="news-date">20 марта 2026</span>
+                </p>
+                <p>Студенты и преподаватели центра не остались равнодушными и общими усилиями собрали 7 305 рублей.</p>
+            </div>
+            <div class="news-card">
+                <h3>В Красноярском ГАУ пройдёт заседание Учёного совета</h3>
+                <p class="news-meta">
+                    <span class="news-date">20 марта 2026</span>
+                </p>
+                <p>Заседание Учёного совета Красноярского ГАУ пройдёт 27 марта в 10:00 по адресу проспект Мира, 90.</p>
+            </div>
+            <div class="news-card">
+                <h3>В КрасГАУ прошёл кадровый форум «День карьеры в АПК»</h3>
+                <p class="news-meta">
+                    <span class="news-date">19 марта 2026</span>
+                </p>
+                <p>Форум прошёл в двух форматах, позволивших охватить как практические вопросы трудоустройства, так и стратегические перспективы отрасли.</p>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="{{ url_for('news') }}" class="btn btn-secondary">Все новости →</a>
+        </div>
+    </div>
+</section>
+
+<section class="stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>5000+</h3>
+                <p>Студентов</p>
+            </div>
+            <div class="stat-item">
+                <h3>200+</h3>
+                <p>Преподавателей</p>
+            </div>
+            <div class="stat-item">
+                <h3>50+</h3>
+                <p>Программ обучения</p>
+            </div>
+            <div class="stat-item">
+                <h3>95%</h3>
+                <p>Трудоустройство выпускников</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

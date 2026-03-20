@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Поиск - ООО Аграрный Университет{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1> Поиск по сайту</h1>
+    </div>
+</section>
+
+<section class="page-content">
+    <div class="container">
+        <div class="content-block">
+            <!-- Форма поиска -->
+            <form method="GET" action="{{ url_for('search') }}" style="margin-bottom: 2rem;">
+                <div style="display: flex; gap: 1rem;">
+                    <input type="text" 
+                           name="q" 
+                           value="{{ query }}"
+                           placeholder="Введите поисковый запрос..." 
+                           style="flex: 1; padding: 1rem; border: 2px solid var(--beige-medium); border-radius: 10px; font-size: 1rem;">
+                    <button type="submit" class="btn btn-primary">Найти</button>
+                </div>
+            </form>
+            
+            {% if query %}
+                <h2>Результаты поиска: {{ total_results }}</h2>
+                
+                {% if all_results %}
+                    <div style="display: grid; gap: 1rem; margin-top: 2rem;">
+                        {% for result in all_results %}
+                            <a href="{{ result.url }}" style="text-decoration: none; color: inherit;">
+                                <div style="padding: 1.5rem; background: var(--white); border-radius: 10px; box-shadow: var(--shadow-sm); transition: transform 0.2s; border-left: 4px solid var(--accent-color);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                        <h3 style="margin: 0;">{{ result.title }}</h3>
+                                        <span style="font-size: 0.8rem; color: var(--accent-color);">{{ result.type_ru }}</span>
+                                    </div>
+                                    <p style="color: var(--text-light); margin: 0;">{{ result.description }}</p>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div style="text-align: center; padding: 3rem; background: var(--beige-light); border-radius: 15px; margin-top: 2rem;">
+                        <p style="font-size: 1.2rem;"> По вашему запросу ничего не найдено</p>
+                        <p>Попробуйте изменить запрос</p>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

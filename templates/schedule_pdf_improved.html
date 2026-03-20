@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block title %}{{ file_title }} - ООО Аграрный Университет{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>{{ file_title }}</h1>
+        <p>{{ file_description }}</p>
+    </div>
+</section>
+
+<section class="schedule-content">
+    <div class="container">
+        <div class="content-block">
+            <!-- Кнопки навигации -->
+            <div class="schedule-nav-simple">
+                <a href="{{ url_for('schedule_list') }}" class="schedule-btn-simple">← К списку</a>
+                <a href="{{ url_for('serve_rasp_file', filename=filename) }}" class="schedule-btn-simple download" download>
+                    📥 Скачать PDF ({{ file_size }})
+                </a>
+            </div>
+            
+            <!-- Информация о файле -->
+            <div class="schedule-file-info-compact">
+                <span class="file-badge">{{ file_institute }}</span>
+                <span class="file-badge">{{ file_size }}</span>
+                <span class="file-badge">Всего страниц: {{ total_pages }}</span>
+            </div>
+            
+            <!-- PDF ридер -->
+            <div class="pdf-reader-container" id="pdf-reader">
+                <div class="pdf-controls">
+                    <button class="pdf-nav-btn" id="pdf-prev" disabled>← Предыдущая</button>
+                    <span class="pdf-page-info" id="pdf-page-info">Страница 1 из {{ total_pages }}</span>
+                    <button class="pdf-nav-btn" id="pdf-next">Следующая →</button>
+                </div>
+                
+                <div class="pdf-content-wrapper" id="pdf-content-wrapper">
+                    <div class="pdf-loading" id="pdf-loading" style="display: none;">Загрузка...</div>
+                    <div class="pdf-error" id="pdf-error" style="display: none;"></div>
+                    <div class="pdf-page-content" id="pdf-page-content">
+                        <p style="text-align: center; color: #666; padding: 2rem;">Нажмите "Следующая" для загрузки страницы</p>
+                    </div>
+                </div>
+                
+                <div class="pdf-zoom-controls">
+                    <button class="zoom-btn" id="zoom-out">−</button>
+                    <span class="zoom-level" id="zoom-level">100%</span>
+                    <button class="zoom-btn" id="zoom-in">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filename = '{{ filename }}';
+    const totalPages = {{ total_pages }};
+    let currentPage = 0;
+    let zoomLevel = 100;
+    let isLoading = false;
+    
+    const prevBtn = document.getElementById('pdf-prev');
+    const nextBtn = document.getElementById('pdf-next');
+    const pageInfo = document.getElementById('pdf-page-info');
+    const pageContent = document.getElementById('pdf-page-content');
+    const loadingEl = document.getElementById('pdf-loading');
+    const errorEl = document.getElementById('pdf-error');
+    const zoomOutBtn = document.getElementById('zoom-out');
+    const zoomInBtn = document.getElementById('zoom-in');
+    const zoomLevelSpan = document.getElementById('zoom-level');
+    
+    function loadPage(pageNum) {
+        if (isLoading) return;
+        isLoading = true;
+        
+        // Показываем загрузку
+        loadingEl.style.display = 'block';
+        errorEl.style.display = 'none';
+        pageContent.style.opacity = '0.5';
+        
+        fetch(`/api/pdf/page?file=${encodeURIComponent(filename)}&page=${pageNum}`)
+            .then(response => response.json())
+            .then(data => {
+                loadingEl.style.display = 'none';
+                
+                if (data.success) {
+                    // Форматируем текст
+                    let html = '';
+                    const lines = data.text.split('\n');
+                    
+                    lines.forEach(line => {
+                        if (line.trim()) {
+                            if (line.includes('утверждаю') || line.includes('ректор')) {
+                                html += `<h3 class="pdf-doc-title">${escapeHtml(line)}</h3>`;
+                            } else if (line.match(/^\d+\.\s/)) {
+                                html += `<div class="pdf-list-item">${escapeHtml(line)}</div>`;
+                            } else if (line.includes(':')) {
+                                const parts = line.split(':');
+                                html += `<div class="pdf-definition"><strong>${escapeHtml(parts[0])}:</strong> ${escapeHtml(parts.slice(1).join(':'))}</div>`;
+                            } else {
+                                html += `<div class="pdf-line">${escapeHtml(line)}</div>`;
+                            }
+                        }
+                    });
+                    
+                    pageContent.innerHTML = html || '<p style="text-align: center; color: #666;">Страница пуста</p>';
+                    pageContent.style.opacity = '1';
+                    pageContent.style.transform = `scale(${zoomLevel/100})`;
+                    
+                    currentPage = pageNum;
+                    pageInfo.textContent = `Страница ${currentPage + 1} из ${totalPages}`;
+                    prevBtn.disabled = currentPage === 0;
+                    nextBtn.disabled = currentPage === totalPages - 1;
+                } else {
+                    showError(data.error || 'Ошибка загрузки страницы');
+                }
+            })
+            .catch(error => {
+                loadingEl.style.display = 'none';
+                showError('Ошибка соединения: ' + error.message);
+            })
+            .finally(() => {
+                isLoading = false;
+            });
+    }
+    
+    function showError(message) {
+        errorEl.style.display = 'block';
+        errorEl.textContent = '❌ ' + message;
+        pageContent.style.opacity = '1';
+    }
+    
+    function escapeHtml(unsafe) {
+        if (!unsafe) return '';
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+    
+    prevBtn.addEventListener('click', function() {
+        if (currentPage > 0) {
+            loadPage(currentPage - 1);
+        }
+    });
+    
+    nextBtn.addEventListener('click', function() {
+        if (currentPage < totalPages - 1) {
+            loadPage(currentPage + 1);
+        }
+    });
+    
+    zoomInBtn.addEventListener('click', function() {
+        if (zoomLevel < 200) {
+            zoomLevel += 10;
+            zoomLevelSpan.textContent = zoomLevel + '%';
+            pageContent.style.transform = `scale(${zoomLevel/100})`;
+        }
+    });
+    
+    zoomOutBtn.addEventListener('click', function() {
+        if (zoomLevel > 50) {
+            zoomLevel -= 10;
+            zoomLevelSpan.textContent = zoomLevel + '%';
+            pageContent.style.transform = `scale(${zoomLevel/100})`;
+        }
+    });
+    
+    // Загружаем первую страницу
+    if (totalPages > 0) {
+        loadPage(0);
+    }
+});
+</script>
+{% endblock %}

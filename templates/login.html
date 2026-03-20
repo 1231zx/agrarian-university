@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Вход в систему - ООО Аграрный Университет{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>🔐 Вход в систему</h1>
+    </div>
+</section>
+
+<section class="login-content">
+    <div class="container">
+        <div class="login-form-wrapper">
+            <h2>Авторизация</h2>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <form method="POST" action="{{ url_for('login') }}" class="login-form">
+                <div class="form-group">
+                    <label for="username">Имя пользователя</label>
+                    <input type="text" id="username" name="username" required placeholder="Введите имя пользователя">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <input type="password" id="password" name="password" required placeholder="Введите пароль">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Войти</button>
+            </form>
+            
+            <p class="register-link">
+                Нет аккаунта? <a href="{{ url_for('register') }}">Зарегистрируйтесь</a>
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}

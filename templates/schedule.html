@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Расписание - ООО Аграрный Университет{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>📅 Расписание занятий</h1>
+    </div>
+</section>
+
+<section class="schedule-content">
+    <div class="container">
+        <div class="content-block">
+            <h2>Выберите институт и курс</h2>
+            
+            <div class="schedule-institutes-grid">
+                
+                <!-- ЦПССЗ -->
+                <div class="schedule-institute-card">
+                    <h3>🏫 ЦПССЗ</h3>
+                    <p>Центр подготовки специалистов среднего звена</p>
+                    <div class="schedule-course-links">
+                        <a href="{{ url_for('schedule_pdf', institute='cpssz', course='1') }}" class="schedule-course-btn">1 курс</a>
+                        <a href="{{ url_for('schedule_pdf', institute='cpssz', course='2') }}" class="schedule-course-btn">2 курс</a>
+                        <a href="{{ url_for('schedule_pdf', institute='cpssz', course='3') }}" class="schedule-course-btn">3 курс</a>
+                        <a href="{{ url_for('schedule_pdf', institute='cpssz', course='4') }}" class="schedule-course-btn">4 курс</a>
+                    </div>
+                </div>
+                
+                <!-- ИАЭТ -->
+                <div class="schedule-institute-card">
+                    <h3>🌱 ИАЭТ</h3>
+                    <p>Институт агроэкологических технологий</p>
+                    <div class="schedule-course-links">
+                        <a href="{{ url_for('schedule_pdf', institute='iaet', course='1', week='1') }}" class="schedule-course-btn">1 курс</a>
+                        <a href="{{ url_for('schedule_pdf', institute='iaet', course='2', week='1') }}" class="schedule-course-btn">2 курс</a>
+                        <a href="{{ url_for('schedule_pdf', institute='iaet', course='3', week='1') }}" class="schedule-course-btn">3 курс</a>
+                        <a href="{{ url_for('schedule_pdf', institute='iaet', course='4', week='1') }}" class="schedule-course-btn">4 курс</a>
+                    </div>
+                </div>
+                
+                <!-- ИЭиУ АПК -->
+                <div class="schedule-institute-card">
+                    <h3>📊 ИЭиУ АПК</h3>
+                    <p>Институт экономики и управления АПК</p>
+                    <div class="schedule-course-links">
+                        <a href="{{ url_for('schedule_pdf', institute='ieu', course='1', week='1') }}" class="schedule-course-btn">1 курс</a>
+                        <a href="{{ url_for('schedule_pdf', institute='ieu', course='2', week='1') }}" class="schedule-course-btn">2 курс</a>
+                        <a href="{{ url_for('schedule_pdf', institute='ieu', course='3', week='1') }}" class="schedule-course-btn">3 курс</a>
+                        <a href="{{ url_for('schedule_pdf', institute='ieu', course='4', week='1') }}" class="schedule-course-btn">4 курс</a>
+                    </div>
+                </div>
+                
+                <!-- Магистратура -->
+                <div class="schedule-institute-card">
+                    <h3>🎓 Магистратура</h3>
+                    <p>Магистерские программы</p>
+                    <div class="schedule-course-links">
+                        <a href="{{ url_for('schedule_pdf', institute='magistr', course='1', week='1') }}" class="schedule-course-btn">1 курс</a>
+                        <a href="{{ url_for('schedule_pdf', institute='magistr', course='2', week='1') }}" class="schedule-course-btn">2 курс</a>
+                    </div>
+                </div>
+                
+                <!-- Специалитет -->
+                <div class="schedule-institute-card">
+                    <h3>⚖️ Специалитет</h3>
+                    <p>Специальности</p>
+                    <div class="schedule-course-links">
+                        <a href="{{ url_for('schedule_pdf', institute='specialist', course='1') }}" class="schedule-course-btn">1 курс</a>
+                        <a href="{{ url_for('schedule_pdf', institute='specialist', course='2') }}" class="schedule-course-btn">2 курс</a>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="schedule-info-box">
+                <p><strong>ℹ️ Информация:</strong> Для некоторых институтов доступны 1 и 2 недели. Используйте переключатели на странице расписания для выбора недели.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

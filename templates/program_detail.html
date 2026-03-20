@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}{{ program.name }} - ООО Аграрный Университет{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>{{ program.name }}</h1>
+    </div>
+</section>
+
+<section class="page-content">
+    <div class="container">
+        <div class="content-block">
+            <p><strong>Степень:</strong> {{ program.degree }}</p>
+            <p><strong>Длительность:</strong> {{ program.duration }}</p>
+            <p><strong>Просмотров:</strong> {{ program.views }}</p>
+            <div style="margin-top: 2rem;">
+                <p>{{ program.description }}</p>
+            </div>
+            <a href="{{ url_for('programs') }}" class="btn btn-secondary">← Назад к программам</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ООО Аграрный Университет{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+<body>
+    <header>
+        <div class="top-bar">
+            <div class="container">
+                <div class="logo">
+                    <a href="{{ url_for('index') }}">
+                        <h1>🌾 Аграрный Университет</h1>
+                    </a>
+                </div>
+                
+                <!-- ПОЛЕ ПОИСКА С АВТОПОДСКАЗКАМИ -->
+                <div style="flex: 1; max-width: 400px; margin: 0 2rem; position: relative;">
+                    <form action="{{ url_for('search') }}" method="GET" style="display: flex;" autocomplete="off">
+                        <input type="text" 
+                               id="search-input"
+                               name="q" 
+                               placeholder="🔍 Поиск по сайту..." 
+                               style="flex: 1; padding: 0.5rem 1rem; border: none; border-radius: 20px 0 0 20px; outline: none;">
+                        <button type="submit" 
+                                style="background: var(--accent-color); border: none; border-radius: 0 20px 20px 0; padding: 0.5rem 1rem; cursor: pointer; color: white;">
+                            Найти
+                        </button>
+                    </form>
+                    
+                    <!-- Контейнер для подсказок -->
+                    <div id="search-suggestions" class="suggestions-container"></div>
+                </div>
+                
+                <div class="auth-top-menu">
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.is_admin %}
+                            <a href="{{ url_for('admin') }}" class="auth-link admin-link">Админ</a>
+                        {% endif %}
+                        <a href="{{ url_for('profile') }}" class="auth-link profile-link">👤 {{ current_user.username }}</a>
+                        <a href="{{ url_for('logout') }}" class="auth-link logout-link">Выйти</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="auth-link login-link">Войти</a>
+                        <a href="{{ url_for('register') }}" class="auth-link register-link">Регистрация</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Левое вертикальное меню -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <ul class="sidebar-menu">
+                    <!-- ИНСТИТУТЫ с подменю -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"> Институт агроэкологических технологий</a>
+                        <ul class="sidebar-dropdown">
+                            <li><a href="{{ url_for('institute_agro') }}"> Об институте</a></li>
+                            <li><a href="{{ url_for('institute_agro_department_agronomy') }}"> Общего земледелия и защиты растений</a></li>
+                            <li><a href="{{ url_for('institute_agro_department_plant_breeding') }}"> Растениеводства, селекции и семеноводства</a></li>
+                            <li><a href="{{ url_for('institute_agro_department_soil') }}"> Почвоведения и агрохимии</a></li>
+                            <li><a href="{{ url_for('institute_agro_department_landscape') }}"> Ландшафтной архитектуры и ботаники</a></li>
+                            <li><a href="{{ url_for('institute_agro_department_ecology') }}"> Экологии и природопользования</a></li>
+                            <li><a href="{{ url_for('institute_agro_department_physical_culture') }}"> Физической культуры</a></li>
+                            <li><a href="{{ url_for('institute_agro_department_languages') }}"> Иностранных языков и профессиональных коммуникаций</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"> Институт прикладной биотехнологии и ветеринарной медицины</a>
+                        <ul class="sidebar-dropdown">
+                            <li><a href="{{ url_for('institute_biotech') }}"> Об институте</a></li>
+                            <li><a href="{{ url_for('institute_biotech_department_anatomy') }}"> Анатомии, патологической анатомии и хирургии</a></li>
+                            <li><a href="{{ url_for('institute_biotech_department_zootechny') }}"> Зоотехнии и технологии переработки продуктов животноводства</a></li>
+                            <li><a href="{{ url_for('institute_biotech_department_breeding') }}"> Разведение, генетика, биология и водные биоресурсы</a></li>
+                            <li><a href="{{ url_for('institute_biotech_department_internal_diseases') }}"> Внутренних незаразных болезней, акушерства и физиологии</a></li>
+                            <li><a href="{{ url_for('institute_biotech_department_epizootology') }}"> Эпизоотологии, микробиологии, паразитологии и ветеринарно-санитарной экспертизы</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"> Институт экономики и управления АПК</a>
+                        <ul class="sidebar-dropdown">
+                            <li><a href="{{ url_for('institute_economy') }}"> Об институте</a></li>
+                            <li><a href="{{ url_for('institute_economy_department_organization') }}"> Организация и экономика сельскохозяйственного производства</a></li>
+                            <li><a href="{{ url_for('institute_economy_department_management') }}"> Управление социально-экономическими системами</a></li>
+                            <li><a href="{{ url_for('institute_economy_department_information') }}"> Информационные технологии и математическое обеспечение</a></li>
+                            <li><a href="{{ url_for('institute_economy_department_accounting') }}"> Бухгалтерский учет и статистика</a></li>
+                            <li><a href="{{ url_for('institute_economy_department_psychology') }}"> Психология, педагогика и экология человека</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"> Институт инженерных систем и энергетики</a>
+                        <ul class="sidebar-dropdown">
+                            <li><a href="{{ url_for('institute_engineering') }}"> Об институте</a></li>
+                            <li><a href="{{ url_for('institute_engineering_department_physics') }}"> Физики и математики</a></li>
+                            <li><a href="{{ url_for('institute_engineering_department_mechanization') }}"> Механизация и технический сервис в АПК</a></li>
+                            <li><a href="{{ url_for('institute_engineering_department_general_engineering') }}"> Общеинженерных дисциплин</a></li>
+                            <li><a href="{{ url_for('institute_engineering_department_system_energy') }}"> Системоэнергетики</a></li>
+                            <li><a href="{{ url_for('institute_engineering_department_electrical_engineering') }}"> Теоретических основ электротехники</a></li>
+                            <li><a href="{{ url_for('institute_engineering_department_tractors') }}"> Тракторы и автомобили</a></li>
+                            <li><a href="{{ url_for('institute_engineering_department_electrical_supply') }}"> Электроснабжения сельского хозяйства</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"> Институт пищевых производств</a>
+                        <ul class="sidebar-dropdown">
+                            <li><a href="{{ url_for('institute_food') }}"> Об институте</a></li>
+                            <li><a href="{{ url_for('institute_food_department_bakery') }}"> Технологии хлебопекарного, кондитерского и макаронного производств</a></li>
+                            <li><a href="{{ url_for('institute_food_department_canning') }}"> Технологии консервирования и пищевая биотехнология</a></li>
+                            <li><a href="{{ url_for('institute_food_department_equipment') }}"> Технологии, оборудования бродильных и пищевых производств</a></li>
+                            <li><a href="{{ url_for('institute_food_department_quality') }}"> Товароведения и управления качеством продукции АПК</a></li>
+                            <li><a href="{{ url_for('institute_food_department_chemistry') }}"> Химии</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"> Институт землеустройства, кадастров и природообустройства</a>
+                        <ul class="sidebar-dropdown">
+                            <li><a href="{{ url_for('institute_land') }}"> Об институте</a></li>
+                            <li><a href="{{ url_for('institute_land_department_land_management') }}"> Землеустройство и кадастры</a></li>
+                            <li><a href="{{ url_for('institute_land_department_gis') }}"> Кадастр застроенных территорий и геоинформационные технологии</a></li>
+                            <li><a href="{{ url_for('institute_land_department_environmental') }}"> Природообустройство</a></li>
+                            <li><a href="{{ url_for('institute_land_department_safety') }}"> Безопасность жизнедеятельности</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"> Юридический институт</a>
+                        <ul class="sidebar-dropdown">
+                            <li><a href="{{ url_for('institute_law') }}"> Об институте</a></li>
+                            <li><a href="{{ url_for('institute_law_department_theory') }}"> Теории и истории государства и права</a></li>
+                            <li><a href="{{ url_for('institute_law_department_civil') }}"> Гражданского права и процесса</a></li>
+                            <li><a href="{{ url_for('institute_law_department_criminal_procedure') }}"> Уголовного процесса, криминалистики и основ судебной экспертизы</a></li>
+                            <li><a href="{{ url_for('institute_law_department_criminal_law') }}"> Уголовного права и криминологии</a></li>
+                            <li><a href="{{ url_for('institute_law_department_land_law') }}"> Земельного права и экологических экспертиз</a></li>
+                            <li><a href="{{ url_for('institute_law_department_history') }}"> Истории и политологии</a></li>
+                            <li><a href="{{ url_for('institute_law_department_philosophy') }}"> Философии</a></li>
+                            <li><a href="{{ url_for('institute_law_department_forensic') }}"> Судебных экспертиз</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"> Ачинский филиал</a>
+                        <ul class="sidebar-dropdown">
+                            <li><a href="{{ url_for('institute_achinsk') }}"> Об институте</a></li>
+                            <li><a href="{{ url_for('institute_achinsk_department_law') }}"> Правовых и социально-экономических дисциплин</a></li>
+                            <li><a href="{{ url_for('institute_achinsk_department_engineering') }}"> Агроинженерии</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Университет -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"> Университет</a>
+                        <ul class="sidebar-dropdown">
+                            <li><a href="{{ url_for('university_today') }}">Университет сегодня</a></li>
+                            <li><a href="{{ url_for('structure') }}">Структура университета</a></li>
+                            <li><a href="{{ url_for('leadership') }}">Руководство</a></li>
+                            <li><a href="{{ url_for('academic_council') }}">Ученый совет</a></li>
+                            <li><a href="{{ url_for('departments') }}">Управления и отделы</a></li>
+                            <li><a href="{{ url_for('library') }}">Научная библиотека</a></li>
+                            <li><a href="{{ url_for('educational_activity') }}">Образовательная деятельность</a></li>
+                            <li><a href="{{ url_for('professionalitet') }}">Профессионалитет</a></li>
+                            <li><a href="{{ url_for('inclusive_education') }}">Инклюзивное образование</a></li>
+                            <li><a href="{{ url_for('additional_education') }}">Дополнительное образование</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Наука и инновации -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"> Наука и инновации</a>
+                        <ul class="sidebar-dropdown">
+                            <li><a href="{{ url_for('science') }}">Научная деятельность</a></li>
+                            <li><a href="{{ url_for('laboratories') }}">Инновационные лаборатории</a></li>
+                            <li><a href="{{ url_for('science_schools') }}">Научные школы</a></li>
+                            <li><a href="{{ url_for('grants') }}">Гранты и конкурсы</a></li>
+                            <li><a href="{{ url_for('conferences') }}">Конференции</a></li>
+                            <li><a href="{{ url_for('science_news') }}">Новости науки</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Студенту -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"> Студенту</a>
+                        <ul class="sidebar-dropdown">
+                            <li><a href="{{ url_for('school_news') }}">Новости, объявления</a></li>
+                            <li><a href="{{ url_for('student_teams') }}">Студенческий отряд</a></li>
+                            <li><a href="{{ url_for('volunteer') }}">Волонтерский центр</a></li>
+                            <li><a href="{{ url_for('dormitory') }}">Общежитие</a></li>
+                            <li><a href="{{ url_for('payment') }}">Оплата ON-LINE</a></li>
+                            <li><a href="{{ url_for('schedule_list') }}"> Расписание занятий</a></li>
+                            <li><a href="{{ url_for('cossack') }}">Казачья сотня</a></li>
+                            <li><a href="{{ url_for('international_students') }}">Ассоциация иностранных студентов</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Поступающему -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"> Поступающему</a>
+                        <ul class="sidebar-dropdown">
+                            <li><a href="{{ url_for('programs') }}">Программы обучения</a></li>
+                            <li><a href="{{ url_for('admission_addresses') }}">Адреса приема документов</a></li>
+                            <li><a href="{{ url_for('admission_faq') }}">Вопросы - ответы</a></li>
+                            <li><a href="{{ url_for('admission_docs') }}">Документы для поступления</a></li>
+                            <li><a href="{{ url_for('admission_info') }}">Информация для поступающего</a></li>
+                            <li><a href="{{ url_for('disabled_info') }}">Информация для лиц с ОВЗ</a></li>
+                            <li><a href="{{ url_for('paid_education') }}">Платное обучение</a></li>
+                            <li><a href="{{ url_for('entrance_tests') }}">Вступительные испытания</a></li>
+                            <li><a href="{{ url_for('competition_lists') }}">Конкурсные списки</a></li>
+                            <li><a href="{{ url_for('enrollment_orders') }}">Приказы о зачислении</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Школьнику -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"> Школьнику</a>
+                        <ul class="sidebar-dropdown">
+                            <li><a href="{{ url_for('school_info') }}">Информация для школьников</a></li>
+                            <li><a href="{{ url_for('olympiads') }}">Олимпиады и конкурсы</a></li>
+                            <li><a href="{{ url_for('preparatory_courses') }}">Подготовительные курсы</a></li>
+                            <li><a href="{{ url_for('agro_classes') }}">Агроклассы</a></li>
+                            <li><a href="{{ url_for('career_guidance') }}">Профориентационная работа</a></li>
+                            <li><a href="{{ url_for('school_conferences') }}">Конференции</a></li>
+                            <li><a href="{{ url_for('school_awards') }}">Наши награды</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Аспиранту -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"> Аспиранту</a>
+                        <ul class="sidebar-dropdown">
+                            <li><a href="{{ url_for('postgraduate') }}">Аспирантура</a></li>
+                            <li><a href="{{ url_for('doctoral') }}">Докторантура</a></li>
+                            <li><a href="{{ url_for('attestation') }}">Аттестация</a></li>
+                            <li><a href="{{ url_for('candidate_exams') }}">Кандидатские экзамены</a></li>
+                            <li><a href="{{ url_for('dissertations') }}">Диссертации</a></li>
+                            <li><a href="{{ url_for('science_supervisors') }}">Научные руководители</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li><a href="{{ url_for('news') }}"> Новости</a></li>
+                    <li><a href="{{ url_for('employee') }}"> Сотруднику</a></li>
+                    <li><a href="{{ url_for('employer') }}"> Работодателю</a></li>
+                    <li><a href="{{ url_for('alumni') }}"> Выпускнику</a></li>
+                    <li><a href="{{ url_for('contacts_departments') }}"> Контакты подразделений</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <footer>
+        <div class="container">
+            <!-- Основные ссылки в одну строку -->
+            <div class="footer-main-links">
+                <a href="{{ url_for('about') }}">О нас</a>
+                <a href="{{ url_for('programs') }}">Программы</a>
+                <a href="{{ url_for('news') }}">Новости</a>
+                <a href="{{ url_for('contacts') }}">Контакты</a>
+            </div>
+            
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>🌾 Аграрный Университет</h3>
+                    <p class="footer-about">Ведущее учебное заведение в области сельского хозяйства.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon">ВК</a>
+                        <a href="#" class="social-icon">TG</a>
+                        <a href="#" class="social-icon">YT</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024-2026 ООО Аграрный Университет</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Динамический поиск
+        const searchInput = document.getElementById('search-input');
+        const suggestionsDiv = document.getElementById('search-suggestions');
+        let timeoutId;
+
+        function getTypeName(type) {
+            const types = {
+                'program': 'Программа',
+                'news': 'Новость',
+                'schedule_main': 'Расписание',
+                'schedule': 'Расписание',
+                'schedule_content': 'В расписании',
+                'user': 'Пользователь'
+            };
+            return types[type] || type;
+        }
+
+        function highlightText(text, query) {
+            if (!query) return text;
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<span class="search-highlight">$1</span>');
+        }
+
+        searchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+            
+            clearTimeout(timeoutId);
+            
+            if (query.length < 2) {
+                suggestionsDiv.style.display = 'none';
+                return;
+            }
+            
+            timeoutId = setTimeout(() => {
+                fetch(`/api/search?q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.results.length > 0) {
+                            let html = '';
+                            
+                            data.results.forEach(result => {
+                                html += `
+                                    <a href="${result.url}" class="search-suggestion">
+                                        <span style="font-size: 1.2rem;">${result.icon || '📄'}</span>
+                                        <div style="flex: 1;">
+                                            <div style="font-weight: 600; font-size: 0.95rem;">${highlightText(result.title, query)}</div>
+                                            <div style="font-size: 0.8rem; color: var(--text-light);">${result.description || ''}</div>
+                                        </div>
+                                        <span class="search-suggestion-type">${getTypeName(result.type)}</span>
+                                    </a>
+                                `;
+                            });
+                            
+                            html += `
+                                <a href="/search?q=${encodeURIComponent(query)}" style="display: block; padding: 0.8rem; text-align: center; background: var(--beige-light); color: var(--primary-color); text-decoration: none; font-weight: 600; border-radius: 0 0 10px 10px;">
+                                    Все результаты (${data.results.length}) →
+                                </a>
+                            `;
+                            
+                            suggestionsDiv.innerHTML = html;
+                            suggestionsDiv.style.display = 'block';
+                        } else {
+                            suggestionsDiv.innerHTML = '<div style="padding: 1rem; text-align: center; color: #666;">Ничего не найдено</div>';
+                            suggestionsDiv.style.display = 'block';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Ошибка поиска:', error);
+                    });
+            }, 300);
+        });
+
+        // Закрывать подсказки при клике вне
+        document.addEventListener('click', function(event) {
+            if (!searchInput.contains(event.target) && !suggestionsDiv.contains(event.target)) {
+                suggestionsDiv.style.display = 'none';
+            }
+        });
+
+        // JavaScript для выпадающих меню
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+            
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const dropdown = this.parentElement;
+                    dropdown.classList.toggle('active');
+                });
+            });
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,5577 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #8B7355;
+    --primary-dark: #6B5644;
+    --primary-light: #A68968;
+    --secondary-color: #C9A882;
+    --accent-color: #D4AF37;
+    --accent-hover: #B8941F;
+    --beige-light: #F5F1E8;
+    --beige-medium: #E8DCC4;
+    --beige-dark: #D4C4A8;
+    --cream: #FFF8E7;
+    --text-color: #3E3024;
+    --text-light: #6B5D4F;
+    --white: #ffffff;
+    --shadow-sm: 0 2px 12px rgba(139, 115, 85, 0.08);
+    --shadow-md: 0 4px 20px rgba(139, 115, 85, 0.12);
+    --shadow-lg: 0 8px 40px rgba(139, 115, 85, 0.18);
+    --gradient-primary: linear-gradient(135deg, #8B7355 0%, #A68968 100%);
+    --gradient-accent: linear-gradient(135deg, #D4AF37 0%, #F0C952 100%);
+    --gradient-light: linear-gradient(135deg, #F5F1E8 0%, #E8DCC4 100%);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.7;
+    color: var(--text-color);
+    background-color: var(--cream);
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--primary-dark);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* ===== HEADER & NAVIGATION ===== */
+header {
+    background: var(--gradient-primary);
+    color: var(--white);
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    animation: fadeInDown 0.6s ease-out;
+    border-bottom: 2px solid transparent;
+    padding: 0 1rem;
+}
+
+.navbar {
+    padding: 0.5rem 0;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 0.5rem;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    animation: slideInLeft 0.8s ease-out;
+    margin-right: 1rem;
+}
+
+.logo h1 {
+    font-size: 1.2rem;
+    color: var(--white);
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+    transition: text-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.logo:hover h1 {
+    text-shadow: 0 0 10px var(--neon-white), 0 0 20px var(--neon-beige);
+    transform: scale(1.02);
+}
+
+nav {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 0.3rem;
+    align-items: center;
+    animation: slideInRight 0.8s ease-out;
+    flex-wrap: nowrap;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu li {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.nav-menu a {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    padding: 0.4rem 0.5rem;
+    position: relative;
+    white-space: nowrap;
+}
+
+.nav-menu a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--gradient-accent);
+    transition: width 0.3s ease;
+    border-radius: 3px;
+}
+
+.nav-menu a:hover::before {
+    width: 80%;
+}
+
+.nav-menu a:hover {
+    transform: translateY(-2px);
+    text-shadow: 0 0 8px var(--neon-white);
+}
+
+/* Специальные стили для кнопок в навигации */
+.nav-menu .auth-link,
+.nav-menu .admin-link {
+    margin: 0 0.1rem;
+    display: inline-block;
+}
+
+/* ===== AUTH BUTTONS STYLES ===== */
+.auth-link {
+    background: white !important;
+    color: var(--primary-color) !important;
+    padding: 0.3rem 0.8rem !important;
+    border-radius: 20px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease !important;
+    border: 2px solid transparent !important;
+    font-size: 0.75rem !important;
+    white-space: nowrap !important;
+}
+
+.auth-link:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15) !important;
+    background: white !important;
+    border-color: var(--accent-color) !important;
+}
+
+.logout-link {
+    background: white !important;
+    color: #dc3545 !important;
+}
+
+.logout-link:hover {
+    color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+
+/* Стили для админ кнопки */
+.admin-link {
+    background: var(--gradient-accent) !important;
+    color: white !important;
+    padding: 0.3rem 0.8rem !important;
+    border-radius: 20px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease !important;
+    font-size: 0.75rem !important;
+    white-space: nowrap !important;
+    display: inline-block !important;
+    border: 2px solid transparent !important;
+}
+
+.admin-link:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: var(--neon-glow-strong);
+    animation: neonPulse 2s infinite;
+}
+
+/* Убираем псевдоэлемент для админ кнопки */
+.admin-link::before {
+    display: none !important;
+}
+
+/* ===== DROPDOWN MENU STYLES ===== */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border-radius: 10px;
+    box-shadow: var(--shadow-lg);
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    padding: 0.5rem 0;
+    list-style: none;
+    border: 2px solid var(--beige-medium);
+}
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu li {
+    width: 100%;
+}
+
+.dropdown-menu a {
+    color: var(--text-color) !important;
+    padding: 0.6rem 1.2rem !important;
+    display: block;
+    font-size: 0.85rem !important;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    background: transparent !important;
+}
+
+.dropdown-menu a::before {
+    display: none !important;
+}
+
+.dropdown-menu a:hover {
+    background: var(--gradient-light) !important;
+    color: var(--primary-color) !important;
+    transform: translateX(5px);
+}
+
+/* ===== HERO SECTION ===== */
+.hero {
+    background: var(--gradient-primary);
+    position: relative;
+    overflow: hidden;
+    padding: 10rem 0;
+    color: var(--white);
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+    animation: float 6s ease-in-out infinite;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(201, 168, 130, 0.15) 0%, transparent 70%);
+    animation: float 8s ease-in-out infinite reverse;
+}
+
+.hero .container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    color: var(--white);
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 0.8s ease-out;
+    font-weight: 900;
+}
+
+.hero-subtitle {
+    font-size: 1.6rem;
+    margin-bottom: 3rem;
+    opacity: 0.95;
+    font-weight: 300;
+    animation: fadeInUp 1s ease-out 0.2s backwards;
+    letter-spacing: 0.5px;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+    display: inline-block;
+    padding: 1.2rem 3rem;
+    text-decoration: none;
+    border-radius: 35px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-primary {
+    background: var(--gradient-accent);
+    color: var(--white);
+    animation: fadeInUp 1.2s ease-out 0.4s backwards;
+}
+
+.btn-primary:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+    background: var(--white);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-secondary:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-3px);
+}
+
+/* ===== FEATURES SECTION ===== */
+.features {
+    padding: 8rem 0;
+    background: var(--beige-light);
+    position: relative;
+}
+
+.features::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(to bottom, var(--cream), transparent);
+}
+
+.features h2 {
+    text-align: center;
+    font-size: 3.5rem;
+    margin-bottom: 5rem;
+    color: var(--primary-dark);
+    position: relative;
+    padding-bottom: 1.5rem;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.features h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 5px;
+    background: var(--gradient-accent);
+    border-radius: 3px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3rem;
+}
+
+.feature-card {
+    padding: 3rem;
+    background: var(--white);
+    border-radius: 20px;
+    text-align: center;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid var(--beige-medium);
+    position: relative;
+    overflow: hidden;
+    animation: scaleIn 0.6s ease-out backwards;
+}
+
+.feature-card:nth-child(1) { animation-delay: 0.1s; }
+.feature-card:nth-child(2) { animation-delay: 0.2s; }
+.feature-card:nth-child(3) { animation-delay: 0.3s; }
+.feature-card:nth-child(4) { animation-delay: 0.4s; }
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.feature-card:hover::before {
+    left: 100%;
+}
+
+.feature-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--gradient-accent);
+    transform: scaleX(0);
+    transition: transform 0.5s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-15px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-color);
+}
+
+.feature-card:hover::after {
+    transform: scaleX(1);
+}
+
+.feature-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    transition: transform 0.5s ease;
+}
+
+.feature-card:hover .feature-icon {
+    transform: rotateY(360deg) scale(1.2);
+}
+
+.feature-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.feature-card p {
+    color: var(--text-light);
+    line-height: 1.8;
+}
+
+/* ===== STATS SECTION ===== */
+.stats {
+    padding: 6rem 0;
+    background: var(--gradient-primary);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+}
+
+.stats::before,
+.stats::after {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+}
+
+.stats::before {
+    top: -200px;
+    right: -100px;
+    animation: float 10s ease-in-out infinite;
+}
+
+.stats::after {
+    bottom: -200px;
+    left: -100px;
+    animation: float 12s ease-in-out infinite reverse;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 4rem;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.stat-item {
+    padding: 2rem;
+    transition: transform 0.5s ease;
+    animation: fadeInUp 0.8s ease-out backwards;
+}
+
+.stat-item:nth-child(1) { animation-delay: 0.1s; }
+.stat-item:nth-child(2) { animation-delay: 0.2s; }
+.stat-item:nth-child(3) { animation-delay: 0.3s; }
+.stat-item:nth-child(4) { animation-delay: 0.4s; }
+
+.stat-item:hover {
+    transform: scale(1.15);
+}
+
+.stat-item h3 {
+    font-size: 4rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent-color);
+    font-weight: 900;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.stat-item p {
+    font-size: 1.2rem;
+    opacity: 0.95;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+    background: var(--gradient-primary);
+    color: var(--white);
+    padding: 5rem 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(201, 168, 130, 0.2) 0%, transparent 50%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+.page-header h1 {
+    font-size: 3.5rem;
+    color: var(--white);
+    position: relative;
+    z-index: 1;
+    animation: fadeInDown 0.8s ease-out;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== ABOUT CONTENT ===== */
+.about-content {
+    padding: 6rem 0;
+    background: var(--beige-light);
+}
+
+.about-text {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--white);
+    padding: 4rem;
+    border-radius: 25px;
+    box-shadow: var(--shadow-lg);
+    animation: scaleIn 0.8s ease-out;
+}
+
+.about-text h2 {
+    color: var(--primary-color);
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    font-size: 2.2rem;
+    padding-left: 1.5rem;
+    border-left: 5px solid var(--accent-color);
+    animation: slideInLeft 0.6s ease-out;
+}
+
+.about-text h2:first-child {
+    margin-top: 0;
+}
+
+.about-text p {
+    color: var(--text-light);
+    line-height: 2;
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.values-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.values-list li {
+    padding: 1.8rem;
+    margin-bottom: 1.5rem;
+    background: var(--gradient-light);
+    border-left: 5px solid var(--secondary-color);
+    border-radius: 12px;
+    transition: all 0.4s ease;
+    animation: slideInRight 0.6s ease-out backwards;
+}
+
+.values-list li:nth-child(1) { animation-delay: 0.1s; }
+.values-list li:nth-child(2) { animation-delay: 0.2s; }
+.values-list li:nth-child(3) { animation-delay: 0.3s; }
+.values-list li:nth-child(4) { animation-delay: 0.4s; }
+
+.values-list li:hover {
+    transform: translateX(15px);
+    box-shadow: var(--shadow-md);
+    background: var(--white);
+    border-left-width: 8px;
+}
+
+.values-list strong {
+    color: var(--primary-color);
+    font-size: 1.15rem;
+}
+
+/* ===== PROGRAMS ===== */
+.programs-content {
+    padding: 6rem 0;
+    background: var(--cream);
+}
+
+.programs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 3rem;
+}
+
+.program-card {
+    padding: 3rem;
+    background: var(--white);
+    border-radius: 20px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    border-top: 5px solid var(--secondary-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.program-card::before {
+    content: '🎓';
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 4rem;
+    opacity: 0.08;
+    transition: all 0.5s ease;
+}
+
+.program-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: var(--gradient-light);
+    transition: height 0.5s ease;
+    z-index: -1;
+}
+
+.program-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+.program-card:hover::before {
+    opacity: 0.15;
+    transform: rotate(15deg) scale(1.3);
+}
+
+.program-card:hover::after {
+    height: 100%;
+}
+
+.program-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.6rem;
+}
+
+.program-degree, .program-duration {
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 1.05rem;
+}
+
+.program-degree::before {
+    content: '📚';
+    font-size: 1.3rem;
+}
+
+.program-duration::before {
+    content: '⏱️';
+    font-size: 1.3rem;
+}
+
+.program-description {
+    color: var(--text-light);
+    line-height: 1.9;
+    margin-top: 1.2rem;
+}
+
+/* ===== NEWS ===== */
+.news-content {
+    padding: 2rem 0;
+    padding-left: 32px;
+    padding-right: 32px;
+    background: var(--beige-light);
+}
+
+.news-grid {
+    display: grid;
+    gap: 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.news-card {
+    padding: 3rem;
+    background: var(--white);
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+    border-left: 6px solid var(--accent-color);
+    transition: all 0.4s ease;
+    animation: slideInLeft 0.6s ease-out backwards;
+}
+
+.news-card:hover {
+    transform: translateX(15px);
+    box-shadow: var(--shadow-lg);
+    border-left-width: 10px;
+}
+
+.news-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+.news-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-light);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 2px solid var(--beige-medium);
+}
+
+.news-author {
+    font-weight: 600;
+    color: var(--secondary-color);
+}
+
+.news-date {
+    color: var(--text-light);
+}
+
+.news-content p {
+    color: var(--text-color);
+    line-height: 1.9;
+    border-radius: 10px;
+}
+
+/* ===== CONTACTS ===== */
+.contacts-content {
+    padding: 6rem 0;
+    background: var(--cream);
+}
+
+.contacts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 4rem;
+}
+
+.contact-info {
+    background: var(--white);
+    padding: 3.5rem;
+    border-radius: 25px;
+    box-shadow: var(--shadow-lg);
+    animation: slideInLeft 0.8s ease-out;
+}
+
+.contact-info h2 {
+    color: var(--primary-color);
+    margin-bottom: 3rem;
+    font-size: 2.2rem;
+}
+
+.contact-item {
+    margin-bottom: 2.5rem;
+    padding: 2rem;
+    background: var(--gradient-light);
+    border-radius: 15px;
+    transition: all 0.4s ease;
+    animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.contact-item:nth-child(1) { animation-delay: 0.1s; }
+.contact-item:nth-child(2) { animation-delay: 0.2s; }
+.contact-item:nth-child(3) { animation-delay: 0.3s; }
+.contact-item:nth-child(4) { animation-delay: 0.4s; }
+
+.contact-item:hover {
+    background: var(--white);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-5px);
+}
+
+.contact-item h3 {
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.contact-item p {
+    color: var(--text-color);
+    line-height: 1.8;
+}
+
+/* ===== FORMS ===== */
+.contact-form-wrapper, .admin-form {
+    background: var(--white);
+    padding: 3.5rem;
+    border-radius: 25px;
+    box-shadow: var(--shadow-lg);
+    animation: slideInRight 0.8s ease-out;
+}
+
+.contact-form-wrapper h2, .admin-form h3 {
+    color: var(--primary-color);
+    margin-bottom: 2.5rem;
+    font-size: 2.2rem;
+}
+
+.form-group {
+    margin-bottom: 2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    font-size: 1.05rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 1.2rem 1.5rem;
+    border: 2px solid var(--beige-medium);
+    border-radius: 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: var(--beige-light);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background: var(--white);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+    transform: translateY(-2px);
+}
+
+.form-message {
+    margin-top: 1.5rem;
+    animation: fadeInUp 0.4s ease-out;
+}
+
+.form-message .success {
+    color: #155724;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border-left: 5px solid #28a745;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.form-message .error {
+    color: #721c24;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    border-left: 5px solid #dc3545;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+/* ===== ADMIN PANEL ===== */
+.admin-content {
+    padding: 6rem 0;
+    background: var(--beige-light);
+}
+
+.admin-tabs {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+    animation: fadeInDown 0.6s ease-out;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 1.5rem 2rem;
+    background: transparent;
+    border: 2px solid transparent;
+    cursor: pointer;
+    border-radius: 12px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-light);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.tab-btn::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 4px;
+    background: var(--gradient-accent);
+    transition: width 0.4s ease;
+    border-radius: 3px;
+}
+
+.tab-btn:hover {
+    background: var(--beige-light);
+    color: var(--primary-color);
+    transform: translateY(-3px);
+}
+
+.tab-btn.active {
+    background: var(--gradient-primary);
+    color: var(--white);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
+}
+
+.tab-btn.active::before {
+    width: 70%;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.admin-form {
+    margin-bottom: 4rem;
+}
+
+.admin-list {
+    display: grid;
+    gap: 2rem;
+}
+
+.admin-item {
+    padding: 2.5rem;
+    background: var(--white);
+    border-radius: 18px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 2rem;
+    transition: all 0.4s ease;
+    border-left: 5px solid var(--secondary-color);
+    animation: slideInLeft 0.6s ease-out backwards;
+}
+
+.admin-item:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateX(10px);
+    border-left-width: 8px;
+}
+
+.admin-item-content {
+    flex: 1;
+}
+
+.admin-item-content h3 {
+    color: var(--primary-color);
+    margin-bottom: 1.2rem;
+    font-size: 1.5rem;
+}
+
+.admin-item-content p {
+    color: var(--text-light);
+    margin-bottom: 0.7rem;
+    line-height: 1.7;
+}
+
+.admin-item-actions {
+    display: flex;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+.btn-edit, .btn-delete {
+    padding: 0.9rem 1.8rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-edit {
+    background: var(--gradient-accent);
+    color: var(--white);
+}
+
+.btn-edit:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-delete {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: var(--white);
+}
+
+.btn-delete:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ===== FOOTER ===== */
+footer {
+    background: var(--gradient-primary);
+    color: var(--white);
+    padding: 5rem 0 2rem;
+    margin-top: 6rem;
+    position: relative;
+    overflow: hidden;
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gradient-accent);
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 4rem;
+    margin-bottom: 3rem;
+}
+
+.footer-section {
+    animation: fadeInUp 0.8s ease-out backwards;
+}
+
+.footer-section:nth-child(1) { animation-delay: 0.1s; }
+.footer-section:nth-child(2) { animation-delay: 0.2s; }
+.footer-section:nth-child(3) { animation-delay: 0.3s; }
+
+.footer-section h3 {
+    margin-bottom: 1.5rem;
+    color: var(--accent-color);
+    font-size: 1.5rem;
+}
+
+.footer-section p {
+    line-height: 1.9;
+    opacity: 0.9;
+    margin-bottom: 0.7rem;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    opacity: 0.85;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 968px) {
+    .navbar .container {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+
+    .hero h1 {
+        font-size: 2.8rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.3rem;
+    }
+
+    .contacts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-item {
+        flex-direction: column;
+    }
+
+    .admin-item-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 640px) {
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .features h2, .page-header h1 {
+        font-size: 2.2rem;
+    }
+
+    .programs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-tabs {
+        flex-direction: column;
+    }
+
+    .btn {
+        padding: 1rem 2rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* ===== SMOOTH SCROLL ===== */
+html {
+    scroll-behavior: smooth;
+}
+
+/* ===== SELECTION ===== */
+::selection {
+    background: var(--accent-color);
+    color: var(--white);
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--beige-light);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gradient-primary);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+/*ПРОФИЛЬ*/
+.profile-content {
+    padding: 6rem 0;
+    background: var(--beige-light);
+    min-height: calc(100vh - 400px);
+}
+
+.profile-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: 25px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.profile-header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 3rem;
+    text-align: center;
+}
+
+.profile-avatar {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.profile-header h2 {
+    color: white;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+}
+
+.admin-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: var(--gradient-accent);
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.profile-info {
+    padding: 3rem;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--beige-medium);
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.info-value {
+    color: var(--text-color);
+}
+
+.profile-actions {
+    padding: 0 3rem 3rem 3rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.profile-actions .btn {
+    min-width: 150px;
+}
+
+/* Flash messages */
+.flash-messages {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    z-index: 9999;
+    max-width: 400px;
+}
+
+.flash-message {
+    padding: 1.2rem 2rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-lg);
+    animation: slideInRight 0.4s ease-out;
+    font-weight: 500;
+    border-left: 5px solid;
+}
+
+.flash-success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+    border-left-color: #28a745;
+}
+
+.flash-danger {
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    color: #721c24;
+    border-left-color: #dc3545;
+}
+
+.flash-info {
+    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+    color: #0c5460;
+    border-left-color: #17a2b8;
+}
+
+.flash-warning {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%);
+    color: #856404;
+    border-left-color: #ffc107;
+}
+
+/* Login and Register pages */
+.login-content, .register-content {
+    padding: 6rem 0;
+    background: var(--beige-light);
+    min-height: calc(100vh - 400px);
+}
+
+.login-form-wrapper, .register-form-wrapper {
+    max-width: 450px;
+    margin: 0 auto;
+    background: var(--white);
+    padding: 3.5rem;
+    border-radius: 25px;
+    box-shadow: var(--shadow-lg);
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.login-form-wrapper h2, .register-form-wrapper h2 {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    color: var(--primary-color);
+    font-size: 2rem;
+}
+
+.login-form .form-group, .register-form .form-group {
+    margin-bottom: 2rem;
+}
+
+.login-form label, .register-form label {
+    display: block;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.login-form input, .register-form input {
+    width: 100%;
+    padding: 1.2rem 1.5rem;
+    border: 2px solid var(--beige-medium);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.login-form input:focus, .register-form input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+}
+
+.login-form .btn, .register-form .btn {
+    width: 100%;
+    padding: 1.2rem;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+}
+
+.alert {
+    padding: 1.2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+    border-left: 5px solid #28a745;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    color: #721c24;
+    border-left: 5px solid #dc3545;
+}
+
+.register-link, .login-link {
+    text-align: center;
+    margin-top: 2rem;
+    color: var(--text-light);
+}
+
+.register-link a, .login-link a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.register-link a:hover, .login-link a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+/* Profile page */
+.profile-content {
+    padding: 6rem 0;
+    background: var(--beige-light);
+    min-height: calc(100vh - 400px);
+}
+
+.profile-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: 25px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.profile-header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 3rem;
+    text-align: center;
+}
+
+.profile-avatar {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.profile-header h2 {
+    color: white;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+}
+
+.admin-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: var(--gradient-accent);
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.profile-info {
+    padding: 3rem;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--beige-medium);
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.info-value {
+    color: var(--text-color);
+}
+
+.profile-actions {
+    padding: 0 3rem 3rem 3rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.profile-actions .btn {
+    min-width: 150px;
+}
+
+/* Register form specific */
+.register-form-wrapper {
+    max-width: 500px;
+}
+
+/* ===== EDIT PAGE STYLES ===== */
+.edit-page-content {
+    padding: 4rem 0;
+    background: var(--beige-light);
+    min-height: calc(100vh - 400px);
+}
+
+.edit-page-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    background: var(--white);
+    border-radius: 25px;
+    box-shadow: var(--shadow-lg);
+    padding: 3rem;
+}
+
+.edit-page-form {
+    padding-right: 2rem;
+    border-right: 2px solid var(--beige-medium);
+}
+
+.edit-page-form .form-group {
+    margin-bottom: 2rem;
+}
+
+.edit-page-form label {
+    display: block;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    font-size: 1.1rem;
+}
+
+.edit-page-form input,
+.edit-page-form textarea {
+    width: 100%;
+    padding: 1.2rem;
+    border: 2px solid var(--beige-medium);
+    border-radius: 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: var(--beige-light);
+}
+
+.edit-page-form input:focus,
+.edit-page-form textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background: var(--white);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+}
+
+.edit-page-form .form-text {
+    display: block;
+    margin-top: 0.5rem;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.edit-page-form .form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.preview-section {
+    padding-left: 2rem;
+}
+
+.preview-section h3 {
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+}
+
+.preview-content {
+    background: var(--beige-light);
+    padding: 2rem;
+    border-radius: 15px;
+    min-height: 300px;
+    white-space: pre-wrap;
+    line-height: 1.8;
+}
+
+.preview-content h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+/* ===== PAGE EDIT CARDS ===== */
+.pages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.page-edit-card {
+    display: block;
+    padding: 2rem;
+    background: var(--white);
+    border-radius: 15px;
+    text-decoration: none;
+    color: var(--text-color);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    text-align: center;
+    border: 2px solid transparent;
+}
+
+.page-edit-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-color);
+}
+
+.page-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.page-edit-card h3 {
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.page-edit-card p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+/* ===== PROFILE PAGE STYLES ===== */
+.profile-content {
+    padding: 6rem 0;
+    background: var(--beige-light);
+    min-height: calc(100vh - 400px);
+}
+
+.profile-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: 25px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.profile-header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 3rem;
+    text-align: center;
+}
+
+.profile-avatar {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.profile-header h2 {
+    color: white;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+}
+
+.admin-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: var(--gradient-accent);
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.profile-info {
+    padding: 3rem;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--beige-medium);
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.info-value {
+    color: var(--text-color);
+}
+
+.profile-actions {
+    padding: 0 3rem 3rem 3rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.profile-actions .btn {
+    min-width: 150px;
+}
+
+/* ===== LOGIN & REGISTER STYLES ===== */
+.login-content, .register-content {
+    padding: 6rem 0;
+    background: var(--beige-light);
+    min-height: calc(100vh - 400px);
+}
+
+.login-form-wrapper, .register-form-wrapper {
+    max-width: 450px;
+    margin: 0 auto;
+    background: var(--white);
+    padding: 3.5rem;
+    border-radius: 25px;
+    box-shadow: var(--shadow-lg);
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.login-form-wrapper h2, .register-form-wrapper h2 {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    color: var(--primary-color);
+    font-size: 2rem;
+}
+
+.login-form .form-group, .register-form .form-group {
+    margin-bottom: 2rem;
+}
+
+.login-form label, .register-form label {
+    display: block;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.login-form input, .register-form input {
+    width: 100%;
+    padding: 1.2rem 1.5rem;
+    border: 2px solid var(--beige-medium);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.login-form input:focus, .register-form input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+}
+
+.login-form .btn, .register-form .btn {
+    width: 100%;
+    padding: 1.2rem;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+}
+
+.alert {
+    padding: 1.2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+    border-left: 5px solid #28a745;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    color: #721c24;
+    border-left: 5px solid #dc3545;
+}
+
+.register-link, .login-link {
+    text-align: center;
+    margin-top: 2rem;
+    color: var(--text-light);
+}
+
+.register-link a, .login-link a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.register-link a:hover, .login-link a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+/* ===== MEDIA QUERIES ===== */
+@media (max-width: 968px) {
+    .edit-page-wrapper {
+        grid-template-columns: 1fr;
+    }
+    
+    .edit-page-form {
+        padding-right: 0;
+        border-right: none;
+        border-bottom: 2px solid var(--beige-medium);
+        padding-bottom: 2rem;
+    }
+    
+    .preview-section {
+        padding-left: 0;
+        padding-top: 2rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .profile-actions {
+        flex-direction: column;
+    }
+    
+    .profile-actions .btn {
+        width: 100%;
+    }
+    
+    .login-form-wrapper, .register-form-wrapper {
+        padding: 2rem;
+    }
+}
+
+/* ===== AUTH BUTTONS STYLES ===== */
+.auth-link {
+    background: white !important;
+    color: var(--primary-color) !important;
+    padding: 0.6rem 1.5rem !important;
+    border-radius: 30px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease !important;
+    border: 2px solid transparent !important;
+}
+
+.auth-link:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15) !important;
+    background: white !important;
+    border-color: var(--accent-color) !important;
+}
+
+.profile-link {
+    background: white !important;
+    color: var(--primary-color) !important;
+}
+
+.logout-link {
+    background: white !important;
+    color: #dc3545 !important;
+}
+
+.logout-link:hover {
+    color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+
+/* Для мобильной версии */
+@media (max-width: 768px) {
+    .auth-link {
+        padding: 0.5rem 1.2rem !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+/* ===== DROPDOWN MENU STYLES ===== */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border-radius: 10px;
+    box-shadow: var(--shadow-lg);
+    min-width: 220px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    padding: 0.5rem 0;
+    list-style: none;
+    border: 2px solid var(--beige-medium);
+}
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu li {
+    width: 100%;
+}
+
+.dropdown-menu a {
+    color: var(--text-color) !important;
+    padding: 0.8rem 1.5rem !important;
+    display: block;
+    font-size: 0.9rem !important;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    background: transparent !important;
+}
+
+.dropdown-menu a::before {
+    display: none !important;
+}
+
+.dropdown-menu a:hover {
+    background: var(--gradient-light) !important;
+    color: var(--primary-color) !important;
+    transform: translateX(5px);
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 968px) {
+    .dropdown {
+        position: static;
+    }
+    
+    .dropdown-menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        border: none;
+        background: transparent;
+        min-width: 100%;
+        padding-left: 1rem;
+    }
+    
+    .dropdown-menu a {
+        color: var(--white) !important;
+        padding: 0.5rem 1rem !important;
+    }
+    
+    .dropdown-menu a:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: var(--white) !important;
+    }
+}
+
+/* ===== NEW PAGE STYLES ===== */
+.science-content,
+.applicants-content,
+.international-content,
+.life-content,
+.structure-content,
+.departments-content {
+    padding: 4rem 0;
+    background: transparent;
+    min-height: 400px;
+}
+
+.science-grid,
+.faculties-grid,
+.departments-grid,
+.partners-grid,
+.life-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.science-card,
+.faculty-card,
+.department-card,
+.partner-card,
+.life-item {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.science-card:hover,
+.faculty-card:hover,
+.department-card:hover,
+.partner-card:hover,
+.life-item:hover {
+    border-color: var(--neon-beige);
+    box-shadow: var(--neon-glow-soft);
+    transform: translateY(-5px);
+}
+
+.info-blocks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.info-block {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+}
+
+.info-block ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.info-block ul li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--beige-medium);
+}
+
+.life-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    background: var(--beige-light);
+}
+
+/* ===== SCHEDULE PAGE STYLES ===== */
+.schedule-content {
+    padding: 4rem 0;
+    background: transparent;
+    min-height: 500px;
+}
+
+.schedule-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.schedule-tab {
+    padding: 1rem 2rem;
+    background: var(--white);
+    border: 2px solid var(--beige-medium);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.schedule-tab:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: var(--neon-glow-soft);
+}
+
+.schedule-tab.active {
+    background: var(--gradient-primary);
+    color: var(--white);
+    border-color: var(--neon-beige);
+    box-shadow: var(--neon-glow-soft);
+}
+
+.schedule-table {
+    display: none;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.schedule-table.active {
+    display: block;
+}
+
+.schedule-table h2 {
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.schedule {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.schedule th {
+    background: var(--gradient-primary);
+    color: var(--white);
+    padding: 1.2rem;
+    font-weight: 600;
+    text-align: left;
+    font-size: 1rem;
+}
+
+.schedule td {
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid var(--beige-medium);
+    color: var(--text-color);
+}
+
+.schedule tr:last-child td {
+    border-bottom: none;
+}
+
+.schedule tr:hover td {
+    background: var(--beige-light);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+    .schedule-tabs {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .schedule-tab {
+        width: 100%;
+        padding: 0.8rem;
+    }
+    
+    .schedule {
+        font-size: 0.9rem;
+    }
+    
+    .schedule th,
+    .schedule td {
+        padding: 0.8rem 0.5rem;
+    }
+    
+    /* Делаем таблицу горизонтально прокручиваемой на очень маленьких экранах */
+    .schedule-table {
+        overflow-x: auto;
+    }
+    
+    .schedule {
+        min-width: 600px;
+    }
+}
+
+@media (max-width: 480px) {
+    .schedule th,
+    .schedule td {
+        font-size: 0.8rem;
+        padding: 0.6rem 0.3rem;
+    }
+}
+
+/* ===== ADDITIONAL STYLES FOR ABOUT PAGE ===== */
+.about-text h2 {
+    color: var(--primary-color);
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    font-size: 2.2rem;
+    padding-left: 1.5rem;
+    border-left: 5px solid var(--accent-color);
+}
+
+.about-text h2:first-child {
+    margin-top: 0;
+}
+
+.about-text p {
+    color: var(--text-light);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.values-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 1.5rem 0;
+}
+
+.values-list li {
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    background: var(--gradient-light);
+    border-left: 4px solid var(--secondary-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.values-list li:hover {
+    transform: translateX(10px);
+    background: var(--white);
+    box-shadow: var(--shadow-md);
+    border-left-color: var(--accent-color);
+}
+
+.values-list strong {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+/* ===== NEW PAGE STYLES ===== */
+.institute-content,
+.page-content {
+    padding: 4rem 0;
+    background: transparent;
+    min-height: 500px;
+}
+
+.institute-info,
+.content-block {
+    background: var(--white);
+    padding: 3rem;
+    border-radius: 25px;
+    box-shadow: var(--shadow-lg);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.institute-info:hover,
+.content-block:hover {
+    border-color: var(--neon-beige);
+    box-shadow: var(--neon-glow-soft);
+}
+
+.institute-info h2,
+.content-block h2 {
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    border-left: 5px solid var(--accent-color);
+    padding-left: 1.5rem;
+}
+
+.institute-info h3,
+.content-block h3 {
+    color: var(--secondary-color);
+    margin: 2rem 0 1rem;
+    font-size: 1.5rem;
+}
+
+.institute-info p,
+.content-block p {
+    color: var(--text-light);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+/* ===== MEGA MENU STYLES ===== */
+.mega-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border-radius: 15px;
+    box-shadow: var(--shadow-lg);
+    min-width: 600px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    border: 2px solid var(--beige-medium);
+}
+
+.dropdown:hover .mega-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.mega-menu-content {
+    display: flex;
+    padding: 1.5rem;
+    gap: 2rem;
+}
+
+.mega-menu-column {
+    flex: 1;
+}
+
+.mega-menu-column h3 {
+    color: var(--primary-color);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-color);
+    font-weight: 600;
+}
+
+.mega-menu-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mega-menu-column li {
+    margin-bottom: 0.5rem;
+}
+
+.mega-menu-column a {
+    color: var(--text-color) !important;
+    padding: 0.3rem 0 !important;
+    font-size: 0.85rem !important;
+    display: inline-block;
+    transition: all 0.2s ease;
+    background: transparent !important;
+}
+
+.mega-menu-column a::before {
+    display: none !important;
+}
+
+.mega-menu-column a:hover {
+    color: var(--accent-color) !important;
+    transform: translateX(5px);
+}
+
+/* Адаптация для разных экранов */
+@media (max-width: 1200px) {
+    .logo h1 {
+        font-size: 1rem;
+    }
+    
+    .navbar .container {
+        gap: 0.8rem;
+    }
+    
+    .nav-menu {
+        gap: 0.2rem;
+    }
+    
+    .nav-menu a {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.4rem;
+    }
+}
+
+@media (max-width: 1100px) {
+    .navbar .container {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+    }
+    
+    .logo {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+        margin-right: 0;
+    }
+    
+    .logo h1 {
+        font-size: 1.2rem;
+        white-space: normal;
+        text-align: center;
+    }
+    
+    nav {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.3rem;
+    }
+    
+    .nav-menu a {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.5rem;
+    }
+    
+    /* Адаптация mega menu для мобильных */
+    .mega-menu {
+        position: static;
+        min-width: 100%;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        border: none;
+        background: transparent;
+        margin-top: 0.5rem;
+    }
+    
+    .mega-menu-content {
+        flex-direction: column;
+        padding: 0.5rem 0 0.5rem 1rem;
+        gap: 1rem;
+    }
+    
+    .mega-menu-column h3 {
+        color: var(--white) !important;
+        border-bottom-color: var(--accent-color);
+    }
+    
+    .mega-menu-column a {
+        color: var(--white) !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .nav-menu {
+        gap: 0.2rem;
+    }
+    
+    .nav-menu a {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.3rem;
+    }
+    
+    .auth-link,
+    .admin-link {
+        padding: 0.2rem 0.5rem !important;
+        font-size: 0.7rem !important;
+    }
+}
+
+/* ===== TOP BAR STYLES ===== */
+.top-bar {
+    background: var(--gradient-primary);
+    color: var(--white);
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 0.5rem 0;
+}
+
+.top-bar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.logo a {
+    text-decoration: none;
+}
+
+.logo h1 {
+    font-size: 1.3rem;
+    color: var(--white);
+    font-weight: 900;
+    white-space: nowrap;
+    transition: text-shadow 0.3s ease;
+}
+
+.logo h1:hover {
+    text-shadow: 0 0 10px var(--neon-white), 0 0 20px var(--neon-beige);
+}
+
+.auth-top-menu {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.auth-top-menu .auth-link {
+    background: white !important;
+    color: var(--primary-color) !important;
+    padding: 0.3rem 0.8rem !important;
+    border-radius: 20px !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    display: inline-block;
+}
+
+.auth-top-menu .auth-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-color: var(--accent-color);
+    cursor: pointer;
+}
+
+.auth-top-menu .admin-link {
+    background: var(--gradient-accent) !important;
+    color: white !important;
+}
+
+.auth-top-menu .logout-link {
+    background: white !important;
+    color: #dc3545 !important;
+}
+
+.auth-top-menu .logout-link:hover {
+    border-color: #dc3545 !important;
+}
+
+/* ===== LAYOUT STYLES ===== */
+.layout {
+    display: flex;
+    min-height: calc(100vh - 150px);
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Левое меню */
+.sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    background: var(--white);
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    padding: 1rem 0;
+    height: fit-content;
+    position: sticky;
+    top: 80px;
+}
+
+.sidebar-nav {
+    width: 100%;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-menu li {
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.sidebar-menu > li > a {
+    display: block;
+    padding: 0.8rem 1.2rem;
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+}
+
+.sidebar-menu > li > a:hover {
+    background: var(--beige-light);
+    border-left-color: var(--accent-color);
+    color: var(--primary-color);
+}
+
+/* Выпадающее меню в сайдбаре */
+.sidebar-menu .dropdown > a::after {
+    content: '▼';
+    font-size: 0.7rem;
+    margin-left: 0.5rem;
+    float: right;
+    transition: transform 0.3s ease;
+}
+
+.sidebar-menu .dropdown.active > a::after {
+    transform: rotate(180deg);
+}
+
+.sidebar-dropdown {
+    display: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: var(--beige-light);
+}
+
+.sidebar-menu .dropdown.active .sidebar-dropdown {
+    display: block;
+}
+
+.sidebar-dropdown li a {
+    display: block;
+    padding: 0.6rem 1.2rem 0.6rem 2rem;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.sidebar-dropdown li a:hover {
+    background: var(--white);
+    border-left-color: var(--accent-color);
+    color: var(--primary-color);
+    padding-left: 2.3rem;
+}
+
+/* Основной контент */
+.main-content {
+    flex: 1;
+    background: transparent;
+    min-height: 500px;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 968px) {
+    .layout {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        position: static;
+    }
+    
+    .auth-top-menu {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 640px) {
+    .top-bar .container {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .logo h1 {
+        font-size: 1.1rem;
+    }
+    
+    .auth-top-menu {
+        justify-content: center;
+    }
+    
+    .auth-top-menu .auth-link {
+        padding: 0.2rem 0.5rem !important;
+        font-size: 0.7rem !important;
+    }
+}
+
+
+
+/* ===== FOOTER STYLES ===== */
+footer {
+    background: var(--gradient-primary);
+    color: var(--white);
+    padding: 4rem 0 2rem;
+    margin-top: 6rem;
+    position: relative;
+    overflow: hidden;
+    border-top: 3px solid var(--accent-color);
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        repeating-linear-gradient(45deg, 
+            rgba(255, 255, 255, 0.02) 0px, 
+            rgba(255, 255, 255, 0.02) 2px,
+            transparent 2px, 
+            transparent 10px);
+    pointer-events: none;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 1;
+}
+
+.footer-section {
+    animation: fadeInUp 0.8s ease-out backwards;
+}
+
+.footer-section:nth-child(1) { animation-delay: 0.1s; }
+.footer-section:nth-child(2) { animation-delay: 0.2s; }
+.footer-section:nth-child(3) { animation-delay: 0.3s; }
+.footer-section:nth-child(4) { animation-delay: 0.4s; }
+
+.footer-section h3 {
+    color: var(--accent-color);
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.8rem;
+}
+
+.footer-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.footer-section:hover h3::after {
+    width: 80px;
+}
+
+.footer-about {
+    line-height: 1.8;
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-links a {
+    color: var(--white);
+    text-decoration: none;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+    display: inline-block;
+    position: relative;
+    padding-left: 0;
+}
+
+.footer-links a::before {
+    content: '›';
+    position: absolute;
+    left: -15px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    color: var(--accent-color);
+    font-size: 1.2rem;
+}
+
+.footer-links a:hover {
+    opacity: 1;
+    transform: translateX(15px);
+    color: var(--accent-color);
+}
+
+.footer-links a:hover::before {
+    opacity: 1;
+    left: -5px;
+}
+
+.footer-contacts p {
+    margin-bottom: 0.8rem;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer-contacts p:hover {
+    opacity: 1;
+}
+
+.footer-address, .footer-phone, .footer-email {
+    font-size: 0.95rem;
+}
+
+.footer-social {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.social-icon {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.social-icon:hover {
+    background: var(--accent-color);
+    color: var(--primary-dark);
+    transform: translateY(-3px);
+    border-color: var(--white);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+}
+
+.footer-bottom p {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.footer-made {
+    opacity: 0.7;
+    font-size: 0.85rem;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .footer-section {
+        text-align: center;
+    }
+    
+    .footer-section h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .footer-links a:hover {
+        transform: translateX(5px);
+    }
+    
+    .footer-social {
+        justify-content: center;
+    }
+    
+    .footer-contacts p {
+        justify-content: center;
+    }
+}
+
+.contact-map-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.map-container {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 25px;
+    box-shadow: var(--shadow-lg);
+    animation: slideInRight 0.8s ease-out;
+}
+
+.map-container h3 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.map-placeholder {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 2px solid var(--beige-medium);
+    height: 250px;
+}
+
+.map-static {
+    width: 100%;
+    height: 100%;
+}
+
+.map-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    backdrop-filter: blur(5px);
+}
+
+.map-overlay p {
+    margin: 0.3rem 0;
+}
+
+.map-link {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.map-link:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .contacts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .map-placeholder {
+        height: 200px;
+    }
+}
+
+/* ===== FOOTER LINK STYLES ===== */
+.footer-links-compact {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links-compact li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-links-compact a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 400;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+    display: inline-block;
+    position: relative;
+    padding: 0.2rem 0;
+    border-bottom: 1px solid transparent;
+}
+
+/* Эффект 1: Подчеркивание с анимацией */
+.footer-links-compact a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.footer-links-compact a:hover::after {
+    width: 100%;
+}
+
+.footer-links-compact a:hover {
+    opacity: 1;
+    color: var(--accent-color);
+    transform: translateX(5px);
+}
+
+/* Эффект 3: Подсветка фона при наведении */
+.footer-links-compact a {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.footer-links-compact a:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Для мобильных устройств */
+@media (max-width: 768px) {
+    .footer-links-compact {
+        text-align: center;
+    }
+    
+    .footer-links-compact a {
+        padding: 0.4rem 1rem;
+    }
+    
+    .footer-links-compact a:hover {
+        transform: translateY(-2px) scale(1.05);
+    }
+}
+
+/* Для главных ссылок (крупнее) */
+.footer-main-links {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.footer-main-links a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 0.5rem 1.2rem;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.footer-main-links a:hover {
+    background: var(--accent-color);
+    color: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+    border-color: var(--white);
+}
+
+/* Компактные ссылки для колонок */
+.footer-column-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-column-links li {
+    margin-bottom: 0.6rem;
+}
+
+.footer-column-links a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    display: inline-block;
+    position: relative;
+    padding-left: 0;
+}
+
+.footer-column-links a:hover {
+    color: var(--accent-color);
+    padding-left: 8px;
+}
+
+/* ===== CONTACTS PAGE STYLES ===== */
+.contacts-extra {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--beige-medium);
+}
+
+.contacts-page-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.contacts-page-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.contacts-page-form,
+.contacts-page-map {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+}
+
+@media (max-width: 768px) {
+    .contacts-page-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+/* Стили для поиска */
+.search-suggestion {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--beige-medium);
+    text-decoration: none;
+    color: var(--text-color);
+    transition: background 0.2s;
+}
+.search-suggestion:hover {
+    background: var(--beige-light);
+}
+.search-suggestion-type {
+    font-size: 0.7rem;
+    color: var(--accent-color);
+    background: var(--beige-light);
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+.search-highlight {
+    background: #fff3cd;
+    font-weight: 600;
+}
+.suggestions-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 10px;
+    box-shadow: var(--shadow-lg);
+    max-height: 400px;
+    overflow-y: auto;
+    display: none;
+    z-index: 1000;
+    margin-top: 0.3rem;
+}    
+
+/* ===== SCHEDULE PDF STYLES ===== */
+.schedule-nav {
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.schedule-week-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.schedule-nav-btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.schedule-nav-btn-primary {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.schedule-nav-btn-secondary {
+    background: var(--white);
+    color: var(--primary-color);
+    border: 2px solid var(--beige-medium);
+}
+
+.schedule-nav-btn-secondary:hover {
+    background: var(--beige-light);
+}
+
+.schedule-pdf-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+}
+
+.schedule-error {
+    color: #dc3545;
+    padding: 2rem;
+    text-align: center;
+    border: 2px dashed #dc3545;
+    border-radius: 10px;
+}
+
+.schedule-error p {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+}
+
+.schedule-pdf-content {
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    line-height: 1.5;
+    font-size: 0.9rem;
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 10px;
+    overflow-x: auto;
+}
+
+.schedule-download {
+    margin-top: 2rem;
+    text-align: right;
+}
+
+/* ===== SCHEDULE MAIN PAGE STYLES ===== */
+.schedule-institutes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.schedule-institute-card {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+}
+
+.schedule-institute-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.schedule-institute-card p {
+    margin-bottom: 1.5rem;
+}
+
+.schedule-course-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.schedule-course-btn {
+    display: block;
+    padding: 0.8rem 1rem;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-align: center;
+    background: var(--beige-light);
+    color: var(--primary-color);
+    border: 1px solid var(--beige-medium);
+}
+
+.schedule-course-btn:hover {
+    background: var(--beige-medium);
+    transform: translateY(-2px);
+}
+
+.schedule-info-box {
+    margin-top: 3rem;
+    padding: 1.5rem;
+    background: var(--beige-light);
+    border-radius: 10px;
+}
+
+.schedule-info-box p {
+    margin: 0;
+    color: var(--text-light);
+}
+
+/* ===== SCHEDULE STYLES ===== */
+.schedule-search {
+    margin-bottom: 2rem;
+}
+
+.schedule-search-input {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 2px solid var(--beige-medium);
+    border-radius: 50px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.schedule-search-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+}
+
+.schedule-institute-section {
+    margin-bottom: 3rem;
+}
+
+.schedule-institute-title {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid var(--accent-color);
+}
+
+.schedule-files-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.schedule-file-card {
+    display: flex;
+    background: var(--white);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    gap: 1rem;
+}
+
+.schedule-file-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-color);
+}
+
+.schedule-file-icon {
+    font-size: 2.5rem;
+    line-height: 1;
+    min-width: 50px;
+    text-align: center;
+}
+
+.schedule-file-info {
+    flex: 1;
+}
+
+.schedule-file-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+    color: var(--primary-color);
+}
+
+.schedule-file-description {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+.schedule-file-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+}
+
+.schedule-file-size {
+    color: var(--text-light);
+}
+
+.schedule-file-ext {
+    background: var(--beige-light);
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.schedule-file-actions {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.schedule-btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    flex: 1;
+}
+
+.schedule-btn-primary {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.schedule-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.schedule-btn-secondary {
+    background: var(--white);
+    color: var(--primary-color);
+    border: 2px solid var(--beige-medium);
+}
+
+.schedule-btn-secondary:hover {
+    background: var(--beige-light);
+    transform: translateY(-2px);
+}
+
+.schedule-nav {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.schedule-file-info-box {
+    background: var(--beige-light);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.schedule-file-info-box p {
+    margin: 0.3rem 0;
+}
+
+/* ===== УЛУЧШЕННЫЕ СТИЛИ ДЛЯ РАСПИСАНИЯ ===== */
+
+/* Контейнер для Excel таблиц */
+.schedule-excel-container {
+    background: white;
+    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Обертка для таблицы с горизонтальной прокруткой */
+.schedule-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin: 1rem 0;
+    border-radius: 8px;
+    border: 1px solid var(--beige-medium);
+}
+
+/* Стили для самой таблицы */
+.schedule-excel-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.9rem;
+    background: white;
+}
+
+/* Ячейки таблицы */
+.schedule-excel-table td,
+.schedule-excel-table th {
+    border: 1px solid var(--beige-medium);
+    padding: 0.8rem;
+    text-align: left;
+    vertical-align: top;
+    min-width: 150px; /* Минимальная ширина для читаемости */
+    max-width: 300px;
+    word-wrap: break-word;
+    white-space: normal; /* Текст переносится */
+    line-height: 1.4;
+}
+
+/* Заголовки таблицы */
+.schedule-excel-table th {
+    background: var(--gradient-primary);
+    color: white;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* Чередование строк */
+.schedule-excel-table tr:nth-child(even) {
+    background: var(--beige-light);
+}
+
+/* Подсветка при наведении */
+.schedule-excel-table tr:hover {
+    background: rgba(212, 175, 55, 0.1);
+}
+
+/* Ячейки с предметами - жирный шрифт */
+.schedule-excel-table td:first-child {
+    font-weight: 600;
+    background: rgba(139, 115, 85, 0.05);
+}
+
+/* Ячейки с преподавателями - курсив */
+.schedule-excel-table td:last-child {
+    font-style: italic;
+    color: var(--text-light);
+}
+
+/* Заголовки листов Excel */
+.schedule-sheet-title {
+    color: var(--primary-color);
+    margin: 2rem 0 1rem 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.schedule-sheet-title:first-of-type {
+    margin-top: 0;
+}
+
+/* PDF контент */
+.schedule-pdf-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    width: 100%;
+    overflow-x: auto;
+}
+
+.schedule-pdf-content {
+    font-family: 'Courier New', monospace;
+    line-height: 1.6;
+    font-size: 1rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 10px;
+    border: 1px solid var(--beige-medium);
+}
+
+.schedule-pdf-line {
+    margin: 0.4rem 0;
+    line-height: 1.5;
+    border-bottom: 1px dotted var(--beige-light);
+    padding-bottom: 0.2rem;
+}
+
+.schedule-pdf-line:hover {
+    background: rgba(212, 175, 55, 0.05);
+}
+
+/* Информационный блок о файле */
+.schedule-file-info-box {
+    background: var(--beige-light);
+    padding: 1.5rem 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.schedule-file-info-box p {
+    margin: 0;
+    color: var(--text-color);
+}
+
+.schedule-file-info-box strong {
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+/* Кнопки навигации */
+.schedule-nav {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.schedule-btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.schedule-btn-primary {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.schedule-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.schedule-btn-secondary {
+    background: var(--white);
+    color: var(--primary-color);
+    border: 2px solid var(--beige-medium);
+}
+
+.schedule-btn-secondary:hover {
+    background: var(--beige-light);
+    transform: translateY(-2px);
+}
+
+/* Список файлов на главной странице */
+.schedule-institute-section {
+    margin-bottom: 3rem;
+}
+
+.schedule-institute-title {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid var(--accent-color);
+}
+
+.schedule-files-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 1.5rem;
+}
+
+.schedule-file-card {
+    display: flex;
+    background: var(--white);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    gap: 1.2rem;
+}
+
+.schedule-file-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-color);
+}
+
+.schedule-file-icon {
+    font-size: 2.8rem;
+    line-height: 1;
+    min-width: 60px;
+    text-align: center;
+}
+
+.schedule-file-info {
+    flex: 1;
+}
+
+.schedule-file-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.4rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.schedule-file-description {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    margin-bottom: 0.8rem;
+    line-height: 1.4;
+}
+
+.schedule-file-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.schedule-file-size {
+    color: var(--text-light);
+}
+
+.schedule-file-ext {
+    background: var(--beige-light);
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.schedule-file-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Поиск */
+.schedule-search {
+    margin-bottom: 2rem;
+}
+
+.schedule-search-input {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 2px solid var(--beige-medium);
+    border-radius: 50px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.schedule-search-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+}
+
+/* Ошибки и пустые состояния */
+.schedule-error {
+    color: #dc3545;
+    padding: 2rem;
+    text-align: center;
+    border: 2px dashed #dc3545;
+    border-radius: 10px;
+    background: #fff8f8;
+    font-size: 1.1rem;
+}
+
+.schedule-empty {
+    text-align: center;
+    padding: 3rem;
+    background: var(--beige-light);
+    border-radius: 15px;
+    margin: 2rem 0;
+}
+
+.schedule-empty p {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+}
+
+/* ===== МЕДИА ЗАПРОСЫ ДЛЯ РАЗНЫХ ЭКРАНОВ ===== */
+
+/* Планшеты */
+@media (max-width: 1024px) {
+    .schedule-files-grid {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+    
+    .schedule-excel-table {
+        font-size: 0.85rem;
+    }
+    
+    .schedule-excel-table td,
+    .schedule-excel-table th {
+        padding: 0.6rem;
+        min-width: 130px;
+    }
+}
+
+/* Мобильные устройства */
+@media (max-width: 768px) {
+    .schedule-files-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .schedule-file-actions {
+        flex-direction: column;
+    }
+    
+    .schedule-nav {
+        flex-direction: column;
+    }
+    
+    .schedule-nav .schedule-btn {
+        width: 100%;
+        margin-left: 0 !important;
+    }
+    
+    .schedule-file-info-box {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 0.5rem;
+    }
+    
+    .schedule-institute-title {
+        font-size: 1.5rem;
+    }
+    
+    .schedule-excel-table {
+        font-size: 0.8rem;
+    }
+    
+    .schedule-excel-table td,
+    .schedule-excel-table th {
+        padding: 0.5rem;
+        min-width: 120px;
+    }
+    
+    .schedule-sheet-title {
+        font-size: 1.1rem;
+    }
+    
+    .schedule-pdf-content {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 480px) {
+    .schedule-excel-table {
+        font-size: 0.75rem;
+    }
+    
+    .schedule-excel-table td,
+    .schedule-excel-table th {
+        padding: 0.4rem;
+        min-width: 100px;
+    }
+    
+    .schedule-file-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .schedule-file-icon {
+        font-size: 3rem;
+    }
+    
+    .schedule-file-meta {
+        justify-content: center;
+    }
+}
+
+/* Для очень больших таблиц - добавляем подсказку */
+.schedule-table-wrapper::before {
+    content: '←→ Горизонтальная прокрутка';
+    display: none;
+    background: var(--accent-color);
+    color: white;
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    border-radius: 5px 5px 0 0;
+}
+
+.schedule-table-wrapper {
+    position: relative;
+}
+
+/* Показываем подсказку о прокрутке на мобильных */
+@media (max-width: 768px) {
+    .schedule-table-wrapper::before {
+        display: block;
+    }
+}
+
+/* ===== ЧИТАЕМОЕ РАСПИСАНИЕ ===== */
+
+.schedule-readable-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Карточка занятия */
+.schedule-lesson-card {
+    display: flex;
+    background: white;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-left: 5px solid var(--accent-color);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.schedule-lesson-card:hover {
+    transform: translateX(5px);
+    box-shadow: var(--shadow-md);
+}
+
+.schedule-lesson-time {
+    min-width: 120px;
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.schedule-lesson-details {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+}
+
+.schedule-lesson-subject {
+    font-weight: 600;
+    color: var(--text-color);
+    min-width: 200px;
+}
+
+.schedule-lesson-teacher {
+    color: var(--text-light);
+    font-style: italic;
+}
+
+.schedule-lesson-room {
+    color: var(--accent-color);
+    font-weight: 500;
+    margin-left: auto;
+}
+
+/* Информационные строки */
+.schedule-info-row {
+    padding: 0.5rem 1rem;
+    background: var(--beige-light);
+    border-radius: 8px;
+    margin-bottom: 0.3rem;
+    border-left: 3px solid var(--secondary-color);
+}
+
+.schedule-info-row strong {
+    color: var(--primary-color);
+}
+
+/* Текстовые строки */
+.schedule-text-line {
+    padding: 0.3rem 1rem;
+    margin: 0;
+    line-height: 1.5;
+    border-bottom: 1px dotted var(--beige-medium);
+}
+
+.schedule-text-line:last-child {
+    border-bottom: none;
+}
+
+/* Списки */
+.schedule-list-item {
+    padding: 0.3rem 1rem;
+    margin: 0;
+    list-style-type: none;
+    position: relative;
+    padding-left: 2rem;
+}
+
+.schedule-list-item::before {
+    content: "•";
+    color: var(--accent-color);
+    font-weight: bold;
+    position: absolute;
+    left: 0.8rem;
+}
+
+/* Заголовки секций */
+.schedule-section-title {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    margin: 1.5rem 0 0.8rem 0;
+    padding-bottom: 0.3rem;
+    border-bottom: 2px solid var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.schedule-section-title:first-of-type {
+    margin-top: 0;
+}
+
+/* Заголовки листов */
+.schedule-sheet-title {
+    color: var(--primary-dark);
+    font-size: 1.5rem;
+    margin: 2rem 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid var(--accent-color);
+}
+
+/* PDF контейнер */
+.schedule-pdf-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .schedule-lesson-card {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .schedule-lesson-time {
+        min-width: auto;
+        font-size: 0.9rem;
+    }
+    
+    .schedule-lesson-details {
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+    
+    .schedule-lesson-subject {
+        min-width: auto;
+    }
+    
+    .schedule-lesson-room {
+        margin-left: 0;
+    }
+    
+    .schedule-sheet-title {
+        font-size: 1.3rem;
+    }
+    
+    .schedule-section-title {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .schedule-pdf-container {
+        padding: 1rem;
+    }
+    
+    .schedule-lesson-card {
+        padding: 0.8rem;
+    }
+}
+
+/* ===== СТИЛИ ДЛЯ СПИСКА ФАЙЛОВ ===== */
+.schedule-search {
+    margin-bottom: 2rem;
+}
+
+.schedule-search-input {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 2px solid var(--beige-medium);
+    border-radius: 50px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.schedule-search-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+}
+
+.schedule-institute-section {
+    margin-bottom: 3rem;
+}
+
+.schedule-institute-title {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid var(--accent-color);
+}
+
+.schedule-files-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 1.5rem;
+}
+
+.schedule-file-card {
+    display: flex;
+    background: var(--white);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    gap: 1.2rem;
+}
+
+.schedule-file-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-color);
+}
+
+.schedule-file-icon {
+    font-size: 2.8rem;
+    line-height: 1;
+    min-width: 60px;
+    text-align: center;
+}
+
+.schedule-file-info {
+    flex: 1;
+}
+
+.schedule-file-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.4rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.schedule-file-description {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    margin-bottom: 0.8rem;
+    line-height: 1.4;
+}
+
+.schedule-file-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.schedule-file-size {
+    color: var(--text-light);
+}
+
+.schedule-file-ext {
+    background: var(--beige-light);
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.schedule-file-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.schedule-btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.schedule-btn-primary {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.schedule-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.schedule-btn-secondary {
+    background: var(--white);
+    color: var(--primary-color);
+    border: 2px solid var(--beige-medium);
+}
+
+.schedule-btn-secondary:hover {
+    background: var(--beige-light);
+    transform: translateY(-2px);
+}
+
+.schedule-nav {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.schedule-file-info-box {
+    background: var(--beige-light);
+    padding: 1.5rem 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.schedule-file-info-box p {
+    margin: 0;
+    color: var(--text-color);
+}
+
+.schedule-file-info-box strong {
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+.schedule-error {
+    color: #dc3545;
+    padding: 2rem;
+    text-align: center;
+    border: 2px dashed #dc3545;
+    border-radius: 10px;
+    background: #fff8f8;
+    font-size: 1.1rem;
+}
+
+.schedule-empty {
+    text-align: center;
+    padding: 3rem;
+    background: var(--beige-light);
+    border-radius: 15px;
+    margin: 2rem 0;
+}
+
+.schedule-empty p {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+}
+
+@media (max-width: 1024px) {
+    .schedule-files-grid {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .schedule-files-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .schedule-file-actions {
+        flex-direction: column;
+    }
+    
+    .schedule-nav {
+        flex-direction: column;
+    }
+    
+    .schedule-nav .schedule-btn {
+        width: 100%;
+        margin-left: 0 !important;
+    }
+    
+    .schedule-file-info-box {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 0.5rem;
+    }
+    
+    .schedule-institute-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .schedule-file-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .schedule-file-icon {
+        font-size: 3rem;
+    }
+    
+    .schedule-file-meta {
+        justify-content: center;
+    }
+}
+
+/* Компактные кнопки навигации */
+.schedule-nav-simple {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.schedule-btn-simple {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--beige-light);
+    color: var(--primary-color);
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    border: 1px solid var(--beige-medium);
+    transition: all 0.2s ease;
+}
+
+.schedule-btn-simple:hover {
+    background: var(--beige-medium);
+    transform: translateY(-1px);
+}
+
+.schedule-btn-simple.download {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+}
+
+/* Компактная информация о файле */
+.schedule-file-info-compact {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.file-badge {
+    background: var(--beige-light);
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
+/* PDF ридер */
+.pdf-reader-container {
+    background: #f5f5f5;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: var(--shadow-md);
+}
+
+.pdf-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    background: white;
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+.pdf-nav-btn {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.pdf-nav-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.pdf-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.pdf-page-info {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.pdf-content-wrapper {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    min-height: 400px;
+    max-height: 600px;
+    overflow: auto;
+    position: relative;
+    border: 1px solid var(--beige-medium);
+}
+
+.pdf-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255,255,255,0.9);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    z-index: 10;
+}
+
+.pdf-page-content {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform-origin: top left;
+    font-family: 'Courier New', monospace;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.pdf-page-content h3 {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    margin: 1rem 0 0.5rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.pdf-list-item {
+    padding-left: 1rem;
+    margin: 0.3rem 0;
+    position: relative;
+}
+
+.pdf-list-item::before {
+    content: "•";
+    color: var(--accent-color);
+    position: absolute;
+    left: 0;
+}
+
+.pdf-definition {
+    margin: 0.5rem 0;
+    padding: 0.3rem;
+    background: var(--beige-light);
+    border-radius: 4px;
+}
+
+.pdf-paragraph {
+    margin: 0.8rem 0;
+    line-height: 1.6;
+}
+
+.pdf-line {
+    margin: 0.3rem 0;
+    padding: 0.2rem 0;
+    border-bottom: 1px dotted var(--beige-light);
+}
+
+.pdf-zoom-controls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.zoom-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--beige-medium);
+    background: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.zoom-btn:hover {
+    background: var(--beige-light);
+}
+
+.zoom-level {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    min-width: 50px;
+    text-align: center;
+}
+
+.pdf-error {
+    color: #dc3545;
+    text-align: center;
+    padding: 2rem;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .pdf-controls {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .pdf-page-info {
+        order: -1;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .pdf-content-wrapper {
+        max-height: 400px;
+        padding: 1rem;
+    }
+    
+    .pdf-page-content {
+        font-size: 12px;
+    }
+}
+
+/* ===== УЛУЧШЕННЫЕ СТИЛИ ДЛЯ РАСПИСАНИЯ (С ЦВЕТОВОЙ ИНДИКАЦИЕЙ) ===== */
+
+/* Фильтры на странице списка */
+.schedule-filters {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--white);
+    border-radius: 15px;
+    box-shadow: var(--shadow-sm);
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 150px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 0.9rem;
+}
+
+.schedule-search-input,
+.schedule-filter-select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 2px solid var(--beige-medium);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.schedule-search-input:focus,
+.schedule-filter-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+/* Карточка файла с улучшенным дизайном */
+.schedule-file-card {
+    display: flex;
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid var(--beige-medium);
+    gap: 1.2rem;
+}
+
+.schedule-file-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-color);
+}
+
+.schedule-file-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    background: var(--gradient-light);
+    border-radius: 15px;
+    flex-shrink: 0;
+}
+
+.schedule-file-info {
+    flex: 1;
+}
+
+.schedule-file-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.4rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.schedule-file-description {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 0.8rem;
+    line-height: 1.4;
+}
+
+.schedule-file-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+}
+
+.schedule-file-size {
+    color: var(--text-light);
+}
+
+.schedule-file-ext {
+    background: var(--beige-light);
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 0.75rem;
+}
+
+.schedule-file-actions {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+/* Кнопки */
+.schedule-btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 500;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-align: center;
+}
+
+.schedule-btn-primary {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+}
+
+.schedule-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.schedule-btn-secondary {
+    background: var(--white);
+    color: var(--primary-color);
+    border: 2px solid var(--beige-medium);
+}
+
+.schedule-btn-secondary:hover {
+    background: var(--beige-light);
+    transform: translateY(-2px);
+}
+
+/* Переключатель недель и дней */
+.schedule-week-nav {
+    margin-bottom: 2rem;
+    background: var(--white);
+    border-radius: 15px;
+    padding: 1rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.week-switcher {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.week-btn {
+    padding: 0.6rem 1.5rem;
+    background: var(--white);
+    border: 2px solid var(--beige-medium);
+    border-radius: 40px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-color);
+}
+
+.week-btn.active {
+    background: var(--gradient-primary);
+    color: white;
+    border-color: transparent;
+}
+
+.week-btn:hover:not(.active) {
+    background: var(--beige-light);
+    transform: translateY(-2px);
+}
+
+.week-dates {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    background: var(--beige-light);
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+}
+
+.day-switcher {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.day-btn {
+    flex: 1;
+    min-width: 50px;
+    padding: 0.6rem;
+    background: var(--white);
+    border: 2px solid var(--beige-medium);
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.day-btn.active {
+    background: var(--gradient-primary);
+    color: white;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.day-btn:hover:not(.active) {
+    background: var(--beige-light);
+    transform: translateY(-1px);
+}
+
+/* Карточка занятия (цветная индикация) */
+.schedule-lesson-card {
+    display: flex;
+    background: var(--white);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 0.8rem;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+    border-left: 4px solid var(--accent-color);
+}
+
+/* Цветовая индикация по типу занятия */
+.schedule-lesson-card[data-type="lecture"] {
+    border-left-color: #4a90e2;
+}
+.schedule-lesson-card[data-type="practice"] {
+    border-left-color: #28a745;
+}
+.schedule-lesson-card[data-type="lab"] {
+    border-left-color: #dc3545;
+}
+.schedule-lesson-card[data-type="exam"] {
+    border-left-color: #ffc107;
+}
+
+.schedule-lesson-card:hover {
+    transform: translateX(5px);
+    box-shadow: var(--shadow-md);
+}
+
+.schedule-lesson-time {
+    min-width: 100px;
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    padding-right: 1rem;
+}
+
+.schedule-lesson-details {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    align-items: center;
+}
+
+.schedule-lesson-subject {
+    font-weight: 600;
+    color: var(--text-color);
+    min-width: 180px;
+}
+
+.schedule-lesson-teacher {
+    color: var(--text-light);
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.schedule-lesson-room {
+    color: var(--accent-color);
+    font-weight: 500;
+    background: var(--beige-light);
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    margin-left: auto;
+}
+
+/* Информационные строки */
+.schedule-info-row {
+    padding: 0.6rem 1rem;
+    background: var(--beige-light);
+    border-radius: 10px;
+    margin-bottom: 0.5rem;
+    border-left: 3px solid var(--secondary-color);
+}
+
+.schedule-info-row strong {
+    color: var(--primary-color);
+}
+
+/* Текстовые строки */
+.schedule-text-line {
+    padding: 0.4rem 0.8rem;
+    margin: 0;
+    line-height: 1.5;
+    border-bottom: 1px dotted var(--beige-medium);
+}
+
+/* Заголовки листов */
+.schedule-sheet-title {
+    color: var(--primary-color);
+    margin: 1.5rem 0 1rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.schedule-sheet-title:first-of-type {
+    margin-top: 0;
+}
+
+/* Пустые состояния */
+.schedule-empty {
+    text-align: center;
+    padding: 3rem;
+    background: var(--beige-light);
+    border-radius: 15px;
+    margin: 2rem 0;
+}
+
+.schedule-empty p {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+}
+
+.schedule-error {
+    color: #dc3545;
+    padding: 2rem;
+    text-align: center;
+    border: 2px dashed #dc3545;
+    border-radius: 10px;
+    background: #fff8f8;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .schedule-filters {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .filter-group {
+        min-width: auto;
+    }
+    
+    .schedule-file-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .schedule-file-icon {
+        margin: 0 auto;
+    }
+    
+    .schedule-file-meta {
+        justify-content: center;
+    }
+    
+    .schedule-file-actions {
+        justify-content: center;
+    }
+    
+    .schedule-lesson-card {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .schedule-lesson-time {
+        min-width: auto;
+    }
+    
+    .schedule-lesson-room {
+        margin-left: 0;
+        align-self: flex-start;
+    }
+    
+    .day-btn {
+        min-width: 40px;
+        font-size: 0.8rem;
+        padding: 0.4rem;
+    }
+    
+    .week-switcher {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .week-dates {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .day-btn {
+        min-width: 35px;
+        font-size: 0.7rem;
+        padding: 0.3rem;
+    }
+    
+    .schedule-file-title {
+        font-size: 1rem;
+    }
+}
+
+/* ===== СТИЛИ ДЛЯ РАСПИСАНИЯ С ГРУППИРОВКОЙ ПО ГРУППАМ ===== */
+/* ===== СТИЛИ ДЛЯ РАСПИСАНИЯ ===== */
+
+/* Выбор группы */
+.schedule-group-selector {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.5rem;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+}
+
+.schedule-group-selector label {
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.schedule-group-select {
+    padding: 0.6rem 1.2rem;
+    border: 2px solid var(--beige-medium);
+    border-radius: 30px;
+    font-size: 0.95rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 200px;
+}
+
+.schedule-group-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+/* Группа расписания */
+.schedule-group-container {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.schedule-group-title {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid var(--accent-color);
+}
+
+/* Переключатель дней внутри группы */
+.schedule-day-switcher-inner {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem;
+    background: var(--beige-light);
+    border-radius: 40px;
+}
+
+.day-btn-inner {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    color: var(--text-color);
+    font-size: 0.85rem;
+}
+
+.day-btn-inner.active {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.day-btn-inner:hover:not(.active) {
+    background: var(--white);
+    transform: translateY(-2px);
+}
+
+/* Секция дня */
+.schedule-day-section {
+    margin-bottom: 1.5rem;
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.schedule-day-title {
+    background: var(--gradient-light);
+    color: var(--primary-dark);
+    padding: 0.6rem 1rem;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    border-left: 4px solid var(--accent-color);
+}
+
+.schedule-lessons-list {
+    padding: 0.3rem;
+}
+
+/* Карточка занятия */
+.schedule-lesson-card {
+    display: flex;
+    align-items: center;
+    background: var(--white);
+    border-radius: 10px;
+    padding: 0.8rem;
+    margin: 0.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+    border-left: 4px solid var(--accent-color);
+    gap: 1rem;
+}
+
+.schedule-lesson-card.lesson-type-lecture {
+    border-left-color: #4a90e2;
+}
+
+.schedule-lesson-card.lesson-type-practice {
+    border-left-color: #28a745;
+}
+
+.schedule-lesson-card.lesson-type-lab {
+    border-left-color: #dc3545;
+}
+
+.schedule-lesson-card.lesson-type-exam {
+    border-left-color: #ffc107;
+}
+
+.schedule-lesson-card:hover {
+    transform: translateX(5px);
+    box-shadow: var(--shadow-md);
+}
+
+.schedule-lesson-time {
+    min-width: 90px;
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 0.85rem;
+    padding: 0.2rem 0.6rem;
+    background: var(--beige-light);
+    border-radius: 20px;
+    text-align: center;
+}
+
+.schedule-lesson-details {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    align-items: baseline;
+}
+
+.schedule-lesson-subject {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.95rem;
+    min-width: 150px;
+}
+
+.schedule-lesson-teacher {
+    color: var(--text-light);
+    font-style: italic;
+    font-size: 0.85rem;
+}
+
+.schedule-lesson-room {
+    color: var(--accent-color);
+    font-weight: 500;
+    background: rgba(212, 175, 55, 0.1);
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-left: auto;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .schedule-group-selector {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    
+    .schedule-group-select {
+        width: 100%;
+    }
+    
+    .schedule-lesson-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .schedule-lesson-time {
+        min-width: auto;
+        width: auto;
+        display: inline-block;
+    }
+    
+    .schedule-lesson-room {
+        margin-left: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== СТИЛИ ДЛЯ СТРАНИЦ КАФЕДР ===== */
+
+/* Основной контейнер страницы кафедры */
+.page-content {
+    padding: 2rem 0;
+}
+
+.content-block {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+}
+
+.content-block:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+/* Заголовки кафедр */
+.content-block h1 {
+    font-size: 2.2rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid var(--accent-color);
+}
+
+.content-block h2 {
+    font-size: 1.6rem;
+    color: var(--primary-dark);
+    margin: 1.8rem 0 1rem 0;
+    padding-left: 1rem;
+    border-left: 4px solid var(--accent-color);
+}
+
+.content-block h3 {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    margin: 1.5rem 0 0.8rem 0;
+}
+
+.content-block h4 {
+    font-size: 1.1rem;
+    color: var(--primary-dark);
+    margin: 1rem 0 0.5rem 0;
+}
+
+/* Абзацы */
+.content-block p {
+    line-height: 1.8;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+/* Списки */
+.content-block ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.content-block li {
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+}
+
+.content-block ul ul {
+    margin: 0.5rem 0;
+}
+
+/* Сетка для кафедр (главная страница института) */
+.departments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.department-card {
+    background: var(--gradient-light);
+    border-radius: 15px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    border: 1px solid var(--beige-medium);
+}
+
+.department-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent-color);
+}
+
+.department-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.8rem;
+    font-size: 1.2rem;
+}
+
+.department-card p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    margin-bottom: 0;
+}
+
+/* Информационные блоки */
+.info-block {
+    background: var(--beige-light);
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin: 1.5rem 0;
+}
+
+.info-block h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+/* Таблицы */
+.content-block table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+}
+
+.content-block th,
+.content-block td {
+    padding: 0.8rem;
+    border: 1px solid var(--beige-medium);
+    text-align: left;
+}
+
+.content-block th {
+    background: var(--gradient-primary);
+    color: white;
+    font-weight: 600;
+}
+
+.content-block tr:nth-child(even) {
+    background: var(--beige-light);
+}
+
+.content-block tr:hover {
+    background: rgba(212, 175, 55, 0.05);
+}
+
+/* Блок с контактами */
+.contact-block {
+    background: var(--beige-light);
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-top: 2rem;
+}
+
+.contact-block p {
+    margin-bottom: 0.5rem;
+}
+
+/* Ссылки */
+.content-block a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.content-block a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+/* Выделенные элементы */
+.content-block strong {
+    color: var(--primary-color);
+}
+
+.content-block em {
+    color: var(--text-light);
+    font-style: italic;
+}
+
+/* Блок с цитатой или важной информацией */
+.highlight-block {
+    background: var(--gradient-light);
+    border-left: 4px solid var(--accent-color);
+    padding: 1.2rem;
+    margin: 1.5rem 0;
+    border-radius: 0 12px 12px 0;
+}
+
+/* Стили для истории кафедры (с датами и именами) */
+.history-item {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed var(--beige-medium);
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-year {
+    font-weight: 700;
+    color: var(--accent-color);
+    display: inline-block;
+    min-width: 80px;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .content-block {
+        padding: 1.5rem;
+    }
+    
+    .content-block h1 {
+        font-size: 1.8rem;
+    }
+    
+    .content-block h2 {
+        font-size: 1.4rem;
+    }
+    
+    .content-block h3 {
+        font-size: 1.2rem;
+    }
+    
+    .departments-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .content-block table {
+        font-size: 0.85rem;
+    }
+    
+    .content-block th,
+    .content-block td {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .content-block {
+        padding: 1rem;
+    }
+    
+    .content-block h1 {
+        font-size: 1.5rem;
+    }
+    
+    .content-block h2 {
+        font-size: 1.2rem;
+    }
+}

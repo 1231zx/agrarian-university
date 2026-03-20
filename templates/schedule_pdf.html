@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}{{ file_title }} - ООО Аграрный Университет{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>{{ file_title }}</h1>
+        <p>{{ file_description }}</p>
+    </div>
+</section>
+
+<section class="schedule-content">
+    <div class="container">
+        <div class="content-block">
+            <!-- Кнопки навигации -->
+            <div class="schedule-nav">
+                <a href="{{ url_for('schedule_list') }}" class="schedule-btn schedule-btn-secondary">← К списку расписаний</a>
+                <a href="{{ url_for('serve_rasp_file', filename=filename) }}" class="schedule-btn schedule-btn-primary" download style="margin-left: auto;">
+                    📥 Скачать оригинал ({{ file_size }})
+                </a>
+            </div>
+            
+            <!-- Информация о файле -->
+            <div class="schedule-file-info-box">
+                <p><strong>Институт:</strong> {{ file_institute }}</p>
+                <p><strong>Файл:</strong> {{ filename }}</p>
+                <p><strong>Размер:</strong> {{ file_size }}</p>
+            </div>
+            
+            <!-- Содержимое PDF -->
+            <div class="schedule-pdf-container">
+                {% if 'Ошибка' in content %}
+                    <div class="schedule-error">
+                        {{ content|safe }}
+                    </div>
+                {% else %}
+                    <div class="schedule-readable-content">
+                        {{ content|safe }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

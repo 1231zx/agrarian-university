@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.env
+.venv
+
+# Flask
+instance/
+.webassets-cache
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Project specific
+rasp/*.xls
+rasp/*.xlsx
+rasp/*.pdf
+rasp/*.doc
+rasp/*.docx
+!rasp/README.md
+
+# Secrets
+.env
+config_local.py
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

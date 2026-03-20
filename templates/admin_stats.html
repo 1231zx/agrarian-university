@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}Статистика - ООО Аграрный Университет{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>📊 Статистика сайта</h1>
+    </div>
+</section>
+
+<section class="admin-content">
+    <div class="container">
+        <!-- Краткие итоги -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <div style="background: var(--gradient-primary); color: white; padding: 1.5rem; border-radius: 12px; text-align: center;">
+                <h3 style="color: white; font-size: 1.8rem; margin-bottom: 0.3rem;">{{ total_users }}</h3>
+                <p style="font-size: 0.9rem;">Пользователей</p>
+            </div>
+            <div style="background: var(--gradient-accent); color: white; padding: 1.5rem; border-radius: 12px; text-align: center;">
+                <h3 style="color: white; font-size: 1.8rem; margin-bottom: 0.3rem;">{{ total_news }}</h3>
+                <p style="font-size: 0.9rem;">Новостей</p>
+            </div>
+            <div style="background: var(--gradient-primary); color: white; padding: 1.5rem; border-radius: 12px; text-align: center;">
+                <h3 style="color: white; font-size: 1.8rem; margin-bottom: 0.3rem;">{{ total_programs }}</h3>
+                <p style="font-size: 0.9rem;">Программ</p>
+            </div>
+            <div style="background: var(--gradient-accent); color: white; padding: 1.5rem; border-radius: 12px; text-align: center;">
+                <h3 style="color: white; font-size: 1.8rem; margin-bottom: 0.3rem;">{{ total_messages }}</h3>
+                <p style="font-size: 0.9rem;">Сообщений</p>
+            </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <!-- График регистраций с подписями -->
+            <div style="background: var(--white); padding: 1.2rem; border-radius: 12px; box-shadow: var(--shadow-md);">
+                <h4 style="margin-bottom: 1rem; font-size: 1.1rem;">📈 Регистрации по месяцам</h4>
+                <canvas id="usersChart" style="width: 100%; height: 150px;"></canvas>
+            </div>
+            
+            <!-- Популярные программы -->
+            <div style="background: var(--white); padding: 1.2rem; border-radius: 12px; box-shadow: var(--shadow-md);">
+                <h4 style="margin-bottom: 1rem; font-size: 1.1rem;">🔥 Популярные программы</h4>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    {% for program in popular_programs %}
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.3rem; border-bottom: 1px solid var(--beige-medium);">
+                        <span style="font-size: 0.9rem;">{{ program.name[:25] }}{% if program.name|length > 25 %}...{% endif %}</span>
+                        <span style="background: var(--accent-color); color: white; padding: 0.2rem 0.6rem; border-radius: 15px; font-size: 0.8rem;">
+                            {{ program.views or 0 }}
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Активность по месяцам -->
+        <div style="background: var(--white); padding: 1.2rem; border-radius: 12px; box-shadow: var(--shadow-md); margin-top: 1.5rem;">
+            <h4 style="margin-bottom: 1rem; font-size: 1.1rem;">📅 Детальная статистика</h4>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                    <thead>
+                        <tr style="background: var(--gradient-primary); color: white;">
+                            <th style="padding: 0.8rem; text-align: left;">Месяц</th>
+                            <th style="padding: 0.8rem; text-align: left;">Новые пользователи</th>
+                            <th style="padding: 0.8rem; text-align: left;">Сообщения</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for month in monthly_stats %}
+                        <tr style="border-bottom: 1px solid var(--beige-medium);">
+                            <td style="padding: 0.8rem;">{{ month.month }}</td>
+                            <td style="padding: 0.8rem;">{{ month.users }}</td>
+                            <td style="padding: 0.8rem;">{{ month.messages }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Chart.js для графиков -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const months = {{ chart_months | safe }};
+    const counts = {{ chart_counts | safe }};
+    
+    const ctx = document.getElementById('usersChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: [{
+                label: 'Новые пользователи',
+                data: counts,
+                borderColor: '#D4AF37',
+                backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                borderWidth: 2,
+                pointRadius: 3,
+                pointBackgroundColor: '#D4AF37',
+                pointBorderColor: 'white',
+                pointBorderWidth: 1,
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: 'rgba(0,0,0,0.8)',
+                    titleColor: 'white',
+                    bodyColor: 'white',
+                    padding: 8,
+                    titleFont: { size: 12 },
+                    bodyFont: { size: 12 }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false,
+                        drawBorder: true
+                    },
+                    ticks: {
+                        font: {
+                            size: 10
+                        },
+                        maxRotation: 45,
+                        minRotation: 45
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0,0,0,0.05)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        font: {
+                            size: 10
+                        },
+                        stepSize: 1,
+                        precision: 0,
+                        callback: function(value) {
+                            if (Math.floor(value) === value) {
+                                return value;
+                            }
+                        }
+                    }
+                }
+            },
+            layout: {
+                padding: {
+                    top: 10,
+                    bottom: 10,
+                    left: 5,
+                    right: 5
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}  

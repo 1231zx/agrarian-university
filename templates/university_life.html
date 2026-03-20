@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Университетская жизнь - ООО Аграрный Университет{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>🎉 Университетская жизнь</h1>
+    </div>
+</section>
+
+<section class="life-content">
+    <div class="container">
+        <div class="life-grid">
+            <div class="life-item">
+                <img src="{{ url_for('static', filename='images/students.jpg') }}" alt="Студенты" class="life-image">
+                <h3>Студенческий совет</h3>
+                <p>Активная студенческая жизнь</p>
+            </div>
+            <div class="life-item">
+                <img src="{{ url_for('static', filename='images/sport.jpg') }}" alt="Спорт" class="life-image">
+                <h3>Спортивные секции</h3>
+                <p>Развитие и достижения</p>
+            </div>
+            <div class="life-item">
+                <img src="{{ url_for('static', filename='images/events.jpg') }}" alt="Мероприятия" class="life-image">
+                <h3>Мероприятия</h3>
+                <p>Традиции университета</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

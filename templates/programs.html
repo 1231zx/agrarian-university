@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Программы обучения - ООО Аграрный Университет{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Программы обучения</h1>
+    </div>
+</section>
+
+<section class="programs-content">
+    <div class="container">
+        <div id="programs-list" class="programs-grid">
+            <!-- Программы загружаются через API -->
+        </div>
+    </div>
+</section>
+
+<script>
+// Загрузка программ через API
+fetch('/api/v1/programs')
+    .then(response => response.json())
+    .then(data => {
+        const programsList = document.getElementById('programs-list');
+        data.programs.forEach(program => {
+            const programCard = document.createElement('div');
+            programCard.className = 'program-card';
+            programCard.innerHTML = `
+                <h3>${program.name}</h3>
+                <p class="program-degree"><strong>Степень:</strong> ${program.degree}</p>
+                <p class="program-duration"><strong>Срок обучения:</strong> ${program.duration}</p>
+                <p class="program-description">${program.description}</p>
+            `;
+            programsList.appendChild(programCard);
+        });
+    })
+    .catch(error => console.error('Ошибка загрузки программ:', error));
+</script>
+{% endblock %}
