@@ -5593,3 +5593,676 @@ footer::before {
         height: 40px;
     }
 }
+
+/* ========== СТРАНИЦА ИНСТИТУТОВ ========== */
+.institutes-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.institutes-page h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+/* Вкладки институтов */
+.institutes-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+.institute-tab-btn {
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    background: #f5f5f5;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #000000;
+    transition: all 0.3s;
+}
+
+.institute-tab-btn:hover {
+    background: #e8f5e9;
+    color: #D4AF37;
+}
+
+.institute-tab-btn.active {
+    background: #D4AF37;
+    color: white;
+}
+
+/* Контент института */
+.institute-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.institute-content.active {
+    display: block;
+}
+
+/* Шапка института */
+.institute-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+    padding: 25px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    border: 1px solid #eef2f5;
+}
+
+.institute-header h2 {
+    color: #000000;
+    margin-bottom: 15px;
+    font-size: 1.6rem;
+}
+
+.institute-info {
+    margin-bottom: 20px;
+}
+
+.institute-info p {
+    color: #666;
+    margin: 8px 0;
+    font-size: 0.95rem;
+}
+
+.btn-institute {
+    display: inline-block;
+    background: #D4AF37;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-institute:hover {
+    background: #D4AF37;
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: white;
+}
+
+/* Сетка кафедр */
+.departments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.department-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 1px solid #ecf0f1;
+}
+
+.department-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    border-color: #D4AF37;
+}
+
+.department-card h4 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.more {
+    color: #D4AF37;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+/* Заголовок h3 */
+.institute-content h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+    border-left: 4px solid #D4AF37;
+    padding-left: 15px;
+}
+
+/* Анимация */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .institutes-tabs {
+        flex-direction: column;
+    }
+    
+    .institute-tab-btn {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .departments-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .institute-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    .btn-institute {
+        display: block;
+        text-align: center;
+    }
+}
+
+
+/* ========== СТРАНИЦА СТУДЕНТУ (ГЛАВНАЯ) ========== */
+.student-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.student-page h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.student-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+.student-section-group {
+    margin-bottom: 50px;
+}
+
+.student-section-group h2 {
+    color: #D4AF37;
+    border-left: 4px solid #D4AF37;
+    padding-left: 15px;
+    margin-bottom: 20px;
+}
+
+.student-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+}
+
+.student-card {
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.student-card:hover {
+    background: #D4AF37;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(39,174,96,0.3);
+    border-color: #D4AF37;
+}
+
+/* ========== ОБЪЕДИНЁННЫЙ СОВЕТ ОБУЧАЮЩИХСЯ ========== */
+.council-info, .council-text, .council-contact {
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.council-link {
+    color: #D4AF37;
+    text-decoration: none;
+}
+
+.council-link:hover {
+    text-decoration: underline;
+}
+
+/* ========== ШТАБ СТУДЕНЧЕСКИХ ОТРЯДОВ ========== */
+.teams-buttons {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 30px 0;
+}
+
+.teams-btn {
+    background: #D4AF37;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.teams-btn:hover {
+    background: #D4AF37;
+    transform: translateY(-2px);
+    color: white;
+}
+
+/* ========== КУЛЬТУРНО-ДОСУГОВЫЙ ЦЕНТР ========== */
+.culture-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.culture-btn {
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.culture-btn:hover {
+    background: #D4AF37;
+    color: white;
+    border-color: #D4AF37;
+}
+
+/* ========== СПОРТИВНАЯ ЖИЗНЬ ========== */
+.sports-buttons {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.sports-btn {
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px 25px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.sports-btn:hover {
+    background: #D4AF37;
+    color: white;
+}
+
+/* ========== ПСИХОЛОГ ========== */
+.psychologist-info {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.psychologist-text {
+    line-height: 1.6;
+}
+
+.psychologist-text h3 {
+    color: #D4AF37;
+    margin: 20px 0 10px;
+}
+
+.psychologist-text ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.psychologist-text li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* ========== СОЦИАЛЬНАЯ ЗАЩИТА ========== */
+.social-info {
+    line-height: 1.8;
+}
+
+.social-info h3 {
+    color: #D4AF37;
+    margin: 25px 0 15px;
+}
+
+/* ========== АДАПТИВНОСТЬ ========== */
+@media (max-width: 768px) {
+    .student-cards-grid,
+    .culture-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .teams-buttons,
+    .sports-buttons {
+        flex-direction: column;
+    }
+    
+    .teams-btn,
+    .sports-btn,
+    .culture-btn {
+        text-align: center;
+    }
+}
+
+/* ========== ПРОЕКТНАЯ ДЕЯТЕЛЬНОСТЬ ========== */
+.projects-info ul, .projects-info ol {
+    margin: 15px 0 20px 25px;
+}
+.projects-contact {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 25px;
+}
+
+/* ========== FAQ ========== */
+.faq-list {
+    margin-top: 20px;
+}
+.faq-item {
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 15px;
+}
+.faq-question {
+    font-weight: 600;
+    color: #D4AF37;
+    padding: 12px 0;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+.faq-answer {
+    padding: 0 0 15px 20px;
+    color: #555;
+    display: none;
+}
+.faq-item.active .faq-answer {
+    display: block;
+}
+
+/* ========== КАЛЕНДАРНЫЙ ГРАФИК ========== */
+.calendar-info ul, .calendar-info ol {
+    margin: 15px 0 20px 25px;
+}
+.calendar-note {
+    font-style: italic;
+    color: #888;
+    margin-top: 25px;
+}
+
+/* ========== СТИПЕНДИИ ========== */
+.scholarships-info ul, .scholarships-info ol {
+    margin: 15px 0 20px 25px;
+}
+.scholarships-contact {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 25px;
+}
+
+/* ========== НОРМАТИВНЫЕ ДОКУМЕНТЫ ========== */
+.regulations-list ul {
+    margin: 15px 0 20px 25px;
+}
+.doc-link {
+    color: #D4AF37;
+    text-decoration: none;
+}
+.doc-link:hover {
+    text-decoration: underline;
+}
+.regulations-note {
+    font-style: italic;
+    color: #888;
+    margin-top: 25px;
+}
+
+/* ========== ОБРАЗОВАТЕЛЬНЫЕ РЕСУРСЫ ========== */
+.resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 25px;
+}
+.resource-card {
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s;
+}
+.resource-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.resource-card h3 {
+    margin-bottom: 12px;
+    color: #2c3e50;
+}
+.resource-card p {
+    color: #666;
+    margin-bottom: 15px;
+}
+.resource-link {
+    color: #D4AF37;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* ========== МАССОВЫЕ ОНЛАЙН-КУРСЫ ========== */
+.mass-courses-info ul, .mass-courses-info ol {
+    margin: 15px 0 20px 25px;
+}
+.mass-courses-contact {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 25px;
+}
+
+/* ========== УЧЕБНЫЕ ПОСОБИЯ ========== */
+.textbooks-info ul {
+    margin: 15px 0 20px 25px;
+}
+.textbook-link {
+    color: #D4AF37;
+    text-decoration: none;
+}
+.textbook-link:hover {
+    text-decoration: underline;
+}
+
+/* ========== БАЗЫ ПРАКТИК ========== */
+.practice-bases-info ul, .practice-bases-info ol {
+    margin: 15px 0 20px 25px;
+}
+.practice-bases-contact {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 25px;
+}
+
+/* ========== СРОКИ ПРАКТИК ========== */
+.practice-dates-info ul, .practice-dates-info ol {
+    margin: 15px 0 20px 25px;
+}
+.practice-note {
+    font-style: italic;
+    color: #888;
+    margin-top: 25px;
+}
+
+/* ========== ДОКУМЕНТЫ ПО ПРАКТИКЕ ========== */
+.practice-docs-list ul {
+    margin: 15px 0 20px 25px;
+}
+
+/* ========== АНКЕТА УДОВЛЕТВОРЁННОСТИ ========== */
+.survey-form {
+    max-width: 600px;
+    margin: 25px 0;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+}
+.submit-btn {
+    background: #D4AF37;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.submit-btn:hover {
+    background: #D4AF37;
+}
+
+/* ========== ИНСТРУКТАЖ ========== */
+.practice-instruction ol {
+    margin: 15px 0 20px 25px;
+}
+.instruction-video, .instruction-test, .instruction-result {
+    margin: 25px 0;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 10px;
+}
+.video-placeholder {
+    background: #e0e0e0;
+    padding: 40px;
+    text-align: center;
+    border-radius: 8px;
+    color: #666;
+}
+.test-link {
+    display: inline-block;
+    background: #D4AF37;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    margin-top: 10px;
+}
+.test-link:hover {
+    background: #D4AF37;
+}
+
+/* ========== ЗАЯВКИ ОТ РАБОТОДАТЕЛЕЙ ========== */
+.requests-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin: 25px 0;
+}
+.request-card {
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+}
+.request-card h3 {
+    color: #D4AF37;
+    margin-bottom: 12px;
+}
+.request-card p {
+    margin: 8px 0;
+    color: #555;
+}
+.requests-note {
+    font-style: italic;
+    color: #888;
+}
+
+/* ========== АНКЕТИРОВАНИЕ ========== */
+.survey-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+    margin: 25px 0;
+}
+.survey-card {
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+}
+.survey-card h3 {
+    margin-bottom: 12px;
+}
+.survey-card p {
+    margin-bottom: 20px;
+    color: #666;
+}
+.survey-link {
+    display: inline-block;
+    background: #D4AF37;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+.survey-link:hover {
+    background: #D4AF37;
+}
+.survey-info {
+    background: #e8f5e9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+/* ========== АДАПТИВНОСТЬ ========== */
+@media (max-width: 768px) {
+    .resources-grid,
+    .requests-list,
+    .survey-links {
+        grid-template-columns: 1fr;
+    }
+}

@@ -62,103 +62,7 @@
                 <ul class="sidebar-menu">
                     <!-- ИНСТИТУТЫ с подменю -->
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle"> Институт агроэкологических технологий</a>
-                        <ul class="sidebar-dropdown">
-                            <li><a href="{{ url_for('institute_agro') }}"> Об институте</a></li>
-                            <li><a href="{{ url_for('institute_agro_department_agronomy') }}"> Общего земледелия и защиты растений</a></li>
-                            <li><a href="{{ url_for('institute_agro_department_plant_breeding') }}"> Растениеводства, селекции и семеноводства</a></li>
-                            <li><a href="{{ url_for('institute_agro_department_soil') }}"> Почвоведения и агрохимии</a></li>
-                            <li><a href="{{ url_for('institute_agro_department_landscape') }}"> Ландшафтной архитектуры и ботаники</a></li>
-                            <li><a href="{{ url_for('institute_agro_department_ecology') }}"> Экологии и природопользования</a></li>
-                            <li><a href="{{ url_for('institute_agro_department_physical_culture') }}"> Физической культуры</a></li>
-                            <li><a href="{{ url_for('institute_agro_department_languages') }}"> Иностранных языков и профессиональных коммуникаций</a></li>
-                        </ul>
-                    </li>
-                    
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle"> Институт прикладной биотехнологии и ветеринарной медицины</a>
-                        <ul class="sidebar-dropdown">
-                            <li><a href="{{ url_for('institute_biotech') }}"> Об институте</a></li>
-                            <li><a href="{{ url_for('institute_biotech_department_anatomy') }}"> Анатомии, патологической анатомии и хирургии</a></li>
-                            <li><a href="{{ url_for('institute_biotech_department_zootechny') }}"> Зоотехнии и технологии переработки продуктов животноводства</a></li>
-                            <li><a href="{{ url_for('institute_biotech_department_breeding') }}"> Разведение, генетика, биология и водные биоресурсы</a></li>
-                            <li><a href="{{ url_for('institute_biotech_department_internal_diseases') }}"> Внутренних незаразных болезней, акушерства и физиологии</a></li>
-                            <li><a href="{{ url_for('institute_biotech_department_epizootology') }}"> Эпизоотологии, микробиологии, паразитологии и ветеринарно-санитарной экспертизы</a></li>
-                        </ul>
-                    </li>
-                    
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle"> Институт экономики и управления АПК</a>
-                        <ul class="sidebar-dropdown">
-                            <li><a href="{{ url_for('institute_economy') }}"> Об институте</a></li>
-                            <li><a href="{{ url_for('institute_economy_department_organization') }}"> Организация и экономика сельскохозяйственного производства</a></li>
-                            <li><a href="{{ url_for('institute_economy_department_management') }}"> Управление социально-экономическими системами</a></li>
-                            <li><a href="{{ url_for('institute_economy_department_information') }}"> Информационные технологии и математическое обеспечение</a></li>
-                            <li><a href="{{ url_for('institute_economy_department_accounting') }}"> Бухгалтерский учет и статистика</a></li>
-                            <li><a href="{{ url_for('institute_economy_department_psychology') }}"> Психология, педагогика и экология человека</a></li>
-                        </ul>
-                    </li>
-                    
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle"> Институт инженерных систем и энергетики</a>
-                        <ul class="sidebar-dropdown">
-                            <li><a href="{{ url_for('institute_engineering') }}"> Об институте</a></li>
-                            <li><a href="{{ url_for('institute_engineering_department_physics') }}"> Физики и математики</a></li>
-                            <li><a href="{{ url_for('institute_engineering_department_mechanization') }}"> Механизация и технический сервис в АПК</a></li>
-                            <li><a href="{{ url_for('institute_engineering_department_general_engineering') }}"> Общеинженерных дисциплин</a></li>
-                            <li><a href="{{ url_for('institute_engineering_department_system_energy') }}"> Системоэнергетики</a></li>
-                            <li><a href="{{ url_for('institute_engineering_department_electrical_engineering') }}"> Теоретических основ электротехники</a></li>
-                            <li><a href="{{ url_for('institute_engineering_department_tractors') }}"> Тракторы и автомобили</a></li>
-                            <li><a href="{{ url_for('institute_engineering_department_electrical_supply') }}"> Электроснабжения сельского хозяйства</a></li>
-                        </ul>
-                    </li>
-                    
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle"> Институт пищевых производств</a>
-                        <ul class="sidebar-dropdown">
-                            <li><a href="{{ url_for('institute_food') }}"> Об институте</a></li>
-                            <li><a href="{{ url_for('institute_food_department_bakery') }}"> Технологии хлебопекарного, кондитерского и макаронного производств</a></li>
-                            <li><a href="{{ url_for('institute_food_department_canning') }}"> Технологии консервирования и пищевая биотехнология</a></li>
-                            <li><a href="{{ url_for('institute_food_department_equipment') }}"> Технологии, оборудования бродильных и пищевых производств</a></li>
-                            <li><a href="{{ url_for('institute_food_department_quality') }}"> Товароведения и управления качеством продукции АПК</a></li>
-                            <li><a href="{{ url_for('institute_food_department_chemistry') }}"> Химии</a></li>
-                        </ul>
-                    </li>
-                    
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle"> Институт землеустройства, кадастров и природообустройства</a>
-                        <ul class="sidebar-dropdown">
-                            <li><a href="{{ url_for('institute_land') }}"> Об институте</a></li>
-                            <li><a href="{{ url_for('institute_land_department_land_management') }}"> Землеустройство и кадастры</a></li>
-                            <li><a href="{{ url_for('institute_land_department_gis') }}"> Кадастр застроенных территорий и геоинформационные технологии</a></li>
-                            <li><a href="{{ url_for('institute_land_department_environmental') }}"> Природообустройство</a></li>
-                            <li><a href="{{ url_for('institute_land_department_safety') }}"> Безопасность жизнедеятельности</a></li>
-                        </ul>
-                    </li>
-                    
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle"> Юридический институт</a>
-                        <ul class="sidebar-dropdown">
-                            <li><a href="{{ url_for('institute_law') }}"> Об институте</a></li>
-                            <li><a href="{{ url_for('institute_law_department_theory') }}"> Теории и истории государства и права</a></li>
-                            <li><a href="{{ url_for('institute_law_department_civil') }}"> Гражданского права и процесса</a></li>
-                            <li><a href="{{ url_for('institute_law_department_criminal_procedure') }}"> Уголовного процесса, криминалистики и основ судебной экспертизы</a></li>
-                            <li><a href="{{ url_for('institute_law_department_criminal_law') }}"> Уголовного права и криминологии</a></li>
-                            <li><a href="{{ url_for('institute_law_department_land_law') }}"> Земельного права и экологических экспертиз</a></li>
-                            <li><a href="{{ url_for('institute_law_department_history') }}"> Истории и политологии</a></li>
-                            <li><a href="{{ url_for('institute_law_department_philosophy') }}"> Философии</a></li>
-                            <li><a href="{{ url_for('institute_law_department_forensic') }}"> Судебных экспертиз</a></li>
-                        </ul>
-                    </li>
-                    
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle"> Ачинский филиал</a>
-                        <ul class="sidebar-dropdown">
-                            <li><a href="{{ url_for('institute_achinsk') }}"> Об институте</a></li>
-                            <li><a href="{{ url_for('institute_achinsk_department_law') }}"> Правовых и социально-экономических дисциплин</a></li>
-                            <li><a href="{{ url_for('institute_achinsk_department_engineering') }}"> Агроинженерии</a></li>
-                        </ul>
-                    </li>
+                        <li><a href="{{ url_for('institutes') }}">Институты</a></li>
                     
                     <!-- Университет -->
                     <li class="dropdown">
@@ -192,18 +96,7 @@
                     
                     <!-- Студенту -->
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle"> Студенту</a>
-                        <ul class="sidebar-dropdown">
-                            <li><a href="{{ url_for('school_news') }}">Новости, объявления</a></li>
-                            <li><a href="{{ url_for('student_teams') }}">Студенческий отряд</a></li>
-                            <li><a href="{{ url_for('volunteer') }}">Волонтерский центр</a></li>
-                            <li><a href="{{ url_for('dormitory') }}">Общежитие</a></li>
-                            <li><a href="{{ url_for('payment') }}">Оплата ON-LINE</a></li>
-                            <li><a href="{{ url_for('schedule_list') }}"> Расписание занятий</a></li>
-                            <li><a href="{{ url_for('cossack') }}">Казачья сотня</a></li>
-                            <li><a href="{{ url_for('international_students') }}">Ассоциация иностранных студентов</a></li>
-                        </ul>
-                    </li>
+                        <li><a href="{{ url_for('student_main') }}"> Студенту</a></li>
                     
                     <!-- Поступающему -->
                     <li class="dropdown">

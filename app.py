@@ -713,18 +713,6 @@ def create_app():
     def conferences():
         return render_template('conferences.html')
 
-    @app.route('/student-news')
-    def student_news():
-        return render_template('school_news.html')
-
-    @app.route('/student-council')
-    def student_council():
-        return render_template('student_teams.html')
-
-    @app.route('/student-teams')
-    def student_teams():
-        return render_template('student_teams.html')
-
     @app.route('/volunteer')
     def volunteer():
         return render_template('volunteer.html')
@@ -1187,9 +1175,113 @@ def create_app():
     @login_required
     def profile():
         return render_template('profile.html', user=current_user)
-
-    return app
     
+    @app.route('/institutes')
+    def institutes():
+        return render_template('institutes.html')
+    
+    # ==================== СТУДЕНТУ ====================
+    @app.route('/student')
+    def student_main():
+        return render_template('student_main.html')
+    
+    @app.route('/student/council')
+    def student_council():
+        return render_template('student_council.html')
+    
+    @app.route('/student/teams')
+    def student_teams():
+        return render_template('student_teams.html')
+    
+    @app.route('/student/culture')
+    def student_culture():
+        return render_template('cultural_center.html')
+    
+    @app.route('/student/sports')
+    def student_sports():
+        return render_template('sports_life.html')
+    
+    @app.route('/student/psychologist')
+    def student_psychologist():
+        return render_template('psychologist.html')
+    
+    @app.route('/student/social-support')
+    def student_social_support():
+        return render_template('social_support.html')
+    
+    @app.route('/student/projects')
+    def student_projects():
+        return render_template('student_projects.html')
+    
+    @app.route('/student/faq')
+    def student_faq():
+        return render_template('student_faq.html')
+    
+    @app.route('/student/calendar')
+    def student_calendar():
+        return render_template('student_calendar.html')
+    
+    @app.route('/student/scholarships')
+    def student_scholarships():
+        return render_template('student_scholarships.html')
+    
+    @app.route('/student/regulations')
+    def student_regulations():
+        return render_template('student_regulations.html')
+    
+    @app.route('/student/educational-resources')
+    def student_educational_resources():
+        return render_template('student_educational_resources.html')
+    
+    @app.route('/student/mass-courses')
+    def student_mass_courses():
+        return render_template('student_mass_courses.html')
+    
+    @app.route('/student/textbooks')
+    def student_textbooks():
+        return render_template('student_textbooks.html')
+    
+    @app.route('/student/practice-bases')
+    def student_practice_bases():
+        return render_template('student_practice_bases.html')
+    
+    @app.route('/student/practice-dates')
+    def student_practice_dates():
+        return render_template('student_practice_dates.html')
+    
+    @app.route('/student/practice-docs')
+    def student_practice_docs():
+        return render_template('student_practice_docs.html')
+    
+    @app.route('/student/practice-survey')
+    def student_practice_survey():
+        return render_template('student_practice_survey.html')
+    
+    @app.route('/student/practice-instruction')
+    def student_practice_instruction():
+        return render_template('student_practice_instruction.html')
+    
+    @app.route('/student/practice-requests')
+    def student_practice_requests():
+        return render_template('student_practice_requests.html')
+    
+    @app.route('/student/survey')
+    def student_survey():
+        return render_template('student_survey.html')
+    
+    @app.route('/student/news')
+    def student_news():
+        return render_template('news.html')
+    
+    @app.route('/student/international-assoc')
+    def student_international_assoc():
+        return render_template('international_students.html')
+    
+    @app.route('/student/foreign')
+    def student_foreign():
+        return render_template('international_students.html')
+    
+    return app
 
 if __name__ == '__main__':
     app = create_app()
