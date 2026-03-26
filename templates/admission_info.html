@@ -1,160 +1,118 @@
 {% extends "base.html" %}
 
-{% block title %}Информация для поступающего - ООО Аграрный Университет{% endblock %}
+{% block title %}Информация для поступающего - Красноярский ГАУ{% endblock %}
 
 {% block content %}
-<section class="page-header">
-    <div class="container">
-        <h1>Информация для поступающего</h1>
-    </div>
-</section>
-
-<section class="page-content">
-    <div class="container">
-        <div class="content-block">
-            <h2>Бонусы для абитуриентов</h2>
-            
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
-                <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 12px; text-align: center;">
-                    <div style="font-size: 2rem;">🏆</div>
-                    <h3>Победителям олимпиад</h3>
-                    <p>Дополнительные баллы при поступлении</p>
-                    <p><strong>до 10 баллов</strong></p>
-                </div>
-                <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 12px; text-align: center;">
-                    <div style="font-size: 2rem;">📚</div>
-                    <h3>Золотая медаль / аттестат с отличием</h3>
-                    <p>За особые успехи в учебе</p>
-                    <p><strong>до 10 баллов</strong></p>
-                </div>
-                <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 12px; text-align: center;">
-                    <div style="font-size: 2rem;">🏅</div>
-                    <h3>Знак ГТО</h3>
-                    <p>За выполнение нормативов</p>
-                    <p><strong>до 3 баллов</strong></p>
-                </div>
-                <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 12px; text-align: center;">
-                    <div style="font-size: 2rem;">🎯</div>
-                    <h3>Целевое обучение</h3>
-                    <p>Отдельный конкурс, гарантированное трудоустройство</p>
-                </div>
-                <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 12px; text-align: center;">
-                    <div style="font-size: 2rem;">🎓</div>
-                    <h3>Высокие баллы ЕГЭ</h3>
-                    <p>При поступлении с баллами выше 250</p>
-                    <p><strong>скидка на обучение до 20%</strong></p>
-                </div>
-                <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 12px; text-align: center;">
-                    <div style="font-size: 2rem;">👨‍👩‍👧‍👦</div>
-                    <h3>Многодетные семьи</h3>
-                    <p>Скидка на обучение</p>
-                    <p><strong>до 10%</strong></p>
-                </div>
+<div class="admission-info-page">
+    <h1>Информация для поступающего</h1>
+    <p class="page-subtitle">Красноярский государственный аграрный университет</p>
+    
+    <!-- Состав приемной комиссии -->
+    <div class="info-section">
+        <h2>📋 Состав приемной комиссии на 2026/2027 учебный год</h2>
+        
+        <div class="committee-leaders">
+            <div class="leader-card">
+                <div class="leader-title">Председатель приемной комиссии</div>
+                <div class="leader-name">Иванов Иван Иванович</div>
+                <div class="leader-position">ректор университета</div>
             </div>
-            
-            <h2>Сроки приема на 2026/2027 учебный год</h2>
-            
-            <ul>
-                <li><strong>с 20 июня 2026 г.</strong> – начало приема документов</li>
-                <li><strong>до 25 июля 2026 г.</strong> – завершение приема документов от лиц, поступающих на обучение по результатам ЕГЭ</li>
-                <li><strong>до 10 июля 2026 г.</strong> – завершение приема документов от лиц, поступающих на обучение по результатам вступительных испытаний</li>
-                <li><strong>3 августа 2026 г.</strong> – завершение приема согласий на зачисление (1 этап)</li>
-                <li><strong>5 августа 2026 г.</strong> – приказ о зачислении (1 этап)</li>
-                <li><strong>8 августа 2026 г.</strong> – завершение приема согласий на зачисление (2 этап)</li>
-                <li><strong>10 августа 2026 г.</strong> – приказ о зачислении (2 этап)</li>
-            </ul>
-            
-            <h2>Контактная информация приемной комиссии</h2>
-            <div style="background: var(--beige-light); padding: 1.5rem; border-radius: 15px; margin-top: 1rem;">
-                <p><strong>Телефон:</strong> (391) 222-07-68</p>
-                <p><strong>Email:</strong> priem@kgau.ru</p>
-                <p><strong>Адрес:</strong> 660130, г. Красноярск, ул. Е. Стасовой, 44И</p>
-                <p><strong>Часы работы:</strong> Пн-Пт 9:00-18:00</p>
+            <div class="leader-card">
+                <div class="leader-title">Ответственный секретарь</div>
+                <div class="leader-name">Петрова Елена Владимировна</div>
             </div>
         </div>
+        
+        <table class="institutes-table">
+            <tr>
+                <th>Институт агроэкологических технологий</th>
+                <td>
+                    <div class="institute-name">Козлова Е.И.</div>
+                    <div class="institute-director">директор</div>
+                </td>
+                <th>Институт биотехнологии и ветеринарии</th>
+                <td>
+                    <div class="institute-name">Васильев А.П.</div>
+                    <div class="institute-director">директор</div>
+                </td>
+            </tr>
+            <tr>
+                <th>Институт экономики и управления АПК</th>
+                <td>
+                    <div class="institute-name">Михайлова С.В.</div>
+                    <div class="institute-director">директор</div>
+                </td>
+                <th>Инженерный институт</th>
+                <td>
+                    <div class="institute-name">Федоров Н.С.</div>
+                    <div class="institute-director">директор</div>
+                </td>
+            </tr>
+            <tr>
+                <th>Институт пищевых производств</th>
+                <td>
+                    <div class="institute-name">Соколова Т.А.</div>
+                    <div class="institute-director">директор</div>
+                </td>
+                <th>Институт землеустройства и кадастров</th>
+                <td>
+                    <div class="institute-name">Алексеев Д.И.</div>
+                    <div class="institute-director">директор</div>
+                </td>
+            </tr>
+            <tr>
+                <th>Юридический институт</th>
+                <td>
+                    <div class="institute-name">Петрова Е.В.</div>
+                    <div class="institute-director">директор</div>
+                </td>
+                <th>Ачинский филиал</th>
+                <td>
+                    <div class="institute-name">Григорьев А.М.</div>
+                    <div class="institute-director">директор</div>
+                </td>
+            </tr>
+        </table>
+        
+        <div class="contacts-row">
+            <div class="contact-block">
+                <span class="contact-icon">📞</span>
+                <div class="contact-text"><strong>Телефон приемной комиссии:</strong><br>+7 (391) 222-07-68</div>
+            </div>
+            <div class="contact-block">
+                <span class="contact-icon">✉️</span>
+                <div class="contact-text"><strong>Email:</strong><br>priem@kgau.ru</div>
+            </div>
+        </div>
     </div>
-    <h2>Состав приемной комиссии на 2026/2027 учебный год</h2>
-
-    <div style="background: var(--beige-light); padding: 1.5rem; border-radius: 15px; margin: 1rem 0;">
-        <p><strong>Председатель приемной комиссии:</strong> Иванов Иван Иванович – ректор университета</p>
-        <p><strong>Ответственный секретарь:</strong> Петрова Елена Владимировна</p>
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
-        <div style="background: var(--beige-light); padding: 1rem; border-radius: 10px;">
-            <h4>Институт агроэкологических технологий</h4>
-            <p>Козлова Е.И. – директор</p>
-        </div>
-        <div style="background: var(--beige-light); padding: 1rem; border-radius: 10px;">
-            <h4>Институт биотехнологии и ветеринарии</h4>
-            <p>Васильев А.П. – директор</p>
-        </div>
-        <div style="background: var(--beige-light); padding: 1rem; border-radius: 10px;">
-            <h4>Институт экономики и управления АПК</h4>
-            <p>Михайлова С.В. – директор</p>
-        </div>
-        <div style="background: var(--beige-light); padding: 1rem; border-radius: 10px;">
-            <h4>Инженерный институт</h4>
-            <p>Федоров Н.С. – директор</p>
-        </div>
-        <div style="background: var(--beige-light); padding: 1rem; border-radius: 10px;">
-            <h4>Институт пищевых производств</h4>
-            <p>Соколова Т.А. – директор</p>
-        </div>
-        <div style="background: var(--beige-light); padding: 1rem; border-radius: 10px;">
-            <h4>Институт землеустройства и кадастров</h4>
-            <p>Алексеев Д.И. – директор</p>
-        </div>
-        <div style="background: var(--beige-light); padding: 1rem; border-radius: 10px;">
-            <h4>Юридический институт</h4>
-            <p>Петрова Е.В. – директор</p>
-        </div>
-        <div style="background: var(--beige-light); padding: 1rem; border-radius: 10px;">
-            <h4>Ачинский филиал</h4>
-            <p>Григорьев А.М. – директор</p>
-        </div>
-    </div>
-
-    <p><strong>Телефон приемной комиссии:</strong> (391) 222-07-68</p>
-    <p><strong>Email:</strong> priem@kgau.ru</p>
-
-    <h2>Нормативные документы</h2>
-    <p>Прием на обучение осуществляется в соответствии со следующими нормативными документами:</p>
-
-    <ul>
-        <li>Приказ от 27.11.2024 г. № 820 «Об утверждении перечня вступительных испытаний при приеме на обучение по образовательным программам высшего образования - программам бакалавриата и программам специалитета»</li>
-        <li><a href="#">Правила приема в Красноярский ГАУ на 2026/2027 учебный год</a></li>
-        <li><a href="#">Порядок приема на обучение по образовательным программам высшего образования</a></li>
-        <li><a href="#">Положение о приемной комиссии</a></li>
-        <li><a href="#">Порядок учета индивидуальных достижений</a></li>
-    </ul>
-
-    <div style="background: var(--beige-light); padding: 1.5rem; border-radius: 15px; margin-top: 1rem;">
-        <p><strong>Все нормативные документы можно скачать в разделе:</strong></p>
-        <p><a href="#" class="btn btn-secondary">Скачать сборник нормативных документов (PDF, 2.5 МБ)</a></p>
-    </div>
-
-    <h2>Расписание вступительных испытаний</h2>
-
-    <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 15px; margin: 1.5rem 0;">
-        <h3>Очная форма обучения</h3>
-        <p>Вступительные испытания проводятся в период с 3 по 25 июля 2026 года.</p>
-        <p>Точное расписание будет опубликовано после 20 июня 2026 года.</p>
-    </div>
-
-    <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 15px; margin: 1.5rem 0;">
-        <h3>Заочная форма обучения</h3>
-        <p>Вступительные испытания проводятся в период с 10 по 30 августа 2026 года.</p>
-    </div>
-
-    <div style="background: var(--beige-light); padding: 1.5rem; border-radius: 15px;">
-        <h3>Важно!</h3>
-        <ul>
-            <li>Расписание экзаменов публикуется на сайте и на информационном стенде приемной комиссии</li>
-            <li>Явка на экзамен осуществляется по паспорту</li>
-            <li>При опоздании абитуриент не допускается к сдаче экзамена</li>
-            <li>Результаты экзаменов публикуются в течение 3 рабочих дней</li>
+    
+    <!-- Нормативные документы -->
+    <div class="info-section">
+        <h2>📜 Нормативные документы</h2>
+        <p>Прием на обучение осуществляется в соответствии со следующими нормативными документами:</p>
+        
+        <ul class="docs-list">
+            <li>
+                <span class="doc-bullet">📄</span>
+                <a href="#" class="doc-link">Приказ от 27.11.2024 г. № 820 «Об утверждении перечня вступительных испытаний при приеме на обучение по образовательным программам высшего образования – программам бакалавриата и программам специалитета»</a>
+            </li>
+            <li>
+                <span class="doc-bullet">📘</span>
+                <a href="#" class="doc-link">Правила приема в Красноярский ГАУ на 2026/2027 учебный год</a>
+            </li>
+            <li>
+                <span class="doc-bullet">📖</span>
+                <a href="#" class="doc-link">Порядок приема на обучение по образовательным программам высшего образования</a>
+            </li>
+            <li>
+                <span class="doc-bullet">⚙️</span>
+                <a href="#" class="doc-link">Положение о приемной комиссии</a>
+            </li>
+            <li>
+                <span class="doc-bullet">⭐</span>
+                <a href="#" class="doc-link">Порядок учета индивидуальных достижений</a>
+            </li>
         </ul>
     </div>
-</section>
+</div>
 {% endblock %}

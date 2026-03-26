@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Университет - Красноярский ГАУ{% endblock %}
+
+{% block content %}
+<div class="university-page">
+    <h1>Университет</h1>
+    <p class="university-subtitle">Красноярский государственный аграрный университет</p>
+    
+    <!-- Университет сегодня -->
+    <div class="university-section-group">
+        <h2> Университет сегодня</h2>
+        <div class="university-cards-grid">
+            <div class="university-card" data-url="/university-today"> Университет сегодня</div>
+            <div class="university-card" data-url="/university/history"> История</div>
+            <div class="university-card" data-url="/university/association"> Ассоциация выпускников</div>
+            <div class="university-card external" data-url="https://kgau.ru/upload/sprint.editor/feb/kl2wrvvkeixsybeecidrrimlmmmjvgh1.pdf"> Коллективный договор (PDF)</div>
+            <div class="university-card" data-url="/university/profsoyuz"> Первичная профсоюзная организация</div>
+            <div class="university-card" data-url="/university/popechitelskiy"> Попечительский совет</div>
+            <div class="university-card" data-url="/university/anticorruption"> Противодействие коррупции</div>
+            <div class="university-card" data-url="/university/parent-council"> Совет родителей</div>
+            <div class="university-card external" data-url=""> Устав КрасГАУ (PDF)</div>
+        </div>
+    </div>
+    
+    <!-- Наука и библиотека -->
+    <div class="university-section-group">
+        <h2> Наука и библиотека</h2>
+        <div class="university-cards-grid">
+            <div class="university-card" data-url="/international"> Международная деятельность</div>
+            <div class="university-card" data-url="/science"> Научная деятельность</div>
+            <div class="university-card" data-url="/library"> Библиотека</div>
+        </div>
+    </div>
+    
+    <!-- Наша пресса -->
+    <div class="university-section-group">
+        <h2> Наша пресса</h2>
+        <div class="university-cards-grid">
+            <div class="university-card" data-url="/university/press"> Наша пресса</div>
+            <div class="university-card external" data-url="https://www.kgau.ru/university/nasha-pressa/ise/index.html"> Журнал «Инженерные системы и энергетика»</div>
+            <div class="university-card external" data-url="https://vestnik.kgau.ru/ru/nauka/"> Журнал «Вестник КрасГАУ»</div>
+            <div class="university-card external" data-url="https://sej.kgau.ru/ru/nauka/"> Социально-экономический и гуманитарный журнал</div>
+        </div>
+    </div>
+    
+    <!-- Пресс-центр -->
+    <div class="university-section-group">
+        <h2> Пресс-центр</h2>
+        <div class="university-cards-grid">
+            <div class="university-card" data-url="/university/press-center"> Пресс-центр</div>
+            <div class="university-card" data-url="/university/vesti-archive"> Архив журнала «Вести Красноярского ГАУ»</div>
+            <div class="university-card" data-url="/university/brandbook"> Брендбук университета</div>
+            <div class="university-card" data-url="/university/vesti"> Журнал «Вести Красноярского ГАУ»</div>
+            <div class="university-card" data-url="/university/media-about-us"> СМИ о нас</div>
+        </div>
+    </div>
+    
+    <!-- Документы и сервисы -->
+    <div class="university-section-group">
+        <h2> Документы и сервисы</h2>
+        <div class="university-cards-grid">
+            <div class="university-card" data-url="/university/prosecutor"> Прокурор разъясняет</div>
+            <div class="university-card" data-url="/university/quality-management"> Система менеджмента качества</div>
+            <div class="university-card" data-url="/university/endowment"> Эндаумент фонд</div>
+            <div class="university-card" data-url="/university/driving-school"> Автошкола</div>
+            <div class="university-card" data-url="/university/jalinga"> Видеостудия Jalinga</div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.university-card').forEach(card => {
+    card.addEventListener('click', function() {
+        const url = this.dataset.url;
+        if (url) window.location.href = url;
+    });
+});
+</script>
+{% endblock %}

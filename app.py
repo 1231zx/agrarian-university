@@ -1281,6 +1281,145 @@ def create_app():
     def student_foreign():
         return render_template('international_students.html')
     
+        # ==================== УНИВЕРСИТЕТ ====================
+    @app.route('/university')
+    def university_main():
+        return render_template('university_main.html')
+    
+    @app.route('/university/history')
+    def university_history():
+        return render_template('university_history.html')
+    
+    @app.route('/university/association')
+    def university_association():
+        return render_template('university_association.html')
+    
+    @app.route('/university/profsoyuz')
+    def university_profsoyuz():
+        return render_template('university_profsoyuz.html')
+    
+    @app.route('/university/popechitelskiy')
+    def university_popechitelskiy():
+        return render_template('university_popechitelskiy.html')
+    
+    @app.route('/university/anticorruption')
+    def university_anticorruption():
+        return render_template('university_anticorruption.html')
+    
+    @app.route('/university/parent-council')
+    def university_parent_council():
+        return render_template('university_parent_council.html')
+    
+    @app.route('/university/press')
+    def university_press():
+        return render_template('university_press.html')
+    
+    @app.route('/university/press-center')
+    def university_press_center():
+        return render_template('university_press_center.html')
+    
+    @app.route('/university/vesti-archive')
+    def university_vesti_archive():
+        return render_template('university_vesti_archive.html')
+    
+    @app.route('/university/brandbook')
+    def university_brandbook():
+        return render_template('university_brandbook.html')
+    
+    @app.route('/university/vesti')
+    def university_vesti():
+        return render_template('university_vesti.html')
+    
+    @app.route('/university/media-about-us')
+    def university_media_about_us():
+        return render_template('media_about_us.html')
+    
+    @app.route('/university/prosecutor')
+    def university_prosecutor():
+        return render_template('prosecutor_explains.html')
+    
+    @app.route('/university/quality-management')
+    def university_quality_management():
+        return render_template('quality_management.html')
+    
+    @app.route('/university/endowment')
+    def university_endowment():
+        return render_template('endowment.html')
+    
+    @app.route('/university/driving-school')
+    def university_driving_school():
+        return render_template('driving_school.html')
+    
+    @app.route('/university/jalinga')
+    def university_jalinga():
+        return render_template('jalinga.html')
+    
+    
+        # ==================== ПОСТУПАЮЩЕМУ ====================
+    @app.route('/applicant')
+    def applicant_main():
+        return render_template('applicant_main.html')
+    
+    @app.route('/target-education')
+    def target_education():
+        return render_template('target_education.html')
+    
+    @app.route('/bonuses')
+    def bonuses():
+        return render_template('bonuses.html')
+    
+    @app.route('/enrollment-info')
+    def enrollment_info():
+        return render_template('enrollment_info.html')
+    
+    @app.route('/enrollment-orders-spo')
+    def enrollment_orders_spo():
+        return render_template('enrollment_orders_spo.html')
+    
+    @app.route('/enrollment-info-vo')
+    def enrollment_info_vo():
+        return render_template('enrollment_info_vo.html')
+    
+    @app.route('/applicant-lists')
+    def applicant_lists():
+        return render_template('applicant_lists.html')
+    
+    @app.route('/applicant-lists-spo')
+    def applicant_lists_spo():
+        return render_template('applicant_lists_spo.html')
+    
+    @app.route('/applicant-lists-bachelor')
+    def applicant_lists_bachelor():
+        return render_template('applicant_lists_bachelor.html')
+    
+    @app.route('/applicant-lists-master')
+    def applicant_lists_master():
+        return render_template('applicant_lists_master.html')
+    
+    @app.route('/applicant-lists-postgraduate')
+    def applicant_lists_postgraduate():
+        return render_template('applicant_lists_postgraduate.html')
+    
+    @app.route('/postgraduate-admission')
+    def postgraduate_admission():
+        return render_template('postgraduate_admission.html')
+    
+    @app.route('/doctoral-admission')
+    def doctoral_admission():
+        return render_template('doctoral_admission.html')
+    
+    @app.route('/admission-regulations')
+    def admission_regulations():
+        return render_template('admission_regulations.html')
+    
+    @app.route('/exam-schedule')
+    def exam_schedule():
+        return render_template('exam_schedule.html')
+    
+    @app.route('/admission-committee')
+    def admission_committee():
+        return render_template('admission_committee.html')
+    
     return app
 
 if __name__ == '__main__':

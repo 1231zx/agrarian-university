@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Списки лиц, подавших документы - Красноярский ГАУ{% endblock %}
+
+{% block content %}
+<div class="page-content">
+    <div class="container">
+        <h1>Списки лиц, подавших документы</h1>
+        
+        <div class="applicant-lists-grid">
+            <div class="list-card" data-url="/applicant-lists-spo">
+                <h3>🎓 Среднее профессиональное образование</h3>
+                <p>Списки поступающих на программы СПО</p>
+            </div>
+            <div class="list-card" data-url="/applicant-lists-bachelor">
+                <h3>📚 Бакалавриат (специалитет)</h3>
+                <p>Списки поступающих на программы высшего образования</p>
+            </div>
+            <div class="list-card" data-url="/applicant-lists-master">
+                <h3>📖 Магистратура</h3>
+                <p>Списки поступающих в магистратуру</p>
+            </div>
+            <div class="list-card" data-url="/applicant-lists-postgraduate">
+                <h3>🔬 Аспирантура</h3>
+                <p>Списки поступающих в аспирантуру</p>
+            </div>
+        </div>
+        
+        <div class="info-block">
+            <h3>Как узнать свой уникальный код (ID) при поступлении через «Госуслуги»?</h3>
+            <ol>
+                <li>Войти в учётную запись на «Госуслугах»</li>
+                <li>Выбрать раздел «Заявления»</li>
+                <li>Выбрать «Подача заявления на поступление в вуз»</li>
+                <li>Перейти в раздел «Статусы заявлений и конкурсные списки»</li>
+                <li>Выбрать «Списки подавших документы»</li>
+                <li>Найти в списке строку с отметкой — ID участника и есть уникальный код</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.list-card').forEach(card => {
+    card.addEventListener('click', function() {
+        const url = this.dataset.url;
+        if (url) window.location.href = url;
+    });
+});
+</script>
+{% endblock %}
