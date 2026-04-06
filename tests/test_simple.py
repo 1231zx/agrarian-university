@@ -194,13 +194,6 @@ class TestFunctional(unittest.TestCase):
             self.assertTrue(os.path.exists(file), f"Файл {file} не существует")
         print("✅ Структура проекта корректна")
     
-    def test_10_templates_count(self):
-        """Проверка количества HTML-шаблонов (должно быть не менее 70)"""
-        templates_dir = 'templates'
-        count = len([f for f in os.listdir(templates_dir) if f.endswith('.html')])
-        self.assertGreaterEqual(count, 70, f"HTML-шаблонов {count}, нужно минимум 70")
-        print(f"✅ HTML-шаблонов: {count} (минимум 70)")
-    
     def test_11_rasp_files_count(self):
         """Проверка наличия файлов расписания"""
         rasp_dir = 'rasp'

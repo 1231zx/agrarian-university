@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} - ООО Аграрный Университет{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>{{ page.title }}</h1>
+        <p>{{ page.meta_description }}</p>
+    </div>
+</section>
+
+<section class="page-content">
+    <div class="container">
+        <div class="content-block">
+            {{ page.content|safe }}
+        </div>
+        
+        {% if page.parent %}
+            <div style="margin-top: 2rem;">
+                <a href="{{ url_for('dynamic_page', slug=page.parent.slug) }}" class="btn btn-secondary">
+                    ← Назад в {{ page.parent.title }}
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

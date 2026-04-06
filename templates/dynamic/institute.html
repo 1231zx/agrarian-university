@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} - ООО Аграрный Университет{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>{{ page.title }}</h1>
+        <p>Красноярский государственный аграрный университет</p>
+    </div>
+</section>
+
+<section class="page-content">
+    <div class="container">
+        <div class="content-block">
+            {{ page.content|safe }}
+        </div>
+        
+        {% if children %}
+            <h2>📚 Кафедры института</h2>
+            <div class="departments-grid">
+                {% for dept in children %}
+                    <div class="department-card" onclick="location.href='{{ url_for('dynamic_page', slug=dept.slug) }}'">
+                        <h4>{{ dept.title }}</h4>
+                        <span class="more">Подробнее →</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

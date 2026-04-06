@@ -60,67 +60,63 @@
         <aside class="sidebar">
             <nav class="sidebar-nav">
                 <ul class="sidebar-menu">
-                    <!-- ИНСТИТУТЫ с подменю -->
-                    <li class="dropdown">
-                        <li><a href="{{ url_for('institutes') }}">Институты</a></li>
+                    <!-- ИНСТИТУТЫ -->
+                    <li><a href="{{ url_for('institutes_page') }}">Институты</a></li>
                     
                     <!-- Университет -->
-                    <li class="dropdown">
-                        <li><a href="{{ url_for('university_main') }}"> Университет</a></li>
+                    <li><a href="{{ url_for('dynamic_page', slug='university_main') }}">Университет</a></li>
                     
                     <!-- Наука и инновации -->
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle"> Наука и инновации</a>
+                        <a href="#" class="dropdown-toggle">Наука и инновации</a>
                         <ul class="sidebar-dropdown">
-                            <li><a href="{{ url_for('science') }}">Научная деятельность</a></li>
-                            <li><a href="{{ url_for('laboratories') }}">Инновационные лаборатории</a></li>
-                            <li><a href="{{ url_for('science_schools') }}">Научные школы</a></li>
-                            <li><a href="{{ url_for('grants') }}">Гранты и конкурсы</a></li>
-                            <li><a href="{{ url_for('conferences') }}">Конференции</a></li>
-                            <li><a href="{{ url_for('science_news') }}">Новости науки</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='science') }}">Научная деятельность</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='laboratories') }}">Инновационные лаборатории</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='science_schools') }}">Научные школы</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='grants') }}">Гранты и конкурсы</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='conferences') }}">Конференции</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='science_news') }}">Новости науки</a></li>
                         </ul>
                     </li>
                     
                     <!-- Студенту -->
-                    <li class="dropdown">
-                        <li><a href="{{ url_for('student_main') }}"> Студенту</a></li>
+                    <li><a href="{{ url_for('dynamic_page', slug='student_main') }}">Студенту</a></li>
                     
                     <!-- Поступающему -->
-                    <li class="dropdown">
-                        <li><a href="{{ url_for('applicant_main') }}"> Поступающему</a></li>
+                    <li><a href="{{ url_for('dynamic_page', slug='applicant_main') }}">Поступающему</a></li>
                     
                     <!-- Школьнику -->
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle"> Школьнику</a>
+                        <a href="#" class="dropdown-toggle">Школьнику</a>
                         <ul class="sidebar-dropdown">
-                            <li><a href="{{ url_for('school_info') }}">Информация для школьников</a></li>
-                            <li><a href="{{ url_for('olympiads') }}">Олимпиады и конкурсы</a></li>
-                            <li><a href="{{ url_for('preparatory_courses') }}">Подготовительные курсы</a></li>
-                            <li><a href="{{ url_for('agro_classes') }}">Агроклассы</a></li>
-                            <li><a href="{{ url_for('career_guidance') }}">Профориентационная работа</a></li>
-                            <li><a href="{{ url_for('school_conferences') }}">Конференции</a></li>
-                            <li><a href="{{ url_for('school_awards') }}">Наши награды</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='school_info') }}">Информация для школьников</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='olympiads') }}">Олимпиады и конкурсы</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='preparatory_courses') }}">Подготовительные курсы</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='agro_classes') }}">Агроклассы</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='career_guidance') }}">Профориентационная работа</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='conferences') }}">Конференции</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='school_awards') }}">Наши награды</a></li>
                         </ul>
                     </li>
                     
                     <!-- Аспиранту -->
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle"> Аспиранту</a>
+                        <a href="#" class="dropdown-toggle">Аспиранту</a>
                         <ul class="sidebar-dropdown">
-                            <li><a href="{{ url_for('postgraduate') }}">Аспирантура</a></li>
-                            <li><a href="{{ url_for('doctoral') }}">Докторантура</a></li>
-                            <li><a href="{{ url_for('attestation') }}">Аттестация</a></li>
-                            <li><a href="{{ url_for('candidate_exams') }}">Кандидатские экзамены</a></li>
-                            <li><a href="{{ url_for('dissertations') }}">Диссертации</a></li>
-                            <li><a href="{{ url_for('science_supervisors') }}">Научные руководители</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='postgraduate') }}">Аспирантура</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='doctoral') }}">Докторантура</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='attestation') }}">Аттестация</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='candidate_exams') }}">Кандидатские экзамены</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='dissertations') }}">Диссертации</a></li>
+                            <li><a href="{{ url_for('dynamic_page', slug='science_supervisors') }}">Научные руководители</a></li>
                         </ul>
                     </li>
                     
-                    <li><a href="{{ url_for('news') }}"> Новости</a></li>
-                    <li><a href="{{ url_for('employee') }}"> Сотруднику</a></li>
-                    <li><a href="{{ url_for('employer') }}"> Работодателю</a></li>
-                    <li><a href="{{ url_for('alumni') }}"> Выпускнику</a></li>
-                    <li><a href="{{ url_for('contacts_departments') }}"> Контакты подразделений</a></li>
+                    <li><a href="{{ url_for('news') }}">Новости</a></li>
+                    <li><a href="{{ url_for('dynamic_page', slug='employee') }}">Сотруднику</a></li>
+                    <li><a href="{{ url_for('dynamic_page', slug='employer') }}">Работодателю</a></li>
+                    <li><a href="{{ url_for('dynamic_page', slug='alumni') }}">Выпускнику</a></li>
+                    <li><a href="{{ url_for('dynamic_page', slug='contacts_departments') }}">Контакты подразделений</a></li>
                 </ul>
             </nav>
         </aside>
@@ -168,7 +164,7 @@
         </div>
     </footer>
 
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+   <!-- <script src="{{ url_for('static', filename='js/main.js') }}"></script>-->
     <script>
         // Динамический поиск
         const searchInput = document.getElementById('search-input');

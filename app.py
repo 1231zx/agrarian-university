@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from flask_mail import Mail, Message
 from flask_caching import Cache
 from config import Config
-from models import db, User, Program, News, Contact, PageContent
+from models import db, User, Program, News, Contact, PageContent, Page
 from sqlalchemy import text
 from datetime import datetime, timedelta
 import calendar
@@ -17,15 +17,12 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     
-    # Инициализация расширений
     db.init_app(app)
     CORS(app)
     
-    # Инициализация почты и кеша
     mail = Mail(app)
     cache = Cache(app)
     
-    # Инициализация Flask-Login
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'login'
@@ -35,16 +32,13 @@ def create_app():
     def load_user(user_id):
         return User.query.get(int(user_id))
     
-    # Добавляем контекстный процессор для current_user
     @app.context_processor
     def inject_user():
         return dict(current_user=current_user)
     
-    # Импортируем и инициализируем API после создания app
     from api import init_api
     init_api(app)
 
-    # Проверка подключения к БД
     with app.app_context():
         try:
             db.session.execute(text('SELECT 1'))
@@ -52,7 +46,6 @@ def create_app():
         except Exception as e:
             print(f"❌ Ошибка подключения к PostgreSQL: {e}")
 
-    # Папка с файлами расписания
     RASP_FOLDER = os.path.join(os.path.dirname(__file__), 'rasp')
     os.makedirs(RASP_FOLDER, exist_ok=True)
 
@@ -93,71 +86,28 @@ def create_app():
             'description': 'Расписание вступительных испытаний',
             'institute': 'Абитуриентам'
         },
-        'CPSSZ2.xls': {
-            'title': 'ЦПССЗ - все курсы',
-            'description': 'Расписание для Центра подготовки специалистов среднего звена (1-4 курсы)',
-            'institute': 'ЦПССЗ'
-        },
-        'IAT2.xls': {
-            'title': 'ИАЭТ - все курсы',
-            'description': 'Институт агроэкологических технологий (1-4 курсы)',
-            'institute': 'ИАЭТ'
-        },
-        'IEU2.xls': {
-            'title': 'ИЭиУ АПК - все курсы',
-            'description': 'Институт экономики и управления АПК (1-4 курсы)',
-            'institute': 'ИЭиУ АПК'
-        },
-        'IEUv2.xls': {
-            'title': 'ИЭиУ АПК - вечернее отделение',
-            'description': 'Институт экономики и управления АПК, вечерняя форма',
-            'institute': 'ИЭиУ АПК'
-        },
-        'IiSiE2.xlsx': {
-            'title': 'ИИСиЭ - расписание',
-            'description': 'Институт информационных систем и инженерии',
-            'institute': 'ИИСиЭ'
-        },
-        'IPBVM2.xls': {
-            'title': 'ИПБиВМ - все курсы',
-            'description': 'Институт прикладной биотехнологии и ветеринарной медицины',
-            'institute': 'ИПБиВМ'
-        },
-        'IPP2.xls': {
-            'title': 'ИПП - все курсы',
-            'description': 'Институт пищевых производств',
-            'institute': 'ИПП'
-        },
-        'IZKP2.xls': {
-            'title': 'ИЗКиП - все курсы',
-            'description': 'Институт землеустройства, кадастров и природообустройства',
-            'institute': 'ИЗКиП'
-        },
-        'UI2.xlsx': {
-            'title': 'Юридический институт - расписание',
-            'description': 'Юридический институт',
-            'institute': 'ЮИ'
-        },
-        'UIv2.xlsx': {
-            'title': 'Юридический институт - вечернее отделение',
-            'description': 'Юридический институт, вечерняя форма',
-            'institute': 'ЮИ'
-        }
+        'CPSSZ2.xls': {'title': 'ЦПССЗ - все курсы', 'description': 'Расписание для Центра подготовки специалистов среднего звена (1-4 курсы)', 'institute': 'ЦПССЗ'},
+        'IAT2.xls': {'title': 'ИАЭТ - все курсы', 'description': 'Институт агроэкологических технологий (1-4 курсы)', 'institute': 'ИАЭТ'},
+        'IEU2.xls': {'title': 'ИЭиУ АПК - все курсы', 'description': 'Институт экономики и управления АПК (1-4 курсы)', 'institute': 'ИЭиУ АПК'},
+        'IEUv2.xls': {'title': 'ИЭиУ АПК - вечернее отделение', 'description': 'Институт экономики и управления АПК, вечерняя форма', 'institute': 'ИЭиУ АПК'},
+        'IiSiE2.xlsx': {'title': 'ИИСиЭ - расписание', 'description': 'Институт информационных систем и инженерии', 'institute': 'ИИСиЭ'},
+        'IPBVM2.xls': {'title': 'ИПБиВМ - все курсы', 'description': 'Институт прикладной биотехнологии и ветеринарной медицины', 'institute': 'ИПБиВМ'},
+        'IPP2.xls': {'title': 'ИПП - все курсы', 'description': 'Институт пищевых производств', 'institute': 'ИПП'},
+        'IZKP2.xls': {'title': 'ИЗКиП - все курсы', 'description': 'Институт землеустройства, кадастров и природообустройства', 'institute': 'ИЗКиП'},
+        'UI2.xlsx': {'title': 'Юридический институт - расписание', 'description': 'Юридический институт', 'institute': 'ЮИ'},
+        'UIv2.xlsx': {'title': 'Юридический институт - вечернее отделение', 'description': 'Юридический институт, вечерняя форма', 'institute': 'ЮИ'}
     }
 
     # ==================== ФУНКЦИИ ДЛЯ РАСПИСАНИЯ ====================
     def read_excel_file(filename):
-        """Читает Excel файл и форматирует в читаемый вид с группировкой по группам"""
         filepath = os.path.join(RASP_FOLDER, filename)
         try:
             excel_file = pd.ExcelFile(filepath)
             html_parts = []
             groups = {}
-            
             for sheet_name in excel_file.sheet_names:
                 df = pd.read_excel(filepath, sheet_name=sheet_name, header=None)
                 group_name = sheet_name
-                
                 if 'групп' in sheet_name.lower() or 'курс' in sheet_name.lower():
                     group_name = sheet_name
                 else:
@@ -166,7 +116,6 @@ def create_app():
                         if 'группа' in row_text.lower() or 'групп' in row_text.lower():
                             group_name = row_text[:50].strip()
                             break
-                
                 lessons = []
                 for idx, row in df.iterrows():
                     if row.isna().all():
@@ -181,7 +130,6 @@ def create_app():
                             lesson_type = 'lab'
                         elif 'экзам' in subject_lower:
                             lesson_type = 'exam'
-                        
                         day_of_week = 'unknown'
                         time_lower = cells[0].lower()
                         if 'пн' in time_lower:
@@ -196,39 +144,21 @@ def create_app():
                             day_of_week = 'fri'
                         elif 'сб' in time_lower:
                             day_of_week = 'sat'
-                        
                         lessons.append({
-                            'time': cells[0],
-                            'subject': cells[1],
-                            'teacher': cells[2] if len(cells) > 2 else '',
-                            'room': cells[3] if len(cells) > 3 else '',
-                            'type': lesson_type,
-                            'day': day_of_week
+                            'time': cells[0], 'subject': cells[1], 'teacher': cells[2] if len(cells) > 2 else '',
+                            'room': cells[3] if len(cells) > 3 else '', 'type': lesson_type, 'day': day_of_week
                         })
-                
                 if lessons:
                     if group_name not in groups:
                         groups[group_name] = []
                     groups[group_name].extend(lessons)
-            
             if groups:
                 unique_id = filename.replace('.', '_').replace(' ', '_').replace('-', '_')
-                
-                html_parts.append(f"""
-                <div class="schedule-group-selector" data-unique="{unique_id}">
-                    <label>👥 Выберите группу:</label>
-                    <select id="schedule-group-select-{unique_id}" class="schedule-group-select">
-                """)
-                
+                html_parts.append(f'<div class="schedule-group-selector" data-unique="{unique_id}"><label>Выберите группу:</label><select id="schedule-group-select-{unique_id}" class="schedule-group-select">')
                 for i, group_name in enumerate(groups.keys()):
                     selected = 'selected' if i == 0 else ''
                     html_parts.append(f'<option value="{i}" {selected}>{group_name}</option>')
-                
-                html_parts.append(f"""
-                    </select>
-                </div>
-                """)
-                
+                html_parts.append('</select></div>')
                 for i, (group_name, lessons) in enumerate(groups.items()):
                     display_style = "block" if i == 0 else "none"
                     lessons_by_day = {'mon': [], 'tue': [], 'wed': [], 'thu': [], 'fri': [], 'sat': [], 'unknown': []}
@@ -238,106 +168,24 @@ def create_app():
                             lessons_by_day[day].append(lesson)
                         else:
                             lessons_by_day['unknown'].append(lesson)
-                    
                     html_parts.append(f'<div id="group-{unique_id}-{i}" class="schedule-group-container" style="display: {display_style};">')
-                    html_parts.append(f'<h3 class="schedule-group-title">📚 {group_name}</h3>')
-                    
-                    html_parts.append(f"""
-                    <div class="schedule-day-switcher-inner" data-group="{i}">
-                        <button class="day-btn-inner active" data-day="all">📅 Все дни</button>
-                        <button class="day-btn-inner" data-day="mon">ПН</button>
-                        <button class="day-btn-inner" data-day="tue">ВТ</button>
-                        <button class="day-btn-inner" data-day="wed">СР</button>
-                        <button class="day-btn-inner" data-day="thu">ЧТ</button>
-                        <button class="day-btn-inner" data-day="fri">ПТ</button>
-                        <button class="day-btn-inner" data-day="sat">СБ</button>
-                    </div>
-                    """)
-                    
-                    day_names = {
-                        'mon': 'Понедельник',
-                        'tue': 'Вторник',
-                        'wed': 'Среда',
-                        'thu': 'Четверг',
-                        'fri': 'Пятница',
-                        'sat': 'Суббота',
-                        'unknown': 'Другое'
-                    }
-                    
+                    html_parts.append(f'<h3 class="schedule-group-title">{group_name}</h3>')
+                    html_parts.append('<div class="schedule-day-switcher-inner">')
+                    for day_key, day_name in [('all','Все дни'),('mon','ПН'),('tue','ВТ'),('wed','СР'),('thu','ЧТ'),('fri','ПТ'),('sat','СБ')]:
+                        active = 'active' if day_key == 'all' else ''
+                        html_parts.append(f'<button class="day-btn-inner {active}" data-day="{day_key}">{day_name}</button>')
+                    html_parts.append('</div>')
+                    day_names = {'mon':'Понедельник','tue':'Вторник','wed':'Среда','thu':'Четверг','fri':'Пятница','sat':'Суббота','unknown':'Другое'}
                     for day_key, day_name in day_names.items():
                         if lessons_by_day.get(day_key) and len(lessons_by_day[day_key]) > 0:
-                            html_parts.append(f'<div class="schedule-day-section" data-day="{day_key}">')
-                            html_parts.append(f'<h4 class="schedule-day-title">{day_name}</h4>')
-                            html_parts.append('<div class="schedule-lessons-list">')
+                            html_parts.append(f'<div class="schedule-day-section" data-day="{day_key}"><h4 class="schedule-day-title">{day_name}</h4><div class="schedule-lessons-list">')
                             for lesson in lessons_by_day[day_key]:
                                 lesson_type_class = f'lesson-type-{lesson["type"]}'
                                 room_html = f'<span class="schedule-lesson-room">{lesson["room"]}</span>' if lesson['room'] else ''
-                                html_parts.append(f'''
-                                    <div class="schedule-lesson-card {lesson_type_class}">
-                                        <div class="schedule-lesson-time">{lesson['time']}</div>
-                                        <div class="schedule-lesson-details">
-                                            <span class="schedule-lesson-subject">{lesson['subject']}</span>
-                                            <span class="schedule-lesson-teacher">{lesson['teacher']}</span>
-                                            {room_html}
-                                        </div>
-                                    </div>
-                                ''')
+                                html_parts.append(f'<div class="schedule-lesson-card {lesson_type_class}"><div class="schedule-lesson-time">{lesson["time"]}</div><div class="schedule-lesson-details"><span class="schedule-lesson-subject">{lesson["subject"]}</span><span class="schedule-lesson-teacher">{lesson["teacher"]}</span>{room_html}</div></div>')
                             html_parts.append('</div></div>')
                     html_parts.append('</div>')
-                
-                html_parts.append(f"""
-                <script>
-                (function() {{
-                    const uniqueId = '{unique_id}';
-                    const groupSelect = document.getElementById('schedule-group-select-' + uniqueId);
-                    const groupContainers = document.querySelectorAll('[id^="group-' + uniqueId + '-"]');
-                    let currentGroup = 0;
-                    function filterDaysInGroup(groupIndex, day) {{
-                        const groupContainer = document.getElementById('group-' + uniqueId + '-' + groupIndex);
-                        if (!groupContainer) return;
-                        const daySections = groupContainer.querySelectorAll('.schedule-day-section');
-                        daySections.forEach(section => {{
-                            const sectionDay = section.dataset.day;
-                            if (day === 'all' || sectionDay === day) {{
-                                section.style.display = 'block';
-                            }} else {{
-                                section.style.display = 'none';
-                            }}
-                        }});
-                    }}
-                    if (groupSelect) {{
-                        groupSelect.addEventListener('change', function() {{
-                            const newGroup = parseInt(this.value);
-                            currentGroup = newGroup;
-                            groupContainers.forEach((container, idx) => {{
-                                container.style.display = idx === newGroup ? 'block' : 'none';
-                            }});
-                            const activeGroupContainer = document.getElementById('group-' + uniqueId + '-' + newGroup);
-                            if (activeGroupContainer) {{
-                                const dayBtns = activeGroupContainer.querySelectorAll('.day-btn-inner');
-                                dayBtns.forEach(btn => btn.classList.remove('active'));
-                                const allBtn = activeGroupContainer.querySelector('.day-btn-inner[data-day="all"]');
-                                if (allBtn) allBtn.classList.add('active');
-                            }}
-                            filterDaysInGroup(newGroup, 'all');
-                        }});
-                    }}
-                    groupContainers.forEach((container, groupIdx) => {{
-                        const dayBtns = container.querySelectorAll('.day-btn-inner');
-                        dayBtns.forEach(btn => {{
-                            btn.addEventListener('click', function(e) {{
-                                e.preventDefault();
-                                e.stopPropagation();
-                                dayBtns.forEach(b => b.classList.remove('active'));
-                                this.classList.add('active');
-                                filterDaysInGroup(groupIdx, this.dataset.day);
-                            }});
-                        }});
-                    }});
-                    filterDaysInGroup(0, 'all');
-                }})();
-                </script>
-                """)
+                html_parts.append('<script>document.querySelectorAll(".schedule-group-select").forEach(sel=>{sel.addEventListener("change",function(){let id=this.id.replace("schedule-group-select-","");document.querySelectorAll(`[id^="group-${id}-"]`).forEach((c,i)=>{c.style.display=i==this.value?"block":"none"});let grp=document.querySelector(`#group-${id}-${this.value}`);if(grp){grp.querySelectorAll(".day-btn-inner").forEach(b=>b.classList.remove("active"));let allBtn=grp.querySelector(".day-btn-inner[data-day=\'all\']");if(allBtn)allBtn.classList.add("active");filterDaysInGroup(id,this.value,"all")}})});function filterDaysInGroup(uid,gidx,day){let grp=document.querySelector(`#group-${uid}-${gidx}`);if(!grp)return;grp.querySelectorAll(".schedule-day-section").forEach(s=>{s.style.display=(day==="all"||s.dataset.day===day)?"block":"none"});}document.querySelectorAll(".day-btn-inner").forEach(btn=>{btn.addEventListener("click",function(e){e.preventDefault();let parent=this.closest(".schedule-group-container");let gidx=parent.id.split("-").pop();let uid=parent.id.replace(`group-`,"").replace(`-${gidx}`,"");document.querySelectorAll(`#group-${uid}-${gidx} .day-btn-inner`).forEach(b=>b.classList.remove("active"));this.classList.add("active");filterDaysInGroup(uid,gidx,this.dataset.day)})});document.querySelectorAll(".schedule-group-container").forEach((c,i)=>{if(i===0)filterDaysInGroup(c.id.split("-")[1],0,"all")});</script>')
                 return "".join(html_parts)
             return read_excel_simple(filepath)
         except Exception as e:
@@ -349,11 +197,7 @@ def create_app():
             html_parts = []
             for sheet_name in excel_file.sheet_names:
                 df = pd.read_excel(filepath, sheet_name=sheet_name, header=None)
-                html_parts.append(f"""
-                    <div class="schedule-excel-sheet">
-                        <h3 class="schedule-sheet-title">📋 {sheet_name}</h3>
-                        <div class="schedule-readable-content">
-                """)
+                html_parts.append(f'<div class="schedule-excel-sheet"><h3 class="schedule-sheet-title">{sheet_name}</h3><div class="schedule-readable-content">')
                 for idx, row in df.iterrows():
                     if row.isna().all():
                         continue
@@ -367,22 +211,9 @@ def create_app():
                             lesson_type = 'lab'
                         elif 'экзам' in subject_lower:
                             lesson_type = 'exam'
-                        html_parts.append(f"""
-                            <div class="schedule-lesson-card" data-type="{lesson_type}">
-                                <div class="schedule-lesson-time">{cells[0]}</div>
-                                <div class="schedule-lesson-details">
-                                    <span class="schedule-lesson-subject">{cells[1]}</span>
-                                    <span class="schedule-lesson-teacher">{cells[2]}</span>
-                                    {f'<span class="schedule-lesson-room">{cells[3]}</span>' if len(cells) > 3 else ''}
-                                </div>
-                            </div>
-                        """)
+                        html_parts.append(f'<div class="schedule-lesson-card" data-type="{lesson_type}"><div class="schedule-lesson-time">{cells[0]}</div><div class="schedule-lesson-details"><span class="schedule-lesson-subject">{cells[1]}</span><span class="schedule-lesson-teacher">{cells[2]}</span>{f"<span class=\"schedule-lesson-room\">{cells[3]}</span>" if len(cells) > 3 else ""}</div></div>')
                     elif len(cells) == 2:
-                        html_parts.append(f"""
-                            <div class="schedule-info-row">
-                                <strong>{cells[0]}:</strong> {cells[1]}
-                            </div>
-                        """)
+                        html_parts.append(f'<div class="schedule-info-row"><strong>{cells[0]}:</strong> {cells[1]}</div>')
                     else:
                         html_parts.append(f"<p class='schedule-text-line'>{cells[0]}</p>")
                 html_parts.append("</div></div>")
@@ -424,6 +255,79 @@ def create_app():
     def get_file_icon(ext):
         icons = {'.pdf': '📄', '.xls': '📊', '.xlsx': '📊', '.doc': '📝', '.docx': '📝'}
         return icons.get(ext.lower(), '📁')
+
+    # ==================== МАРШРУТЫ АДМИН ПАНЕЛИ ====================
+    @app.route('/admin/page/create', methods=['GET', 'POST'])
+    @login_required
+    def admin_page_create():
+        if not current_user.is_admin:
+            flash('Нет доступа', 'danger')
+            return redirect(url_for('index'))
+        if request.method == 'POST':
+            page = Page(
+                slug=request.form['slug'], title=request.form['title'], content=request.form['content'],
+                template=request.form['template'], parent_id=request.form.get('parent_id') or None,
+                meta_description=request.form.get('meta_description'), published='published' in request.form
+            )
+            db.session.add(page)
+            db.session.commit()
+            flash(f'Страница "{page.title}" создана!', 'success')
+            return redirect(url_for('admin_pages'))
+        parents = Page.query.filter_by(template='institute').all()
+        templates = ['institute', 'department', 'info_page', 'student_section', 'applicant_section', 'science_section']
+        return render_template('admin_page_form.html', parents=parents, templates=templates)
+    
+    @app.route('/admin/pages')
+    @login_required
+    def admin_pages():
+        if not current_user.is_admin:
+            flash('Нет доступа', 'danger')
+            return redirect(url_for('index'))
+        all_pages = Page.query.order_by(Page.template, Page.title).all()
+        return render_template('admin.html', all_pages=all_pages)
+
+    @app.route('/admin/page/<int:page_id>/edit', methods=['GET', 'POST'])
+    @login_required
+    def admin_page_edit(page_id):
+        if not current_user.is_admin:
+            flash('Нет доступа', 'danger')
+            return redirect(url_for('index'))
+        page = Page.query.get_or_404(page_id)
+        if request.method == 'POST':
+            page.title = request.form['title']
+            page.content = request.form['content']
+            page.meta_description = request.form.get('meta_description')
+            page.published = 'published' in request.form
+            db.session.commit()
+            flash(f'Страница "{page.title}" сохранена!', 'success')
+            return redirect(url_for('admin_pages'))
+        return render_template('admin_page_edit.html', page=page)
+    
+    @app.route('/admin/page/<int:page_id>/delete', methods=['POST'])
+    @login_required
+    def admin_page_delete(page_id):
+        if not current_user.is_admin:
+            return jsonify({'success': False, 'error': 'Нет доступа'})
+        page = Page.query.get_or_404(page_id)
+        protected_slugs = ['institute_agro', 'institute_biotech', 'student_main', 'applicant_main']
+        if page.slug in protected_slugs:
+            return jsonify({'success': False, 'error': 'Нельзя удалить эту страницу'})
+        db.session.delete(page)
+        db.session.commit()
+        return jsonify({'success': True})
+
+    # ==================== ДИНАМИЧЕСКИЕ СТРАНИЦЫ ====================
+    @app.route('/new/<slug>')
+    def dynamic_page(slug):
+        page = Page.query.filter_by(slug=slug, published=True).first_or_404()
+        print(f"DEBUG: rendering page {slug} with template {page.template}")  # <-- ДОБАВЬТЕ
+        children = Page.query.filter_by(parent_id=page.id, published=True).order_by(Page.menu_order).all()
+        return render_template(f'dynamic/{page.template}.html', page=page, children=children)
+
+    @app.route('/institutes')
+    def institutes_page():
+        institutes = Page.query.filter_by(template='institute', published=True).all()
+        return render_template('dynamic/institutes_page.html', institutes=institutes)
 
     # ==================== МАРШРУТЫ РАСПИСАНИЯ ====================
     @app.route('/rasp/<path:filename>')
@@ -527,39 +431,97 @@ def create_app():
         query = request.args.get('q', '').strip().lower()
         if not query or len(query) < 2:
             return jsonify({'results': []})
+        
         results = []
         seen_urls = set()
         
-        keywords = {
-            'расписание': {'url': 'schedule_list', 'title': '📅 Расписание занятий', 'description': 'Все расписания по институтам и курсам'},
-            'занятие': {'url': 'schedule_list', 'title': '📅 Расписание занятий', 'description': 'Все расписания по институтам и курсам'},
-            'урок': {'url': 'schedule_list', 'title': '📅 Расписание занятий', 'description': 'Все расписания по институтам и курсам'},
-            'пара': {'url': 'schedule_list', 'title': '📅 Расписание занятий', 'description': 'Все расписания по институтам и курсам'},
-            'экзамен': {'url': 'schedule_list', 'title': '📝 Расписание экзаменов', 'description': 'Расписание вступительных испытаний и экзаменов'},
-        }
-        for keyword, data in keywords.items():
-            if keyword in query:
-                url = url_for(data['url'])
-                if url not in seen_urls:
-                    seen_urls.add(url)
-                    results.append({'type': 'schedule_main', 'type_ru': '📅 Расписание', 'title': data['title'], 'url': url, 'description': data['description'], 'icon': '📅'})
-                break
+        # 1. Поиск по динамическим страницам (институты, кафедры, разделы)
+        pages = Page.query.filter(
+            db.or_(
+                Page.title.ilike(f'%{query}%'),
+                Page.content.ilike(f'%{query}%'),
+                Page.meta_description.ilike(f'%{query}%')
+            ),
+            Page.published == True
+        ).limit(20).all()
         
-        programs = Program.query.filter(db.or_(Program.name.ilike(f'%{query}%'), Program.description.ilike(f'%{query}%'), Program.degree.ilike(f'%{query}%'))).limit(3).all()
+        for page in pages:
+            url = url_for('dynamic_page', slug=page.slug)
+            if url not in seen_urls:
+                seen_urls.add(url)
+                # Определяем тип страницы
+                page_type = page.template
+                type_ru = {
+                    'institute': 'Институт',
+                    'department': 'Кафедра',
+                    'info_page': 'Страница',
+                    'student_section': 'Раздел',
+                    'applicant_section': 'Раздел',
+                    'university_section': 'Раздел',
+                    'science_section': 'Раздел'
+                }.get(page_type, 'Страница')
+                
+                # Находим родителя для кафедр
+                parent_name = ''
+                if page.parent_id:
+                    parent = Page.query.get(page.parent_id)
+                    if parent:
+                        parent_name = f' ({parent.title})'
+                
+                results.append({
+                    'type': page_type,
+                    'type_ru': type_ru,
+                    'title': page.title,
+                    'url': url,
+                    'description': page.meta_description or f'{type_ru}{parent_name}',
+                    'icon': get_icon_for_template(page.template)
+                })
+        
+        # 2. Поиск по программам обучения
+        programs = Program.query.filter(
+            db.or_(
+                Program.name.ilike(f'%{query}%'),
+                Program.description.ilike(f'%{query}%'),
+                Program.degree.ilike(f'%{query}%')
+            )
+        ).limit(5).all()
+        
         for p in programs:
             url = url_for('program_detail', program_id=p.id)
             if url not in seen_urls:
                 seen_urls.add(url)
-                results.append({'type': 'program', 'type_ru': 'Программа', 'title': p.name, 'url': url, 'description': f"{p.degree} • {p.duration}", 'icon': '📚'})
+                results.append({
+                    'type': 'program',
+                    'type_ru': 'Программа',
+                    'title': p.name,
+                    'url': url,
+                    'description': f'{p.degree} • {p.duration}',
+                    'icon': '📚'
+                })
         
-        news = News.query.filter(db.or_(News.title.ilike(f'%{query}%'), News.content.ilike(f'%{query}%'))).order_by(News.published_at.desc()).limit(3).all()
+        # 3. Поиск по новостям
+        news = News.query.filter(
+            db.or_(
+                News.title.ilike(f'%{query}%'),
+                News.content.ilike(f'%{query}%')
+            )
+        ).order_by(News.published_at.desc()).limit(5).all()
+        
         for n in news:
             url = url_for('news')
             if url not in seen_urls:
                 seen_urls.add(url)
                 date_str = n.published_at.strftime('%d.%m.%Y') if n.published_at else ''
-                results.append({'type': 'news', 'type_ru': 'Новость', 'title': n.title, 'url': url, 'description': f"{date_str} • {n.content[:100]}...", 'icon': '📰'})
+                results.append({
+                    'type': 'news',
+                    'type_ru': 'Новость',
+                    'title': n.title,
+                    'url': url,
+                    'description': f'{date_str} • {n.content[:100]}...',
+                    'icon': '📰'
+                })
         
+        # 4. Поиск по расписанию (файлы)
         for f in os.listdir(RASP_FOLDER):
             filepath = os.path.join(RASP_FOLDER, f)
             if os.path.isfile(filepath) and query in f.lower():
@@ -567,49 +529,125 @@ def create_app():
                 url = url_for('schedule_view', filename=f)
                 if url not in seen_urls:
                     seen_urls.add(url)
-                    results.append({'type': 'schedule', 'type_ru': 'Расписание', 'title': config['title'], 'url': url, 'description': f"{config['institute']} • {config['description']}", 'icon': '📅'})
+                    results.append({
+                        'type': 'schedule',
+                        'type_ru': 'Расписание',
+                        'title': config['title'],
+                        'url': url,
+                        'description': f"{config['institute']} • {config['description']}",
+                        'icon': '📅'
+                    })
         
-        results = results[:15]
+        # Ограничиваем результаты
+        results = results[:25]
         return jsonify({'results': results})
+
+    def get_icon_for_template(template):
+        icons = {
+            'institute': '🏛️',
+            'department': '📚',
+            'info_page': '📄',
+            'student_section': '👨‍🎓',
+            'applicant_section': '📝',
+            'university_section': '🏫',
+            'science_section': '🔬'
+        }
+        return icons.get(template, '📄')
 
     @app.route('/search')
     def search():
         query = request.args.get('q', '').strip()
         if not query or len(query) < 2:
             return render_template('search.html', query=query, all_results=[], total_results=0)
+        
         results = []
         seen_urls = set()
         
-        keywords = {
-            'расписание': {'url': 'schedule_list', 'title': '📅 Расписание занятий', 'description': 'Все расписания по институтам и курсам'},
-            'занятие': {'url': 'schedule_list', 'title': '📅 Расписание занятий', 'description': 'Все расписания по институтам и курсам'},
-            'урок': {'url': 'schedule_list', 'title': '📅 Расписание занятий', 'description': 'Все расписания по институтам и курсам'},
-            'пара': {'url': 'schedule_list', 'title': '📅 Расписание занятий', 'description': 'Все расписания по институтам и курсам'},
-            'экзамен': {'url': 'schedule_list', 'title': '📝 Расписание экзаменов', 'description': 'Расписание вступительных испытаний и экзаменов'},
-        }
-        for keyword, data in keywords.items():
-            if keyword in query.lower():
-                url = url_for(data['url'])
-                if url not in seen_urls:
-                    seen_urls.add(url)
-                    results.append({'type': 'schedule_main', 'type_ru': '📅 Расписание', 'title': data['title'], 'url': url, 'description': data['description']})
-                break
+        # Поиск по динамическим страницам
+        pages = Page.query.filter(
+            db.or_(
+                Page.title.ilike(f'%{query}%'),
+                Page.content.ilike(f'%{query}%'),
+                Page.meta_description.ilike(f'%{query}%')
+            ),
+            Page.published == True
+        ).limit(50).all()
         
-        programs = Program.query.filter(db.or_(Program.name.ilike(f'%{query}%'), Program.description.ilike(f'%{query}%'), Program.degree.ilike(f'%{query}%'))).all()
+        for page in pages:
+            url = url_for('dynamic_page', slug=page.slug)
+            if url not in seen_urls:
+                seen_urls.add(url)
+                page_type = page.template
+                type_ru = {
+                    'institute': 'Институт',
+                    'department': 'Кафедра',
+                    'info_page': 'Страница',
+                    'student_section': 'Раздел',
+                    'applicant_section': 'Раздел',
+                    'university_section': 'Раздел',
+                    'science_section': 'Раздел'
+                }.get(page_type, 'Страница')
+                
+                parent_name = ''
+                if page.parent_id:
+                    parent = Page.query.get(page.parent_id)
+                    if parent:
+                        parent_name = f' — {parent.title}'
+                
+                results.append({
+                    'type': page_type,
+                    'type_ru': type_ru,
+                    'title': page.title,
+                    'url': url,
+                    'description': f'{type_ru}{parent_name}',
+                    'content_preview': page.content[:200] + '...' if len(page.content) > 200 else page.content
+                })
+        
+        # Поиск по программам
+        programs = Program.query.filter(
+            db.or_(
+                Program.name.ilike(f'%{query}%'),
+                Program.description.ilike(f'%{query}%'),
+                Program.degree.ilike(f'%{query}%')
+            )
+        ).all()
+        
         for p in programs:
             url = url_for('program_detail', program_id=p.id)
             if url not in seen_urls:
                 seen_urls.add(url)
-                results.append({'type': 'program', 'type_ru': 'Программа', 'title': p.name, 'url': url, 'description': f"{p.degree} • {p.duration} • {p.description[:200]}..."})
+                results.append({
+                    'type': 'program',
+                    'type_ru': 'Программа',
+                    'title': p.name,
+                    'url': url,
+                    'description': f'{p.degree} • {p.duration}',
+                    'content_preview': p.description[:200] + '...' if len(p.description) > 200 else p.description
+                })
         
-        news = News.query.filter(db.or_(News.title.ilike(f'%{query}%'), News.content.ilike(f'%{query}%'))).order_by(News.published_at.desc()).all()
+        # Поиск по новостям
+        news = News.query.filter(
+            db.or_(
+                News.title.ilike(f'%{query}%'),
+                News.content.ilike(f'%{query}%')
+            )
+        ).order_by(News.published_at.desc()).all()
+        
         for n in news:
             url = url_for('news')
             if url not in seen_urls:
                 seen_urls.add(url)
                 date_str = n.published_at.strftime('%d.%m.%Y') if n.published_at else ''
-                results.append({'type': 'news', 'type_ru': 'Новость', 'title': n.title, 'url': url, 'description': f"{date_str} • {n.content[:200]}..."})
+                results.append({
+                    'type': 'news',
+                    'type_ru': 'Новость',
+                    'title': n.title,
+                    'url': url,
+                    'description': f'{date_str}',
+                    'content_preview': n.content[:200] + '...' if len(n.content) > 200 else n.content
+                })
         
+        # Поиск по расписанию
         for f in os.listdir(RASP_FOLDER):
             filepath = os.path.join(RASP_FOLDER, f)
             if os.path.isfile(filepath) and query.lower() in f.lower():
@@ -617,11 +655,18 @@ def create_app():
                 url = url_for('schedule_view', filename=f)
                 if url not in seen_urls:
                     seen_urls.add(url)
-                    results.append({'type': 'schedule', 'type_ru': 'Расписание', 'title': config['title'], 'url': url, 'description': f"{config['institute']} • {config['description']}"})
+                    results.append({
+                        'type': 'schedule',
+                        'type_ru': 'Расписание',
+                        'title': config['title'],
+                        'url': url,
+                        'description': f"{config['institute']}",
+                        'content_preview': config['description']
+                    })
         
         return render_template('search.html', query=query, all_results=results, total_results=len(results))
 
-    # ==================== СТАТИЧЕСКИЕ СТРАНИЦЫ (HTML) ====================
+    # ==================== СТАТИЧЕСКИЕ СТРАНИЦЫ (ОСТАВЛЯЕМ) ====================
     @app.route('/')
     def index():
         return render_template('index.html')
@@ -649,414 +694,57 @@ def create_app():
         db.session.commit()
         return render_template('program_detail.html', program=program)
 
-    @app.route('/university-today')
-    def university_today():
-        return render_template('university_today.html')
-
-    @app.route('/structure')
-    def structure():
-        return render_template('structure.html')
-
-    @app.route('/leadership')
-    def leadership():
-        return render_template('leadership.html')
-
-    @app.route('/academic-council')
-    def academic_council():
-        return render_template('academic_council.html')
-
-    @app.route('/departments')
-    def departments():
-        return render_template('departments.html')
-
-    @app.route('/library')
-    def library():
-        return render_template('library.html')
-
-    @app.route('/educational-activity')
-    def educational_activity():
-        return render_template('educational_activity.html')
-
-    @app.route('/professionalitet')
-    def professionalitet():
-        return render_template('professionalitet.html')
-
-    @app.route('/inclusive-education')
-    def inclusive_education():
-        return render_template('inclusive_education.html')
-
-    @app.route('/additional-education')
-    def additional_education():
-        return render_template('additional_education.html')
-
-    @app.route('/science')
-    def science():
-        return render_template('science.html')
-
-    @app.route('/science-news')
-    def science_news():
-        return render_template('science_news.html')
-
-    @app.route('/laboratories')
-    def laboratories():
-        return render_template('laboratories.html')
-
-    @app.route('/science-schools')
-    def science_schools():
-        return render_template('science_schools.html')
-
-    @app.route('/grants')
-    def grants():
-        return render_template('grants.html')
-
-    @app.route('/conferences')
-    def conferences():
-        return render_template('conferences.html')
-
-    @app.route('/volunteer')
-    def volunteer():
-        return render_template('volunteer.html')
-
-    @app.route('/dormitory')
-    def dormitory():
-        return render_template('dormitory.html')
-
-    @app.route('/payment')
-    def payment():
-        return render_template('payment.html')
-
-    @app.route('/cossack')
-    def cossack():
-        return render_template('cossack.html')
-
-    @app.route('/international-students')
-    def international_students():
-        return render_template('international_students.html')
-
-    @app.route('/school-info')
-    def school_info():
-        return render_template('school_info.html')
-
-    @app.route('/school-news')
-    def school_news():
-        return render_template('school_news.html')
-
-    @app.route('/school-conferences')
-    def school_conferences():
-        return render_template('school_conferences.html')
-
-    @app.route('/school-awards')
-    def school_awards():
-        return render_template('school_awards.html')
-
-    @app.route('/olympiads')
-    def olympiads():
-        return render_template('olympiads.html')
-
-    @app.route('/preparatory-courses')
-    def preparatory_courses():
-        return render_template('preparatory_courses.html')
-
-    @app.route('/agro-classes')
-    def agro_classes():
-        return render_template('agro_classes.html')
-
-    @app.route('/career-guidance')
-    def career_guidance():
-        return render_template('career_guidance.html')
-
-    @app.route('/admission-info')
-    def admission_info():
-        return render_template('admission_info.html')
-
-    @app.route('/admission-addresses')
-    def admission_addresses():
-        return render_template('admission_addresses.html')
-
-    @app.route('/admission-faq')
-    def admission_faq():
-        return render_template('admission_faq.html')
-
-    @app.route('/admission-docs')
-    def admission_docs():
-        return render_template('admission_docs.html')
-
-    @app.route('/admission-info-detail')
-    def admission_info_detail():
-        return render_template('admission_info_detail.html')
-
-    @app.route('/disabled-info')
-    def disabled_info():
-        return render_template('disabled_info.html')
-
-    @app.route('/competition-lists')
-    def competition_lists():
-        return render_template('competition_lists.html')
-
-    @app.route('/paid-education')
-    def paid_education():
-        return render_template('paid_education.html')
-
-    @app.route('/entrance-tests')
-    def entrance_tests():
-        return render_template('entrance_tests.html')
-
-    @app.route('/enrollment-orders')
-    def enrollment_orders():
-        return render_template('enrollment_orders.html')
-
-    @app.route('/postgraduate')
-    def postgraduate():
-        return render_template('postgraduate.html')
-
-    @app.route('/doctoral')
-    def doctoral():
-        return render_template('doctoral.html')
-
-    @app.route('/attestation')
-    def attestation():
-        return render_template('attestation.html')
-
-    @app.route('/candidate-exams')
-    def candidate_exams():
-        return render_template('candidate_exams.html')
-
-    @app.route('/dissertations')
-    def dissertations():
-        return render_template('dissertations.html')
-
-    @app.route('/science-supervisors')
-    def science_supervisors():
-        return render_template('science_supervisors.html')
-
-    @app.route('/employee')
-    def employee():
-        return render_template('employee.html')
-
-    @app.route('/employer')
-    def employer():
-        return render_template('employer.html')
-
-    @app.route('/alumni')
-    def alumni():
-        return render_template('alumni.html')
-
-    @app.route('/contacts-departments')
-    def contacts_departments():
-        return render_template('contacts_departments.html')
-
-    @app.route('/international')
-    def international():
-        return render_template('international.html')
-
-    @app.route('/university-life')
-    def university_life():
-        return render_template('university_life.html')
-
-    # ==================== МАРШРУТЫ ИНСТИТУТОВ ====================
-    @app.route('/institute/agro')
-    def institute_agro():
-        return render_template('institute_agro.html')
-
-    @app.route('/institute/agro/department/agronomy')
-    def institute_agro_department_agronomy():
-        return render_template('institute_agro_department_agronomy.html')
-
-    @app.route('/institute/agro/department/plant_breeding')
-    def institute_agro_department_plant_breeding():
-        return render_template('institute_agro_department_plant_breeding.html')
-
-    @app.route('/institute/agro/department/soil')
-    def institute_agro_department_soil():
-        return render_template('institute_agro_department_soil.html')
-
-    @app.route('/institute/agro/department/landscape')
-    def institute_agro_department_landscape():
-        return render_template('institute_agro_department_landscape.html')
-
-    @app.route('/institute/agro/department/ecology')
-    def institute_agro_department_ecology():
-        return render_template('institute_agro_department_ecology.html')
-
-    @app.route('/institute/agro/department/physical_culture')
-    def institute_agro_department_physical_culture():
-        return render_template('institute_agro_department_physical_culture.html')
-
-    @app.route('/institute/agro/department/languages')
-    def institute_agro_department_languages():
-        return render_template('institute_agro_department_languages.html')
-
-    @app.route('/institute/biotech')
-    def institute_biotech():
-        return render_template('institute_biotech.html')
-
-    @app.route('/institute/biotech/department/anatomy')
-    def institute_biotech_department_anatomy():
-        return render_template('institute_biotech_department_anatomy.html')
-
-    @app.route('/institute/biotech/department/zootechny')
-    def institute_biotech_department_zootechny():
-        return render_template('institute_biotech_department_zootechny.html')
-
-    @app.route('/institute/biotech/department/breeding')
-    def institute_biotech_department_breeding():
-        return render_template('institute_biotech_department_breeding.html')
-
-    @app.route('/institute/biotech/department/internal_diseases')
-    def institute_biotech_department_internal_diseases():
-        return render_template('institute_biotech_department_internal_diseases.html')
-
-    @app.route('/institute/biotech/department/epizootology')
-    def institute_biotech_department_epizootology():
-        return render_template('institute_biotech_department_epizootology.html')
-
-    @app.route('/institute/economy')
-    def institute_economy():
-        return render_template('institute_economy.html')
-
-    @app.route('/institute/economy/department/organization')
-    def institute_economy_department_organization():
-        return render_template('institute_economy_department_organization.html')
-
-    @app.route('/institute/economy/department/management')
-    def institute_economy_department_management():
-        return render_template('institute_economy_department_management.html')
-
-    @app.route('/institute/economy/department/information')
-    def institute_economy_department_information():
-        return render_template('institute_economy_department_information.html')
-
-    @app.route('/institute/economy/department/accounting')
-    def institute_economy_department_accounting():
-        return render_template('institute_economy_department_accounting.html')
-
-    @app.route('/institute/economy/department/psychology')
-    def institute_economy_department_psychology():
-        return render_template('institute_economy_department_psychology.html')
-
-    @app.route('/institute/engineering')
-    def institute_engineering():
-        return render_template('institute_engineering.html')
-
-    @app.route('/institute/engineering/department/physics')
-    def institute_engineering_department_physics():
-        return render_template('institute_engineering_department_physics.html')
-
-    @app.route('/institute/engineering/department/mechanization')
-    def institute_engineering_department_mechanization():
-        return render_template('institute_engineering_department_mechanization.html')
-
-    @app.route('/institute/engineering/department/general_engineering')
-    def institute_engineering_department_general_engineering():
-        return render_template('institute_engineering_department_general_engineering.html')
-
-    @app.route('/institute/engineering/department/system_energy')
-    def institute_engineering_department_system_energy():
-        return render_template('institute_engineering_department_system_energy.html')
-
-    @app.route('/institute/engineering/department/electrical_engineering')
-    def institute_engineering_department_electrical_engineering():
-        return render_template('institute_engineering_department_electrical_engineering.html')
-
-    @app.route('/institute/engineering/department/tractors')
-    def institute_engineering_department_tractors():
-        return render_template('institute_engineering_department_tractors.html')
-
-    @app.route('/institute/engineering/department/electrical_supply')
-    def institute_engineering_department_electrical_supply():
-        return render_template('institute_engineering_department_electrical_supply.html')
-
-    @app.route('/institute/food')
-    def institute_food():
-        return render_template('institute_food.html')
-
-    @app.route('/institute/food/department/bakery')
-    def institute_food_department_bakery():
-        return render_template('institute_food_department_bakery.html')
-
-    @app.route('/institute/food/department/canning')
-    def institute_food_department_canning():
-        return render_template('institute_food_department_canning.html')
-
-    @app.route('/institute/food/department/equipment')
-    def institute_food_department_equipment():
-        return render_template('institute_food_department_equipment.html')
-
-    @app.route('/institute/food/department/quality')
-    def institute_food_department_quality():
-        return render_template('institute_food_department_quality.html')
-
-    @app.route('/institute/food/department/chemistry')
-    def institute_food_department_chemistry():
-        return render_template('institute_food_department_chemistry.html')
-
-    @app.route('/institute/land')
-    def institute_land():
-        return render_template('institute_land.html')
-
-    @app.route('/institute/land/department/land_management')
-    def institute_land_department_land_management():
-        return render_template('institute_land_department_land_management.html')
-
-    @app.route('/institute/land/department/gis')
-    def institute_land_department_gis():
-        return render_template('institute_land_department_gis.html')
-
-    @app.route('/institute/land/department/environmental')
-    def institute_land_department_environmental():
-        return render_template('institute_land_department_environmental.html')
-
-    @app.route('/institute/land/department/safety')
-    def institute_land_department_safety():
-        return render_template('institute_land_department_safety.html')
-
-    @app.route('/institute/law')
-    def institute_law():
-        return render_template('institute_law.html')
-
-    @app.route('/institute/law/department/theory')
-    def institute_law_department_theory():
-        return render_template('institute_law_department_theory.html')
-
-    @app.route('/institute/law/department/civil')
-    def institute_law_department_civil():
-        return render_template('institute_law_department_civil.html')
-
-    @app.route('/institute/law/department/criminal_procedure')
-    def institute_law_department_criminal_procedure():
-        return render_template('institute_law_department_criminal_procedure.html')
-
-    @app.route('/institute/law/department/criminal_law')
-    def institute_law_department_criminal_law():
-        return render_template('institute_law_department_criminal_law.html')
-
-    @app.route('/institute/law/department/land_law')
-    def institute_law_department_land_law():
-        return render_template('institute_law_department_land_law.html')
-
-    @app.route('/institute/law/department/history')
-    def institute_law_department_history():
-        return render_template('institute_law_department_history.html')
-
-    @app.route('/institute/law/department/philosophy')
-    def institute_law_department_philosophy():
-        return render_template('institute_law_department_philosophy.html')
-
-    @app.route('/institute/law/department/forensic')
-    def institute_law_department_forensic():
-        return render_template('institute_law_department_forensic.html')
-
-    @app.route('/institute/achinsk')
-    def institute_achinsk():
-        return render_template('institute_achinsk.html')
-
-    @app.route('/institute/achinsk/department/law')
-    def institute_achinsk_department_law():
-        return render_template('institute_achinsk_department_law.html')
-
-    @app.route('/institute/achinsk/department/engineering')
-    def institute_achinsk_department_engineering():
-        return render_template('institute_achinsk_department_engineering.html')
+    # ==================== РЕДИРЕКТЫ НА ДИНАМИЧЕСКИЕ СТРАНИЦЫ ====================
+    redirect_routes = [
+        ('/university-today', 'university_today'), ('/structure', 'structure'), ('/leadership', 'leadership'),
+        ('/academic-council', 'academic_council'), ('/departments', 'departments'), ('/library', 'library'),
+        ('/educational-activity', 'educational_activity'), ('/professionalitet', 'professionalitet'),
+        ('/inclusive-education', 'inclusive_education'), ('/additional-education', 'additional_education'),
+        ('/science', 'science'), ('/science-news', 'science_news'), ('/laboratories', 'laboratories'),
+        ('/science-schools', 'science_schools'), ('/grants', 'grants'), ('/conferences', 'conferences'),
+        ('/volunteer', 'volunteer'), ('/dormitory', 'dormitory'), ('/payment', 'payment'),
+        ('/cossack', 'cossack'), ('/international-students', 'international_students'),
+        ('/school-info', 'school_info'), ('/school-news', 'school_news'), ('/school-conferences', 'school_conferences'),
+        ('/school-awards', 'school_awards'), ('/olympiads', 'olympiads'), ('/preparatory-courses', 'preparatory_courses'),
+        ('/agro-classes', 'agro_classes'), ('/career-guidance', 'career_guidance'), ('/admission-info', 'admission_info'),
+        ('/admission-addresses', 'admission_addresses'), ('/admission-faq', 'admission_faq'), ('/admission-docs', 'admission_docs'),
+        ('/admission-info-detail', 'admission_info_detail'), ('/disabled-info', 'disabled_info'),
+        ('/competition-lists', 'competition_lists'), ('/paid-education', 'paid_education'), ('/entrance-tests', 'entrance_tests'),
+        ('/enrollment-orders', 'enrollment_orders'), ('/postgraduate', 'postgraduate'), ('/doctoral', 'doctoral'),
+        ('/attestation', 'attestation'), ('/candidate-exams', 'candidate_exams'), ('/dissertations', 'dissertations'),
+        ('/science-supervisors', 'science_supervisors'), ('/employee', 'employee'), ('/employer', 'employer'),
+        ('/alumni', 'alumni'), ('/contacts-departments', 'contacts_departments'), ('/international', 'international'),
+        ('/university-life', 'university_life'), ('/institute/agro', 'institute_agro'), ('/institute/biotech', 'institute_biotech'),
+        ('/institute/economy', 'institute_economy'), ('/institute/engineering', 'institute_engineering'),
+        ('/institute/food', 'institute_food'), ('/institute/land', 'institute_land'), ('/institute/law', 'institute_law'),
+        ('/institute/achinsk', 'institute_achinsk'), ('/student/council', 'student_council'),
+        ('/student/teams', 'student_teams'), ('/student/culture', 'student_culture'), ('/student/sports', 'student_sports'),
+        ('/student/psychologist', 'student_psychologist'), ('/student/social-support', 'student_social_support'),
+        ('/student/projects', 'student_projects'), ('/student/faq', 'student_faq'), ('/student/calendar', 'student_calendar'),
+        ('/student/scholarships', 'student_scholarships'), ('/student/regulations', 'student_regulations'),
+        ('/student/educational-resources', 'student_educational_resources'), ('/student/mass-courses', 'student_mass_courses'),
+        ('/student/textbooks', 'student_textbooks'), ('/student/practice-bases', 'student_practice_bases'),
+        ('/student/practice-dates', 'student_practice_dates'), ('/student/practice-docs', 'student_practice_docs'),
+        ('/student/practice-survey', 'student_practice_survey'), ('/student/practice-instruction', 'student_practice_instruction'),
+        ('/student/practice-requests', 'student_practice_requests'), ('/student/survey', 'student_survey'),
+        ('/student/international-assoc', 'student_international_assoc'), ('/university', 'university_main'),
+        ('/university/history', 'university_history'), ('/university/association', 'university_association'),
+        ('/university/profsoyuz', 'university_profsoyuz'), ('/university/press', 'university_press'),
+        ('/university/press-center', 'university_press_center'), ('/university/brandbook', 'university_brandbook'),
+        ('/university/vesti', 'university_vesti'), ('/university/media-about-us', 'university_media_about_us'),
+        ('/university/prosecutor', 'university_prosecutor'), ('/university/quality-management', 'university_quality_management'),
+        ('/university/endowment', 'university_endowment'), ('/university/driving-school', 'university_driving_school'),
+        ('/university/jalinga', 'university_jalinga'), ('/applicant', 'applicant_main'),
+        ('/target-education', 'target_education'), ('/bonuses', 'bonuses'), ('/enrollment-info', 'enrollment_info'),
+        ('/applicant-lists', 'applicant_lists'), ('/postgraduate-admission', 'postgraduate_admission'),
+        ('/doctoral-admission', 'doctoral_admission'), ('/admission-regulations', 'admission_regulations'),
+        ('/exam-schedule', 'exam_schedule'), ('/admission-committee', 'admission_committee')
+    ]
+    
+    for route_path, slug in redirect_routes:
+        def make_redirect(slug_name):
+            return lambda: redirect(url_for('dynamic_page', slug=slug_name), code=301)
+        app.add_url_rule(route_path, f'redirect_{slug}', make_redirect(slug))
 
     # ==================== АУТЕНТИФИКАЦИЯ ====================
     @app.route('/send-message', methods=['POST'])
@@ -1113,7 +801,8 @@ def create_app():
         if not current_user.is_admin:
             flash('У вас нет прав доступа к этой странице.', 'danger')
             return redirect(url_for('index'))
-        return render_template('admin.html')
+        all_pages = Page.query.order_by(Page.template, Page.title).all()
+        return render_template('admin.html', all_pages=all_pages)
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
@@ -1175,252 +864,22 @@ def create_app():
     @login_required
     def profile():
         return render_template('profile.html', user=current_user)
+
+    # ==================== РЕДИРЕКТЫ ДЛЯ СТАРЫХ HTML СТРАНИЦ ====================
+    @app.route('/<old_slug>.html')
+    def redirect_old_pages(old_slug):
+        page = Page.query.filter_by(slug=old_slug).first()
+        if page:
+            return redirect(url_for('dynamic_page', slug=old_slug), code=301)
+        flash('Страница не найдена', 'danger')
+        return redirect(url_for('index'))
     
-    @app.route('/institutes')
-    def institutes():
-        return render_template('institutes.html')
-    
-    # ==================== СТУДЕНТУ ====================
     @app.route('/student')
-    def student_main():
-        return render_template('student_main.html')
-    
-    @app.route('/student/council')
-    def student_council():
-        return render_template('student_council.html')
-    
-    @app.route('/student/teams')
-    def student_teams():
-        return render_template('student_teams.html')
-    
-    @app.route('/student/culture')
-    def student_culture():
-        return render_template('cultural_center.html')
-    
-    @app.route('/student/sports')
-    def student_sports():
-        return render_template('sports_life.html')
-    
-    @app.route('/student/psychologist')
-    def student_psychologist():
-        return render_template('psychologist.html')
-    
-    @app.route('/student/social-support')
-    def student_social_support():
-        return render_template('social_support.html')
-    
-    @app.route('/student/projects')
-    def student_projects():
-        return render_template('student_projects.html')
-    
-    @app.route('/student/faq')
-    def student_faq():
-        return render_template('student_faq.html')
-    
-    @app.route('/student/calendar')
-    def student_calendar():
-        return render_template('student_calendar.html')
-    
-    @app.route('/student/scholarships')
-    def student_scholarships():
-        return render_template('student_scholarships.html')
-    
-    @app.route('/student/regulations')
-    def student_regulations():
-        return render_template('student_regulations.html')
-    
-    @app.route('/student/educational-resources')
-    def student_educational_resources():
-        return render_template('student_educational_resources.html')
-    
-    @app.route('/student/mass-courses')
-    def student_mass_courses():
-        return render_template('student_mass_courses.html')
-    
-    @app.route('/student/textbooks')
-    def student_textbooks():
-        return render_template('student_textbooks.html')
-    
-    @app.route('/student/practice-bases')
-    def student_practice_bases():
-        return render_template('student_practice_bases.html')
-    
-    @app.route('/student/practice-dates')
-    def student_practice_dates():
-        return render_template('student_practice_dates.html')
-    
-    @app.route('/student/practice-docs')
-    def student_practice_docs():
-        return render_template('student_practice_docs.html')
-    
-    @app.route('/student/practice-survey')
-    def student_practice_survey():
-        return render_template('student_practice_survey.html')
-    
-    @app.route('/student/practice-instruction')
-    def student_practice_instruction():
-        return render_template('student_practice_instruction.html')
-    
-    @app.route('/student/practice-requests')
-    def student_practice_requests():
-        return render_template('student_practice_requests.html')
-    
-    @app.route('/student/survey')
-    def student_survey():
-        return render_template('student_survey.html')
-    
-    @app.route('/student/news')
-    def student_news():
-        return render_template('news.html')
-    
-    @app.route('/student/international-assoc')
-    def student_international_assoc():
-        return render_template('international_students.html')
-    
-    @app.route('/student/foreign')
-    def student_foreign():
-        return render_template('international_students.html')
-    
-        # ==================== УНИВЕРСИТЕТ ====================
-    @app.route('/university')
-    def university_main():
-        return render_template('university_main.html')
-    
-    @app.route('/university/history')
-    def university_history():
-        return render_template('university_history.html')
-    
-    @app.route('/university/association')
-    def university_association():
-        return render_template('university_association.html')
-    
-    @app.route('/university/profsoyuz')
-    def university_profsoyuz():
-        return render_template('university_profsoyuz.html')
-    
-    @app.route('/university/popechitelskiy')
-    def university_popechitelskiy():
-        return render_template('university_popechitelskiy.html')
-    
-    @app.route('/university/anticorruption')
-    def university_anticorruption():
-        return render_template('university_anticorruption.html')
-    
-    @app.route('/university/parent-council')
-    def university_parent_council():
-        return render_template('university_parent_council.html')
-    
-    @app.route('/university/press')
-    def university_press():
-        return render_template('university_press.html')
-    
-    @app.route('/university/press-center')
-    def university_press_center():
-        return render_template('university_press_center.html')
-    
-    @app.route('/university/vesti-archive')
-    def university_vesti_archive():
-        return render_template('university_vesti_archive.html')
-    
-    @app.route('/university/brandbook')
-    def university_brandbook():
-        return render_template('university_brandbook.html')
-    
-    @app.route('/university/vesti')
-    def university_vesti():
-        return render_template('university_vesti.html')
-    
-    @app.route('/university/media-about-us')
-    def university_media_about_us():
-        return render_template('media_about_us.html')
-    
-    @app.route('/university/prosecutor')
-    def university_prosecutor():
-        return render_template('prosecutor_explains.html')
-    
-    @app.route('/university/quality-management')
-    def university_quality_management():
-        return render_template('quality_management.html')
-    
-    @app.route('/university/endowment')
-    def university_endowment():
-        return render_template('endowment.html')
-    
-    @app.route('/university/driving-school')
-    def university_driving_school():
-        return render_template('driving_school.html')
-    
-    @app.route('/university/jalinga')
-    def university_jalinga():
-        return render_template('jalinga.html')
-    
-    
-        # ==================== ПОСТУПАЮЩЕМУ ====================
-    @app.route('/applicant')
-    def applicant_main():
-        return render_template('applicant_main.html')
-    
-    @app.route('/target-education')
-    def target_education():
-        return render_template('target_education.html')
-    
-    @app.route('/bonuses')
-    def bonuses():
-        return render_template('bonuses.html')
-    
-    @app.route('/enrollment-info')
-    def enrollment_info():
-        return render_template('enrollment_info.html')
-    
-    @app.route('/enrollment-orders-spo')
-    def enrollment_orders_spo():
-        return render_template('enrollment_orders_spo.html')
-    
-    @app.route('/enrollment-info-vo')
-    def enrollment_info_vo():
-        return render_template('enrollment_info_vo.html')
-    
-    @app.route('/applicant-lists')
-    def applicant_lists():
-        return render_template('applicant_lists.html')
-    
-    @app.route('/applicant-lists-spo')
-    def applicant_lists_spo():
-        return render_template('applicant_lists_spo.html')
-    
-    @app.route('/applicant-lists-bachelor')
-    def applicant_lists_bachelor():
-        return render_template('applicant_lists_bachelor.html')
-    
-    @app.route('/applicant-lists-master')
-    def applicant_lists_master():
-        return render_template('applicant_lists_master.html')
-    
-    @app.route('/applicant-lists-postgraduate')
-    def applicant_lists_postgraduate():
-        return render_template('applicant_lists_postgraduate.html')
-    
-    @app.route('/postgraduate-admission')
-    def postgraduate_admission():
-        return render_template('postgraduate_admission.html')
-    
-    @app.route('/doctoral-admission')
-    def doctoral_admission():
-        return render_template('doctoral_admission.html')
-    
-    @app.route('/admission-regulations')
-    def admission_regulations():
-        return render_template('admission_regulations.html')
-    
-    @app.route('/exam-schedule')
-    def exam_schedule():
-        return render_template('exam_schedule.html')
-    
-    @app.route('/admission-committee')
-    def admission_committee():
-        return render_template('admission_committee.html')
-    
+    def student_redirect():
+        return redirect(url_for('dynamic_page', slug='student_main'), code=301)
+
     return app
+
 
 if __name__ == '__main__':
     app = create_app()

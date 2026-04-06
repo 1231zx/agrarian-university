@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Институты и кафедры - ООО Аграрный Университет{% endblock %}
+
+{% block content %}
+<div class="institutes-page">
+    <h1>Институты и кафедры</h1>
+    
+    <!-- Вкладки институтов -->
+    <div class="institutes-tabs">
+        {% for institute in institutes %}
+        <button class="institute-tab-btn {% if loop.first %}active{% endif %}" data-institute="{{ institute.slug|replace('institute_', '') }}">
+            {{ institute.title }}
+        </button>
+        {% endfor %}
+    </div>
+    
+    <!-- Контент для каждого института -->
+    {% for institute in institutes %}
+    <div class="institute-content {% if loop.first %}active{% endif %}" id="institute-{{ institute.slug|replace('institute_', '') }}">
+        <div class="institute-header">
+            <h2>{{ institute.title }}</h2>
+            <div class="institute-info">
+                <p><strong>Директор:</strong> Информация уточняется</p>
+                <p><strong>Телефон:</strong> (391) 227-09-70</p>
+                <p><strong>Email:</strong> info@kgau.ru</p>
+            </div>
+            <a href="{{ url_for('dynamic_page', slug=institute.slug) }}" class="btn-institute">Подробнее об институте →</a>
+        </div>
+        
+        <h3>Кафедры института</h3>
+        <div class="departments-grid">
+            {% for dept in institute.children %}
+            <div class="department-card" onclick="location.href='{{ url_for('dynamic_page', slug=dept.slug) }}'">
+                <h4>{{ dept.title }}</h4>
+                <span class="more">Подробнее →</span>
+            </div>
+            {% else %}
+            <p>Нет добавленных кафедр</p>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<script>
+document.querySelectorAll('.institute-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.institute-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const instituteId = btn.getAttribute('data-institute');
+        document.querySelectorAll('.institute-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        document.getElementById(`institute-${instituteId}`).classList.add('active');
+    });
+});
+</script>
+{% endblock %}

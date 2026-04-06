@@ -108,3 +108,34 @@ class PageContent(db.Model):
             'content': self.content,
             'updated_at': self.updated_at.isoformat()
         }
+        
+class Page(db.Model):
+    __tablename__ = 'pages'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(100), unique=True, nullable=False)  # 'institute_agro'
+    title = db.Column(db.String(200), nullable=False)              # 'Институт агроэкологических технологий'
+    content = db.Column(db.Text, nullable=False)                  # HTML контент
+    template = db.Column(db.String(50), nullable=False)           # 'institute', 'department', 'info_page'
+    parent_id = db.Column(db.Integer, db.ForeignKey('pages.id'))
+    menu_order = db.Column(db.Integer, default=0)
+    meta_description = db.Column(db.String(300))
+    published = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Связь для иерархии
+    children = db.relationship('Page', backref=db.backref('parent', remote_side=[id]))
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'slug': self.slug,
+            'title': self.title,
+            'content': self.content,
+            'template': self.template,
+            'parent_id': self.parent_id,
+            'menu_order': self.menu_order,
+            'meta_description': self.meta_description,
+            'published': self.published
+        }
