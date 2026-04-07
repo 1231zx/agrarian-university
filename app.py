@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, send_from_directory, abort
+from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, send_from_directory
 from flask_cors import CORS
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_mail import Mail, Message
@@ -12,12 +12,6 @@ import os
 import pandas as pd
 import pdfplumber
 import json
-
-# Импортируем все статические страницы
-try:
-    from pages_data_fixed import PAGES
-except:
-    from pages_data import PAGES
 
 def create_app():
     app = Flask(__name__)
@@ -264,102 +258,7 @@ def create_app():
         icons = {'.pdf': '📄', '.xls': '📊', '.xlsx': '📊', '.doc': '📝', '.docx': '📝'}
         return icons.get(ext.lower(), '📁')
 
-    # ==================== ДИНАМИЧЕСКИЕ СТРАНИЦЫ ====================
-    @app.route('/new/<slug>')
-    def dynamic_page(slug):
-        # Сначала ищем в статических страницах
-        if slug in PAGES:
-            page_data = PAGES[slug]
-            class PageObj:
-                pass
-            page = PageObj()
-            page.slug = slug
-            page.title = page_data['title']
-            page.content = page_data['content']
-            page.template = page_data['template']
-            page.parent_id = None
-            page.meta_description = page_data.get('meta_description', '')
-            page.published = True
-            children = []
-            return render_template(f'dynamic/{page.template}.html', page=page, children=children)
-        
-        # Если нет в статических, ищем в БД
-        page = Page.query.filter_by(slug=slug, published=True).first()
-        if page:
-            children = Page.query.filter_by(parent_id=page.id, published=True).all()
-            return render_template(f'dynamic/{page.template}.html', page=page, children=children)
-        
-        abort(404)
-
-    @app.route('/institutes')
-    def institutes_page():
-        # Получаем институты из PAGES (уникальные)
-        institutes_dict = {}
-        for slug, data in PAGES.items():
-            if data['template'] == 'institute' and data['title'] != 'Без названия':
-                if data['title'] not in institutes_dict:
-                    institutes_dict[data['title']] = {
-                        'title': data['title'],
-                        'slug': slug,
-                        'children': []
-                    }
-        
-        # Добавляем кафедры из БД
-        departments = Page.query.filter_by(template='department', published=True).all()
-        for dept in departments:
-            if dept.parent:
-                parent_title = dept.parent.title
-                if parent_title in institutes_dict:
-                    institutes_dict[parent_title]['children'].append({
-                        'title': dept.title,
-                        'slug': dept.slug
-                    })
-        
-        institutes = list(institutes_dict.values())
-        return render_template('dynamic/institutes_page.html', institutes=institutes)
-
     # ==================== МАРШРУТЫ АДМИН ПАНЕЛИ ====================
-    @app.route('/admin')
-    @login_required
-    def admin():
-        if not current_user.is_admin:
-            flash('Нет доступа', 'danger')
-            return redirect(url_for('index'))
-        all_pages = Page.query.order_by(Page.template, Page.title).all()
-        return render_template('admin.html', all_pages=all_pages)
-
-    @app.route('/admin/stats')
-    @login_required
-    def admin_stats():
-        if not current_user.is_admin:
-            flash('Нет доступа', 'danger')
-            return redirect(url_for('index'))
-        total_users = User.query.count()
-        total_news = News.query.count()
-        total_programs = Program.query.count()
-        total_messages = Contact.query.count()
-        popular_programs = Program.query.order_by(Program.views.desc()).limit(5).all()
-        monthly_stats = []
-        months = []
-        counts = []
-        for i in range(5, -1, -1):
-            date = datetime.now() - timedelta(days=30*i)
-            month_start = datetime(date.year, date.month, 1)
-            if date.month == 12:
-                month_end = datetime(date.year+1, 1, 1) - timedelta(days=1)
-            else:
-                month_end = datetime(date.year, date.month+1, 1) - timedelta(days=1)
-            users_count = User.query.filter(User.created_at >= month_start, User.created_at <= month_end).count()
-            messages_count = Contact.query.filter(Contact.created_at >= month_start, Contact.created_at <= month_end).count()
-            month_name = calendar.month_name[date.month][:3] + f" {date.year}"
-            monthly_stats.append({'month': month_name, 'users': users_count, 'messages': messages_count})
-            months.append(month_name)
-            counts.append(users_count)
-        return render_template('admin_stats.html', total_users=total_users, total_news=total_news,
-                             total_programs=total_programs, total_messages=total_messages,
-                             popular_programs=popular_programs, monthly_stats=monthly_stats,
-                             chart_months=months, chart_counts=counts)
-
     @app.route('/admin/page/create', methods=['GET', 'POST'])
     @login_required
     def admin_page_create():
@@ -368,21 +267,18 @@ def create_app():
             return redirect(url_for('index'))
         if request.method == 'POST':
             page = Page(
-                slug=request.form['slug'],
-                title=request.form['title'],
-                content=request.form['content'],
-                template=request.form['template'],
-                parent_id=request.form.get('parent_id') or None,
-                meta_description=request.form.get('meta_description'),
-                published='published' in request.form
+                slug=request.form['slug'], title=request.form['title'], content=request.form['content'],
+                template=request.form['template'], parent_id=request.form.get('parent_id') or None,
+                meta_description=request.form.get('meta_description'), published='published' in request.form
             )
             db.session.add(page)
             db.session.commit()
             flash(f'Страница "{page.title}" создана!', 'success')
             return redirect(url_for('admin_pages'))
         parents = Page.query.filter_by(template='institute').all()
-        return render_template('admin_page_form.html', parents=parents)
-
+        templates = ['institute', 'department', 'info_page', 'student_section', 'applicant_section', 'science_section']
+        return render_template('admin_page_form.html', parents=parents, templates=templates)
+    
     @app.route('/admin/pages')
     @login_required
     def admin_pages():
@@ -390,7 +286,7 @@ def create_app():
             flash('Нет доступа', 'danger')
             return redirect(url_for('index'))
         all_pages = Page.query.order_by(Page.template, Page.title).all()
-        return render_template('admin_pages.html', all_pages=all_pages)
+        return render_template('admin.html', all_pages=all_pages)
 
     @app.route('/admin/page/<int:page_id>/edit', methods=['GET', 'POST'])
     @login_required
@@ -408,18 +304,34 @@ def create_app():
             flash(f'Страница "{page.title}" сохранена!', 'success')
             return redirect(url_for('admin_pages'))
         return render_template('admin_page_edit.html', page=page)
-
+    
     @app.route('/admin/page/<int:page_id>/delete', methods=['POST'])
     @login_required
     def admin_page_delete(page_id):
         if not current_user.is_admin:
             return jsonify({'success': False, 'error': 'Нет доступа'})
         page = Page.query.get_or_404(page_id)
+        protected_slugs = ['institute_agro', 'institute_biotech', 'student_main', 'applicant_main']
+        if page.slug in protected_slugs:
+            return jsonify({'success': False, 'error': 'Нельзя удалить эту страницу'})
         db.session.delete(page)
         db.session.commit()
         return jsonify({'success': True})
 
-    # ==================== ОСТАЛЬНЫЕ МАРШРУТЫ ====================
+    # ==================== ДИНАМИЧЕСКИЕ СТРАНИЦЫ ====================
+    @app.route('/new/<slug>')
+    def dynamic_page(slug):
+        page = Page.query.filter_by(slug=slug, published=True).first_or_404()
+        print(f"DEBUG: rendering page {slug} with template {page.template}")
+        children = Page.query.filter_by(parent_id=page.id, published=True).order_by(Page.menu_order).all()
+        return render_template(f'dynamic/{page.template}.html', page=page, children=children)
+
+    @app.route('/institutes')
+    def institutes_page():
+        institutes = Page.query.filter_by(template='institute', published=True).all()
+        return render_template('dynamic/institutes_page.html', institutes=institutes)
+
+    # ==================== МАРШРУТЫ РАСПИСАНИЯ ====================
     @app.route('/rasp/<path:filename>')
     def serve_rasp_file(filename):
         return send_from_directory(RASP_FOLDER, filename, as_attachment=True)
@@ -515,6 +427,7 @@ def create_app():
                 return jsonify({'error': str(e), 'lessons': []}), 500
         return jsonify({'lessons': lessons, 'total': len(lessons)})
 
+    # ==================== ДИНАМИЧЕСКИЙ ПОИСК ====================
     @app.route('/api/search')
     def api_search():
         query = request.args.get('q', '').strip().lower()
@@ -524,29 +437,21 @@ def create_app():
         results = []
         seen_urls = set()
         
-        # Поиск в PAGES
-        for slug, page_data in PAGES.items():
-            if query in page_data['title'].lower():
-                url = url_for('dynamic_page', slug=slug)
-                if url not in seen_urls:
-                    seen_urls.add(url)
-                    results.append({
-                        'type': 'page',
-                        'type_ru': 'Страница',
-                        'title': page_data['title'],
-                        'url': url,
-                        'description': page_data.get('meta_description', ''),
-                        'icon': '📄'
-                    })
+        pages = Page.query.filter(
+            db.or_(
+                Page.title.ilike(f'%{query}%'),
+                Page.content.ilike(f'%{query}%'),
+                Page.meta_description.ilike(f'%{query}%')
+            ),
+            Page.published == True
+        ).limit(20).all()
         
-        # Поиск в БД
-        db_pages = Page.query.filter(Page.title.ilike(f'%{query}%'), Page.published==True).limit(10).all()
-        for page in db_pages:
+        for page in pages:
             url = url_for('dynamic_page', slug=page.slug)
             if url not in seen_urls:
                 seen_urls.add(url)
                 results.append({
-                    'type': 'page',
+                    'type': page.template,
                     'type_ru': 'Страница',
                     'title': page.title,
                     'url': url,
@@ -554,7 +459,66 @@ def create_app():
                     'icon': '📄'
                 })
         
-        return jsonify({'results': results[:20]})
+        programs = Program.query.filter(
+            db.or_(
+                Program.name.ilike(f'%{query}%'),
+                Program.description.ilike(f'%{query}%'),
+                Program.degree.ilike(f'%{query}%')
+            )
+        ).limit(5).all()
+        
+        for p in programs:
+            url = url_for('program_detail', program_id=p.id)
+            if url not in seen_urls:
+                seen_urls.add(url)
+                results.append({
+                    'type': 'program',
+                    'type_ru': 'Программа',
+                    'title': p.name,
+                    'url': url,
+                    'description': f'{p.degree} • {p.duration}',
+                    'icon': '📚'
+                })
+        
+        news = News.query.filter(
+            db.or_(
+                News.title.ilike(f'%{query}%'),
+                News.content.ilike(f'%{query}%')
+            )
+        ).order_by(News.published_at.desc()).limit(5).all()
+        
+        for n in news:
+            url = url_for('news')
+            if url not in seen_urls:
+                seen_urls.add(url)
+                date_str = n.published_at.strftime('%d.%m.%Y') if n.published_at else ''
+                results.append({
+                    'type': 'news',
+                    'type_ru': 'Новость',
+                    'title': n.title,
+                    'url': url,
+                    'description': f'{date_str} • {n.content[:100]}...',
+                    'icon': '📰'
+                })
+        
+        for f in os.listdir(RASP_FOLDER):
+            filepath = os.path.join(RASP_FOLDER, f)
+            if os.path.isfile(filepath) and query in f.lower():
+                config = SCHEDULE_CONFIG.get(f, {'title': f, 'description': 'Расписание занятий', 'institute': 'Другое'})
+                url = url_for('schedule_view', filename=f)
+                if url not in seen_urls:
+                    seen_urls.add(url)
+                    results.append({
+                        'type': 'schedule',
+                        'type_ru': 'Расписание',
+                        'title': config['title'],
+                        'url': url,
+                        'description': f"{config['institute']} • {config['description']}",
+                        'icon': '📅'
+                    })
+        
+        results = results[:25]
+        return jsonify({'results': results})
 
     @app.route('/search')
     def search():
@@ -565,29 +529,85 @@ def create_app():
         results = []
         seen_urls = set()
         
-        for slug, page_data in PAGES.items():
-            if query.lower() in page_data['title'].lower():
-                url = url_for('dynamic_page', slug=slug)
-                if url not in seen_urls:
-                    seen_urls.add(url)
-                    results.append({
-                        'title': page_data['title'],
-                        'url': url,
-                        'description': page_data.get('meta_description', ''),
-                        'type_ru': 'Страница'
-                    })
+        pages = Page.query.filter(
+            db.or_(
+                Page.title.ilike(f'%{query}%'),
+                Page.content.ilike(f'%{query}%'),
+                Page.meta_description.ilike(f'%{query}%')
+            ),
+            Page.published == True
+        ).limit(50).all()
         
-        db_pages = Page.query.filter(Page.title.ilike(f'%{query}%'), Page.published==True).limit(20).all()
-        for page in db_pages:
+        for page in pages:
             url = url_for('dynamic_page', slug=page.slug)
             if url not in seen_urls:
                 seen_urls.add(url)
                 results.append({
+                    'type': page.template,
+                    'type_ru': 'Страница',
                     'title': page.title,
                     'url': url,
                     'description': page.meta_description or '',
-                    'type_ru': 'Страница'
+                    'content_preview': page.content[:200] + '...' if len(page.content) > 200 else page.content
                 })
+        
+        programs = Program.query.filter(
+            db.or_(
+                Program.name.ilike(f'%{query}%'),
+                Program.description.ilike(f'%{query}%'),
+                Program.degree.ilike(f'%{query}%')
+            )
+        ).all()
+        
+        for p in programs:
+            url = url_for('program_detail', program_id=p.id)
+            if url not in seen_urls:
+                seen_urls.add(url)
+                results.append({
+                    'type': 'program',
+                    'type_ru': 'Программа',
+                    'title': p.name,
+                    'url': url,
+                    'description': f'{p.degree} • {p.duration}',
+                    'content_preview': p.description[:200] + '...' if len(p.description) > 200 else p.description
+                })
+        
+        news = News.query.filter(
+            db.or_(
+                News.title.ilike(f'%{query}%'),
+                News.content.ilike(f'%{query}%')
+            )
+        ).order_by(News.published_at.desc()).all()
+        
+        for n in news:
+            url = url_for('news')
+            if url not in seen_urls:
+                seen_urls.add(url)
+                date_str = n.published_at.strftime('%d.%m.%Y') if n.published_at else ''
+                results.append({
+                    'type': 'news',
+                    'type_ru': 'Новость',
+                    'title': n.title,
+                    'url': url,
+                    'description': f'{date_str}',
+                    'content_preview': n.content[:200] + '...' if len(n.content) > 200 else n.content
+                })
+        
+        for f in os.listdir(RASP_FOLDER):
+            filepath = os.path.join(RASP_FOLDER, f)
+            if os.path.isfile(filepath) and query.lower() in f.lower():
+                config = SCHEDULE_CONFIG.get(f, {'title': f, 'description': 'Расписание занятий', 'institute': 'Другое'})
+                url = url_for('schedule_view', filename=f)
+                if url not in seen_urls:
+                    seen_urls.add(url)
+                    results.append({
+                        'type': 'schedule',
+                        'type_ru': 'Расписание',
+                        'title': config['title'],
+                        'url': url,
+                        'description': f"{config['institute']}",
+                        'content_preview': config['description']
+                    })
         
         return render_template('search.html', query=query, all_results=results, total_results=len(results))
 
@@ -688,6 +708,47 @@ def create_app():
             flash('Сообщение сохранено', 'warning')
         return redirect(url_for('contacts'))
 
+    @app.route('/admin/stats')
+    @login_required
+    def admin_stats():
+        if not current_user.is_admin:
+            flash('Нет доступа', 'danger')
+            return redirect(url_for('index'))
+        total_users = User.query.count()
+        total_news = News.query.count()
+        total_programs = Program.query.count()
+        total_messages = Contact.query.count()
+        popular_programs = Program.query.order_by(Program.views.desc()).limit(5).all()
+        monthly_stats = []
+        months = []
+        counts = []
+        for i in range(5, -1, -1):
+            date = datetime.now() - timedelta(days=30*i)
+            month_start = datetime(date.year, date.month, 1)
+            if date.month == 12:
+                month_end = datetime(date.year+1, 1, 1) - timedelta(days=1)
+            else:
+                month_end = datetime(date.year, date.month+1, 1) - timedelta(days=1)
+            users_count = User.query.filter(User.created_at >= month_start, User.created_at <= month_end).count()
+            messages_count = Contact.query.filter(Contact.created_at >= month_start, Contact.created_at <= month_end).count()
+            month_name = calendar.month_name[date.month][:3] + f" {date.year}"
+            monthly_stats.append({'month': month_name, 'users': users_count, 'messages': messages_count})
+            months.append(month_name)
+            counts.append(users_count)
+        return render_template('admin_stats.html', total_users=total_users, total_news=total_news,
+                             total_programs=total_programs, total_messages=total_messages,
+                             popular_programs=popular_programs, monthly_stats=monthly_stats,
+                             chart_months=months, chart_counts=counts)
+
+    @app.route('/admin')
+    @login_required
+    def admin():
+        if not current_user.is_admin:
+            flash('Нет доступа', 'danger')
+            return redirect(url_for('index'))
+        all_pages = Page.query.order_by(Page.template, Page.title).all()
+        return render_template('admin.html', all_pages=all_pages)
+
     @app.route('/login', methods=['GET', 'POST'])
     def login():
         if current_user.is_authenticated:
@@ -751,24 +812,15 @@ def create_app():
 
     @app.route('/<old_slug>.html')
     def redirect_old_pages(old_slug):
-        if old_slug in PAGES:
+        page = Page.query.filter_by(slug=old_slug).first()
+        if page:
             return redirect(url_for('dynamic_page', slug=old_slug), code=301)
         flash('Страница не найдена', 'danger')
         return redirect(url_for('index'))
-
+    
     @app.route('/student')
     def student_redirect():
         return redirect(url_for('dynamic_page', slug='student_main'), code=301)
-
-    @app.route('/create-admin-now')
-    def create_admin_now():
-        from models import db, User
-        User.query.filter_by(username='admin').delete()
-        admin = User(username='admin', email='admin@kgau.ru', is_admin=True)
-        admin.set_password('admin123')
-        db.session.add(admin)
-        db.session.commit()
-        return "✅ Админ создан! Логин: admin, Пароль: admin123"
 
     return app
 
