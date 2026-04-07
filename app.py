@@ -13,8 +13,11 @@ import pandas as pd
 import pdfplumber
 import json
 
-# Импортируем все статические страницы из сгенерированного файла
-from pages_data_fixed import PAGES
+# Импортируем все статические страницы
+try:
+    from pages_data_fixed import PAGES
+except:
+    from pages_data import PAGES
 
 def create_app():
     app = Flask(__name__)
@@ -46,7 +49,6 @@ def create_app():
         try:
             db.session.execute(text('SELECT 1'))
             print("✅ Подключение к PostgreSQL успешно!")
-            # Создаём таблицы только для пользователей, программ, новостей, контактов
             db.create_all()
             print("✅ Таблицы созданы/проверены")
         except Exception as e:
@@ -262,81 +264,69 @@ def create_app():
         icons = {'.pdf': '📄', '.xls': '📊', '.xlsx': '📊', '.doc': '📝', '.docx': '📝'}
         return icons.get(ext.lower(), '📁')
 
-    # ==================== ДИНАМИЧЕСКИЕ СТРАНИЦЫ ИЗ PAGES_DATA ====================
+    # ==================== ДИНАМИЧЕСКИЕ СТРАНИЦЫ ====================
     @app.route('/new/<slug>')
     def dynamic_page(slug):
-        """Страницы из pages_data.py (статический контент)"""
-        if slug not in PAGES:
-            abort(404)
+        # Сначала ищем в статических страницах
+        if slug in PAGES:
+            page_data = PAGES[slug]
+            class PageObj:
+                pass
+            page = PageObj()
+            page.slug = slug
+            page.title = page_data['title']
+            page.content = page_data['content']
+            page.template = page_data['template']
+            page.parent_id = None
+            page.meta_description = page_data.get('meta_description', '')
+            page.published = True
+            children = []
+            return render_template(f'dynamic/{page.template}.html', page=page, children=children)
         
-        page_data = PAGES[slug]
+        # Если нет в статических, ищем в БД
+        page = Page.query.filter_by(slug=slug, published=True).first()
+        if page:
+            children = Page.query.filter_by(parent_id=page.id, published=True).all()
+            return render_template(f'dynamic/{page.template}.html', page=page, children=children)
         
-        # Создаём объект-заглушку для совместимости с шаблонами
-        class PageObj:
-            pass
-        
-        page = PageObj()
-        page.slug = slug
-        page.title = page_data['title']
-        page.content = page_data['content']
-        page.template = page_data['template']
-        page.parent_id = None
-        page.meta_description = page_data.get('meta_description', '')
-        page.published = True
-        
-        children = []
-        
-        return render_template(f'dynamic/{page.template}.html', page=page, children=children)
+        abort(404)
 
     @app.route('/institutes')
     def institutes_page():
-        # Используем словарь для уникальности по title
-        unique_institutes = {}
-        
+        # Получаем институты из PAGES (уникальные)
+        institutes_dict = {}
         for slug, data in PAGES.items():
             if data['template'] == 'institute' and data['title'] != 'Без названия':
-                if data['title'] not in unique_institutes:
-                    unique_institutes[data['title']] = {
+                if data['title'] not in institutes_dict:
+                    institutes_dict[data['title']] = {
                         'title': data['title'],
-                        'slug': slug
+                        'slug': slug,
+                        'children': []
                     }
         
-        institutes = list(unique_institutes.values())
+        # Добавляем кафедры из БД
+        departments = Page.query.filter_by(template='department', published=True).all()
+        for dept in departments:
+            if dept.parent:
+                parent_title = dept.parent.title
+                if parent_title in institutes_dict:
+                    institutes_dict[parent_title]['children'].append({
+                        'title': dept.title,
+                        'slug': dept.slug
+                    })
         
+        institutes = list(institutes_dict.values())
         return render_template('dynamic/institutes_page.html', institutes=institutes)
 
-    # ==================== МАРШРУТЫ АДМИН ПАНЕЛИ (только для программ и новостей) ====================
-    @app.route('/admin/programs')
-    @login_required
-    def admin_programs():
-        if not current_user.is_admin:
-            flash('Нет доступа', 'danger')
-            return redirect(url_for('index'))
-        return render_template('admin_programs.html')
-
-    @app.route('/admin/news')
-    @login_required
-    def admin_news():
-        if not current_user.is_admin:
-            flash('Нет доступа', 'danger')
-            return redirect(url_for('index'))
-        return render_template('admin_news.html')
-
-    @app.route('/admin/messages')
-    @login_required
-    def admin_messages():
-        if not current_user.is_admin:
-            flash('Нет доступа', 'danger')
-            return redirect(url_for('index'))
-        return render_template('admin_messages.html')
-
+    # ==================== МАРШРУТЫ АДМИН ПАНЕЛИ ====================
     @app.route('/admin')
     @login_required
     def admin():
         if not current_user.is_admin:
             flash('Нет доступа', 'danger')
             return redirect(url_for('index'))
-        return render_template('admin.html', all_pages=[])
+        all_pages = Page.query.order_by(Page.template, Page.title).all()
+        return render_template('admin.html', all_pages=all_pages)
 
     @app.route('/admin/stats')
     @login_required
@@ -370,7 +360,66 @@ def create_app():
                              popular_programs=popular_programs, monthly_stats=monthly_stats,
                              chart_months=months, chart_counts=counts)
 
-    # ==================== МАРШРУТЫ РАСПИСАНИЯ ====================
+    @app.route('/admin/page/create', methods=['GET', 'POST'])
+    @login_required
+    def admin_page_create():
+        if not current_user.is_admin:
+            flash('Нет доступа', 'danger')
+            return redirect(url_for('index'))
+        if request.method == 'POST':
+            page = Page(
+                slug=request.form['slug'],
+                title=request.form['title'],
+                content=request.form['content'],
+                template=request.form['template'],
+                parent_id=request.form.get('parent_id') or None,
+                meta_description=request.form.get('meta_description'),
+                published='published' in request.form
+            )
+            db.session.add(page)
+            db.session.commit()
+            flash(f'Страница "{page.title}" создана!', 'success')
+            return redirect(url_for('admin_pages'))
+        parents = Page.query.filter_by(template='institute').all()
+        return render_template('admin_page_form.html', parents=parents)
+
+    @app.route('/admin/pages')
+    @login_required
+    def admin_pages():
+        if not current_user.is_admin:
+            flash('Нет доступа', 'danger')
+            return redirect(url_for('index'))
+        all_pages = Page.query.order_by(Page.template, Page.title).all()
+        return render_template('admin_pages.html', all_pages=all_pages)
+
+    @app.route('/admin/page/<int:page_id>/edit', methods=['GET', 'POST'])
+    @login_required
+    def admin_page_edit(page_id):
+        if not current_user.is_admin:
+            flash('Нет доступа', 'danger')
+            return redirect(url_for('index'))
+        page = Page.query.get_or_404(page_id)
+        if request.method == 'POST':
+            page.title = request.form['title']
+            page.content = request.form['content']
+            page.meta_description = request.form.get('meta_description')
+            page.published = 'published' in request.form
+            db.session.commit()
+            flash(f'Страница "{page.title}" сохранена!', 'success')
+            return redirect(url_for('admin_pages'))
+        return render_template('admin_page_edit.html', page=page)
+
+    @app.route('/admin/page/<int:page_id>/delete', methods=['POST'])
+    @login_required
+    def admin_page_delete(page_id):
+        if not current_user.is_admin:
+            return jsonify({'success': False, 'error': 'Нет доступа'})
+        page = Page.query.get_or_404(page_id)
+        db.session.delete(page)
+        db.session.commit()
+        return jsonify({'success': True})
+
+    # ==================== ОСТАЛЬНЫЕ МАРШРУТЫ ====================
     @app.route('/rasp/<path:filename>')
     def serve_rasp_file(filename):
         return send_from_directory(RASP_FOLDER, filename, as_attachment=True)
@@ -466,7 +515,6 @@ def create_app():
                 return jsonify({'error': str(e), 'lessons': []}), 500
         return jsonify({'lessons': lessons, 'total': len(lessons)})
 
-    # ==================== ДИНАМИЧЕСКИЙ ПОИСК ====================
     @app.route('/api/search')
     def api_search():
         query = request.args.get('q', '').strip().lower()
@@ -476,104 +524,37 @@ def create_app():
         results = []
         seen_urls = set()
         
-        # 1. Поиск по статическим страницам (из PAGES)
+        # Поиск в PAGES
         for slug, page_data in PAGES.items():
-            if query in page_data['title'].lower() or (page_data.get('meta_description') and query in page_data['meta_description'].lower()):
+            if query in page_data['title'].lower():
                 url = url_for('dynamic_page', slug=slug)
                 if url not in seen_urls:
                     seen_urls.add(url)
-                    type_ru = {
-                        'institute': 'Институт',
-                        'department': 'Кафедра',
-                        'info_page': 'Страница',
-                        'student_section': 'Раздел',
-                        'applicant_section': 'Раздел',
-                        'science_section': 'Раздел'
-                    }.get(page_data['template'], 'Страница')
-                    
                     results.append({
-                        'type': page_data['template'],
-                        'type_ru': type_ru,
+                        'type': 'page',
+                        'type_ru': 'Страница',
                         'title': page_data['title'],
                         'url': url,
-                        'description': page_data.get('meta_description', type_ru),
-                        'icon': get_icon_for_template(page_data['template'])
+                        'description': page_data.get('meta_description', ''),
+                        'icon': '📄'
                     })
         
-        # 2. Поиск по программам обучения
-        programs = Program.query.filter(
-            db.or_(
-                Program.name.ilike(f'%{query}%'),
-                Program.description.ilike(f'%{query}%'),
-                Program.degree.ilike(f'%{query}%')
-            )
-        ).limit(5).all()
-        
-        for p in programs:
-            url = url_for('program_detail', program_id=p.id)
+        # Поиск в БД
+        db_pages = Page.query.filter(Page.title.ilike(f'%{query}%'), Page.published==True).limit(10).all()
+        for page in db_pages:
+            url = url_for('dynamic_page', slug=page.slug)
             if url not in seen_urls:
                 seen_urls.add(url)
                 results.append({
-                    'type': 'program',
-                    'type_ru': 'Программа',
-                    'title': p.name,
+                    'type': 'page',
+                    'type_ru': 'Страница',
+                    'title': page.title,
                     'url': url,
-                    'description': f'{p.degree} • {p.duration}',
-                    'icon': '📚'
+                    'description': page.meta_description or '',
+                    'icon': '📄'
                 })
         
-        # 3. Поиск по новостям
-        news = News.query.filter(
-            db.or_(
-                News.title.ilike(f'%{query}%'),
-                News.content.ilike(f'%{query}%')
-            )
-        ).order_by(News.published_at.desc()).limit(5).all()
-        
-        for n in news:
-            url = url_for('news')
-            if url not in seen_urls:
-                seen_urls.add(url)
-                date_str = n.published_at.strftime('%d.%m.%Y') if n.published_at else ''
-                results.append({
-                    'type': 'news',
-                    'type_ru': 'Новость',
-                    'title': n.title,
-                    'url': url,
-                    'description': f'{date_str} • {n.content[:100]}...',
-                    'icon': '📰'
-                })
-        
-        # 4. Поиск по расписанию
-        for f in os.listdir(RASP_FOLDER):
-            filepath = os.path.join(RASP_FOLDER, f)
-            if os.path.isfile(filepath) and query in f.lower():
-                config = SCHEDULE_CONFIG.get(f, {'title': f, 'description': 'Расписание занятий', 'institute': 'Другое'})
-                url = url_for('schedule_view', filename=f)
-                if url not in seen_urls:
-                    seen_urls.add(url)
-                    results.append({
-                        'type': 'schedule',
-                        'type_ru': 'Расписание',
-                        'title': config['title'],
-                        'url': url,
-                        'description': f"{config['institute']} • {config['description']}",
-                        'icon': '📅'
-                    })
-        
-        results = results[:25]
-        return jsonify({'results': results})
-
-    def get_icon_for_template(template):
-        icons = {
-            'institute': '🏛️',
-            'department': '📚',
-            'info_page': '📄',
-            'student_section': '👨‍🎓',
-            'applicant_section': '📝',
-            'science_section': '🔬'
-        }
-        return icons.get(template, '📄')
+        return jsonify({'results': results[:20]})
 
     @app.route('/search')
     def search():
@@ -584,90 +565,29 @@ def create_app():
         results = []
         seen_urls = set()
         
-        # Поиск по статическим страницам
         for slug, page_data in PAGES.items():
             if query.lower() in page_data['title'].lower():
                 url = url_for('dynamic_page', slug=slug)
                 if url not in seen_urls:
                     seen_urls.add(url)
-                    type_ru = {
-                        'institute': 'Институт',
-                        'department': 'Кафедра',
-                        'info_page': 'Страница',
-                        'student_section': 'Раздел',
-                        'applicant_section': 'Раздел',
-                        'science_section': 'Раздел'
-                    }.get(page_data['template'], 'Страница')
-                    
                     results.append({
-                        'type': page_data['template'],
-                        'type_ru': type_ru,
                         'title': page_data['title'],
                         'url': url,
-                        'description': type_ru,
-                        'content_preview': page_data['content'][:200] + '...' if len(page_data['content']) > 200 else page_data['content']
+                        'description': page_data.get('meta_description', ''),
+                        'type_ru': 'Страница'
                     })
         
-        # Поиск по программам
-        programs = Program.query.filter(
-            db.or_(
-                Program.name.ilike(f'%{query}%'),
-                Program.description.ilike(f'%{query}%'),
-                Program.degree.ilike(f'%{query}%')
-            )
-        ).all()
-        
-        for p in programs:
-            url = url_for('program_detail', program_id=p.id)
+        db_pages = Page.query.filter(Page.title.ilike(f'%{query}%'), Page.published==True).limit(20).all()
+        for page in db_pages:
+            url = url_for('dynamic_page', slug=page.slug)
             if url not in seen_urls:
                 seen_urls.add(url)
                 results.append({
-                    'type': 'program',
-                    'type_ru': 'Программа',
-                    'title': p.name,
+                    'title': page.title,
                     'url': url,
-                    'description': f'{p.degree} • {p.duration}',
-                    'content_preview': p.description[:200] + '...' if len(p.description) > 200 else p.description
+                    'description': page.meta_description or '',
+                    'type_ru': 'Страница'
                 })
-        
-        # Поиск по новостям
-        news = News.query.filter(
-            db.or_(
-                News.title.ilike(f'%{query}%'),
-                News.content.ilike(f'%{query}%')
-            )
-        ).order_by(News.published_at.desc()).all()
-        
-        for n in news:
-            url = url_for('news')
-            if url not in seen_urls:
-                seen_urls.add(url)
-                date_str = n.published_at.strftime('%d.%m.%Y') if n.published_at else ''
-                results.append({
-                    'type': 'news',
-                    'type_ru': 'Новость',
-                    'title': n.title,
-                    'url': url,
-                    'description': f'{date_str}',
-                    'content_preview': n.content[:200] + '...' if len(n.content) > 200 else n.content
-                })
-        
-        # Поиск по расписанию
-        for f in os.listdir(RASP_FOLDER):
-            filepath = os.path.join(RASP_FOLDER, f)
-            if os.path.isfile(filepath) and query.lower() in f.lower():
-                config = SCHEDULE_CONFIG.get(f, {'title': f, 'description': 'Расписание занятий', 'institute': 'Другое'})
-                url = url_for('schedule_view', filename=f)
-                if url not in seen_urls:
-                    seen_urls.add(url)
-                    results.append({
-                        'type': 'schedule',
-                        'type_ru': 'Расписание',
-                        'title': config['title'],
-                        'url': url,
-                        'description': f"{config['institute']}",
-                        'content_preview': config['description']
-                    })
         
         return render_template('search.html', query=query, all_results=results, total_results=len(results))
 
@@ -699,7 +619,7 @@ def create_app():
         db.session.commit()
         return render_template('program_detail.html', program=program)
 
-    # ==================== РЕДИРЕКТЫ НА ДИНАМИЧЕСКИЕ СТРАНИЦЫ ====================
+    # ==================== РЕДИРЕКТЫ ====================
     redirect_routes = [
         ('/university-today', 'university_today'), ('/structure', 'structure'), ('/leadership', 'leadership'),
         ('/academic-council', 'academic_council'), ('/departments', 'departments'), ('/library', 'library'),
@@ -829,14 +749,13 @@ def create_app():
     def profile():
         return render_template('profile.html', user=current_user)
 
-    # ==================== РЕДИРЕКТЫ ДЛЯ СТАРЫХ HTML СТРАНИЦ ====================
     @app.route('/<old_slug>.html')
     def redirect_old_pages(old_slug):
         if old_slug in PAGES:
             return redirect(url_for('dynamic_page', slug=old_slug), code=301)
         flash('Страница не найдена', 'danger')
         return redirect(url_for('index'))
-    
+
     @app.route('/student')
     def student_redirect():
         return redirect(url_for('dynamic_page', slug='student_main'), code=301)
@@ -844,108 +763,15 @@ def create_app():
     @app.route('/create-admin-now')
     def create_admin_now():
         from models import db, User
-        
-        # Удаляем старого админа если есть
         User.query.filter_by(username='admin').delete()
-        
-        # Создаём нового
-        admin = User(
-            username='admin',
-            email='admin@kgau.ru',
-            is_admin=True
-        )
+        admin = User(username='admin', email='admin@kgau.ru', is_admin=True)
         admin.set_password('admin123')
         db.session.add(admin)
         db.session.commit()
-        
         return "✅ Админ создан! Логин: admin, Пароль: admin123"
 
-    @app.route('/add-pages-to-bd')
-    def add_pages_to_bd():
-        from models import db, Page
-        
-        # Сначала проверяем, есть ли родительские страницы
-        university_main = Page.query.filter_by(slug='university_main').first()
-        applicant_main = Page.query.filter_by(slug='applicant_main').first()
-        
-        if not university_main or not applicant_main:
-            return "❌ Ошибка: Родительские страницы (university_main, applicant_main) не найдены! Сначала создайте их в админ-панели."
-        
-        pages_to_add = [
-            ('admission_regulations', 'Нормативные документы', 
-            '<h2>Основные документы приема 2026 года</h2><ul><li>Правила приема в Красноярский ГАУ на 2026 год</li><li>Перечень вступительных испытаний</li><li>Порядок учета индивидуальных достижений</li></ul>', 
-            'applicant_section', applicant_main.id),
-            
-            ('exam_schedule', 'Расписание экзаменов', 
-            '<p>Расписание вступительных испытаний будет опубликовано после завершения приема документов.</p><p>Телефон: +7 (391) 222-07-68</p>', 
-            'applicant_section', applicant_main.id),
-            
-            ('enrollment_info', 'Сведения о зачислении', 
-            '<h2>Сведения о зачислении 2026</h2><p>Даты публикации: 5 и 10 августа</p>', 
-            'applicant_section', applicant_main.id),
-            
-            ('university_popechitelskiy', 'Попечительский совет', 
-            '<h2>Попечительский совет</h2><p>Создан для содействия развитию университета</p>', 
-            'info_page', university_main.id),
-            
-            ('university_anticorruption', 'Противодействие коррупции', 
-            '<h2>Противодействие коррупции</h2><p>Телефон доверия: +7 (391) 227-09-81</p>', 
-            'info_page', university_main.id),
-            
-            ('university_parent_council', 'Совет родителей', 
-            '<h2>Совет родителей</h2><p>Email: parents@kgau.ru</p>', 
-            'info_page', university_main.id),
-            
-            ('university_vesti_archive', 'Архив журнала «Вести Красноярского ГАУ»', 
-            '<h2>Архив журнала</h2><p><a href="https://www.kgau.ru/university/nasha-pressa/archive/" target="_blank">Перейти к архиву →</a></p>', 
-            'info_page', university_main.id),
-        ]
-        
-        created = 0
-        skipped = 0
-        
-        for slug, title, content, template, parent_id in pages_to_add:
-            existing = Page.query.filter_by(slug=slug).first()
-            if existing:
-                print(f"⚠️ Пропущено: {slug} (уже существует)")
-                skipped += 1
-                continue
-            
-            page = Page(
-                slug=slug,
-                title=title,
-                content=content,
-                template=template,
-                parent_id=parent_id,
-                published=True
-            )
-            db.session.add(page)
-            created += 1
-        
-        db.session.commit()
-        
-        return f"""
-        <h2>Результат:</h2>
-        <ul>
-            <li>✅ Создано: {created} страниц</li>
-            <li>⚠️ Пропущено (уже есть): {skipped}</li>
-        </ul>
-        <p>Теперь проверьте страницы:</p>
-        <ul>
-            <li><a href="/new/admission_regulations">/new/admission_regulations</a></li>
-            <li><a href="/new/exam_schedule">/new/exam_schedule</a></li>
-            <li><a href="/new/enrollment_info">/new/enrollment_info</a></li>
-            <li><a href="/new/university_popechitelskiy">/new/university_popechitelskiy</a></li>
-            <li><a href="/new/university_anticorruption">/new/university_anticorruption</a></li>
-            <li><a href="/new/university_parent_council">/new/university_parent_council</a></li>
-            <li><a href="/new/university_vesti_archive">/new/university_vesti_archive</a></li>
-        </ul>
-        <p><strong>Важно:</strong> Теперь <a href="/admin">удалите этот маршрут</a> из кода и запушьте снова!</p>
-        """
-    
     return app
 
-    
 if __name__ == '__main__':
     app = create_app()
     app.run(debug=True, host='0.0.0.0', port=5000, use_reloader=False)

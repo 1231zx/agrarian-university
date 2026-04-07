@@ -1,76 +1,59 @@
 {% extends "base.html" %}
 
-{% block title %}Создание страницы - ООО Аграрный Университет{% endblock %}
+{% block title %}Создание страницы{% endblock %}
 
 {% block content %}
 <section class="page-header">
     <div class="container">
-        <h1>➕ Создание новой страницы</h1>
+        <h1>Создание страницы</h1>
     </div>
 </section>
 
-<section class="page-content">
-    <div class="container">
-        <div class="content-block">
-            <form method="POST">
-                <div class="form-group">
-                    <label>Slug (уникальный идентификатор) *</label>
-                    <input type="text" name="slug" class="form-control" required 
-                           placeholder="например: my_new_page">
-                    <small>Будет использован в URL: /new/ваш_slug</small>
-                </div>
-                
-                <div class="form-group">
-                    <label>Название страницы *</label>
-                    <input type="text" name="title" class="form-control" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>Шаблон *</label>
-                    <select name="template" class="form-control" required>
-                        <option value="institute">Институт</option>
-                        <option value="department">Кафедра</option>
-                        <option value="info_page">Информационная страница</option>
-                        <option value="student_section">Студенту (раздел)</option>
-                        <option value="applicant_section">Поступающему (раздел)</option>
-                        <option value="science_section">Наука (раздел)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label>Родительская страница</label>
-                    <select name="parent_id" class="form-control">
-                        <option value="">— Нет (корневая страница) —</option>
-                        {% for parent in parents %}
-                        <option value="{{ parent.id }}">{{ parent.title }}</option>
-                        {% endfor %}
-                    </select>
-                    <small>Для кафедр выберите институт-родитель</small>
-                </div>
-                
-                <div class="form-group">
-                    <label>Meta-описание</label>
-                    <input type="text" name="meta_description" class="form-control">
-                </div>
-                
-                <div class="form-group">
-                    <label>Содержание (HTML) *</label>
-                    <textarea name="content" rows="15" class="form-control" required 
-                              placeholder="<h2>Заголовок</h2><p>Текст...</p>"></textarea>
-                    <small>Поддерживается HTML: &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;strong&gt; и т.д.</small>
-                </div>
-                
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" name="published" checked>
-                        Опубликовать сразу
-                    </label>
-                </div>
-                
-                <button type="submit" class="btn btn-primary">💾 Создать страницу</button>
-                <a href="{{ url_for('admin_pages') }}" class="btn btn-secondary">← Назад</a>
-            </form>
-        </div>
+<div class="container">
+    <div class="content-block">
+        <form method="POST">
+            <div class="form-group">
+                <label>Slug (уникальный идентификатор)</label>
+                <input type="text" name="slug" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Название</label>
+                <input type="text" name="title" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Шаблон</label>
+                <select name="template" class="form-control" required>
+                    <option value="info_page">Информационная страница</option>
+                    <option value="applicant_section">Поступающему</option>
+                    <option value="student_section">Студенту</option>
+                    <option value="science_section">Наука</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Родительская страница</label>
+                <select name="parent_id" class="form-control">
+                    <option value="">— Нет —</option>
+                    {% for parent in parents %}
+                    <option value="{{ parent.id }}">{{ parent.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Meta-описание</label>
+                <input type="text" name="meta_description" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Содержание (HTML)</label>
+                <textarea name="content" rows="15" class="form-control" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="published" checked> Опубликовать
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Создать</button>
+            <a href="{{ url_for('admin_pages') }}" class="btn btn-secondary">Отмена</a>
+        </form>
     </div>
-</section>
+</div>
 {% endblock %}
