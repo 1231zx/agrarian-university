@@ -883,4 +883,8 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
+    with app.app_context():
+        from models import db
+        db.create_all()
+        print("✅ Таблицы созданы/проверены")
     app.run(debug=True, host='0.0.0.0', port=5000, use_reloader=False)
