@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Админ панель - ООО Аграрный Университет{% endblock %}
+{% block title %}Админ панель - Красноярский ГАУ{% endblock %}
 
 {% block content %}
 <section class="page-header">
@@ -9,295 +9,27 @@
     </div>
 </section>
 
-<div class="container" style="margin-top: 2rem; text-align: right;">
-    <a href="{{ url_for('admin_stats') }}" class="btn btn-primary">
-        Перейти к статистике
-    </a>
-</div>
-
-<section class="admin-content">
-    <div class="container">
-        <div class="admin-tabs">
-            <button class="tab-btn active" onclick="window.showTab('programs')">Программы</button>
-            <button class="tab-btn" onclick="window.showTab('news')">Новости</button>
-            <button class="tab-btn" onclick="window.showTab('contacts')">Сообщения</button>
-            <button class="tab-btn" onclick="window.showTab('pages')">Страницы</button>
-        </div>
-
-        <!-- Вкладка программ -->
-        <div id="programs-tab" class="tab-content active">
-            <div class="admin-form">
-                <h3>Добавить новую программу</h3>
-                <form id="program-form">
-                    <input type="hidden" id="program-id">
-                    <div class="form-group">
-                        <label for="program-name">Название программы *</label>
-                        <input type="text" id="program-name" required placeholder="Например: Агрономия">
-                    </div>
-                    <div class="form-group">
-                        <label for="program-description">Описание *</label>
-                        <textarea id="program-description" rows="4" required placeholder="Краткое описание программы обучения"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="program-duration">Длительность обучения *</label>
-                        <input type="text" id="program-duration" required placeholder="Например: 4 года">
-                    </div>
-                    <div class="form-group">
-                        <label for="program-degree">Степень *</label>
-                        <input type="text" id="program-degree" required placeholder="Например: Бакалавр">
-                    </div>
-                    <div style="display: flex; gap: 1rem;">
-                        <button type="submit" class="btn btn-primary">Сохранить</button>
-                        <button type="button" class="btn btn-secondary" onclick="window.resetProgramForm()">Отмена</button>
-                    </div>
-                </form>
-            </div>
-
-            <h2 style="margin: 3rem 0 1.5rem; color: var(--primary-color);">Все программы</h2>
-            <div id="programs-admin-list" class="admin-list"></div>
-        </div>
-
-        <!-- Вкладка новостей -->
-        <div id="news-tab" class="tab-content">
-            <div class="admin-form">
-                <h3>Добавить новость</h3>
-                <form id="news-form">
-                    <input type="hidden" id="news-id">
-                    <div class="form-group">
-                        <label for="news-title">Заголовок *</label>
-                        <input type="text" id="news-title" required placeholder="Заголовок новости">
-                    </div>
-                    <div class="form-group">
-                        <label for="news-content">Содержание *</label>
-                        <textarea id="news-content" rows="6" required placeholder="Текст новости"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="news-author">Автор *</label>
-                        <input type="text" id="news-author" required placeholder="Имя автора">
-                    </div>
-                    <div style="display: flex; gap: 1rem;">
-                        <button type="submit" class="btn btn-primary">Сохранить</button>
-                        <button type="button" class="btn btn-secondary" onclick="window.resetNewsForm()">Отмена</button>
-                    </div>
-                </form>
-            </div>
-
-            <h2 style="margin: 3rem 0 1.5rem; color: var(--primary-color);">Все новости</h2>
-            <div id="news-admin-list" class="admin-list"></div>
-        </div>
-
-        <!-- Вкладка сообщений -->
-        <div id="contacts-tab" class="tab-content">
-            <h2 style="margin-bottom: 2rem; color: var(--primary-color);">Полученные сообщения</h2>
-            <div id="contacts-admin-list" class="admin-list"></div>
-        </div>
-
-        <!-- Вкладка страниц -->
-        <div id="pages-tab" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-                <h2 style="color: var(--primary-color); margin: 0;">Управление страницами</h2>
-                <a href="{{ url_for('admin_page_create') }}" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-                    + Создать страницу
-                </a>
-            </div>
-            
-            <!-- Панель поиска и фильтров -->
-            <div style="background: var(--white); padding: 1.5rem; border-radius: 20px; margin-bottom: 2rem; box-shadow: var(--shadow-sm);">
-                <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end;">
-                    <div style="flex: 2; min-width: 200px;">
-                        <label style="display: block; font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.3rem;">Поиск</label>
-                        <input type="text" id="page-search-input" placeholder="По названию..." 
-                               style="width: 100%; padding: 0.8rem 1rem; border: 2px solid var(--beige-medium); border-radius: 12px; font-size: 0.95rem;">
-                    </div>
-                    <div style="flex: 1; min-width: 150px;">
-                        <label style="display: block; font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.3rem;">Тип страницы</label>
-                        <select id="page-template-filter" style="width: 100%; padding: 0.8rem 1rem; border: 2px solid var(--beige-medium); border-radius: 12px; background: white;">
-                            <option value="">Все типы</option>
-                            <option value="institute">Институты</option>
-                            <option value="department">Кафедры</option>
-                            <option value="info_page">Информационные</option>
-                            <option value="student_section">Студенту</option>
-                            <option value="applicant_section">Поступающему</option>
-                            <option value="science_section">Наука</option>
-                            <option value="university_section">Университет</option>
-                        </select>
-                    </div>
-                    <div>
-                        <button id="reset-filters" style="padding: 0.8rem 1.5rem; background: var(--beige-light); border: none; border-radius: 12px; cursor: pointer; color: var(--text-color); font-weight: 500;">
-                            Сбросить
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Статистика -->
-            <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
-                <div style="background: linear-gradient(135deg, #8B7355 0%, #A68968 100%); padding: 1rem 1.5rem; border-radius: 16px; color: white;">
-                    <div style="font-size: 1.8rem; font-weight: bold;">{{ all_pages|length }}</div>
-                    <div style="font-size: 0.8rem; opacity: 0.9;">Всего страниц</div>
-                </div>
-                <div style="background: var(--white); padding: 1rem 1.5rem; border-radius: 16px; box-shadow: var(--shadow-sm); border-left: 4px solid #8B7355;">
-                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary-color);">{{ all_pages|selectattr('template', 'equalto', 'institute')|list|length }}</div>
-                    <div style="font-size: 0.8rem; color: var(--text-light);">Институтов</div>
-                </div>
-                <div style="background: var(--white); padding: 1rem 1.5rem; border-radius: 16px; box-shadow: var(--shadow-sm); border-left: 4px solid #8B7355;">
-                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary-color);">{{ all_pages|selectattr('template', 'equalto', 'department')|list|length }}</div>
-                    <div style="font-size: 0.8rem; color: var(--text-light);">Кафедр</div>
-                </div>
-                <div style="background: var(--white); padding: 1rem 1.5rem; border-radius: 16px; box-shadow: var(--shadow-sm); border-left: 4px solid #8B7355;">
-                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary-color);">{{ all_pages|selectattr('published', 'equalto', true)|list|length }}</div>
-                    <div style="font-size: 0.8rem; color: var(--text-light);">Опубликовано</div>
-                </div>
-            </div>
-            
-            <!-- Список страниц в виде карточек -->
-            <div id="pages-container" style="display: flex; flex-direction: column; gap: 0.8rem;">
-                {% for p in all_pages|sort(attribute='title') %}
-                <div class="page-card" data-title="{{ p.title|lower }}" data-slug="{{ p.slug|lower }}" data-template="{{ p.template }}" style="background: var(--white); border-radius: 16px; padding: 1rem 1.5rem; box-shadow: var(--shadow-sm); transition: all 0.2s ease; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                    <div style="flex: 3; min-width: 200px;">
-                        <div style="display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;">
-                            <div>
-                                <div style="font-weight: 600; color: var(--primary-color);">{{ p.title }}</div>
-                                <div style="font-size: 0.8rem; color: var(--text-light);">
-                                    <code style="background: var(--beige-light); padding: 0.2rem 0.4rem; border-radius: 6px;">{{ p.slug }}</code>
-                                    {% if p.parent %}
-                                        <span style="margin-left: 0.5rem;">← {{ p.parent.title }}</span>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                        {% if p.published %}
-                            <span style="background: #28a74520; color: #28a745; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.7rem; font-weight: 500;">Опубликовано</span>
-                        {% else %}
-                            <span style="background: #dc354520; color: #dc3545; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.7rem; font-weight: 500;">Черновик</span>
-                        {% endif %}
-                        <a href="{{ url_for('admin_page_edit', page_id=p.id) }}" class="btn-edit" style="padding: 0.4rem 0.8rem; border-radius: 10px; text-decoration: none; background: var(--gradient-accent); color: white; font-size: 0.8rem;">Редактировать</a>
-                        <a href="{{ url_for('dynamic_page', slug=p.slug) }}" target="_blank" class="btn-view" style="padding: 0.4rem 0.8rem; border-radius: 10px; text-decoration: none; background: var(--primary-color); color: white; font-size: 0.8rem;">Просмотр</a>
-                        <button onclick="deletePage({{ p.id }}, '{{ p.title|escape }}')" class="btn-delete" style="padding: 0.4rem 0.8rem; border-radius: 10px; border: none; cursor: pointer; background: #dc3545; color: white; font-size: 0.8rem;">Удалить</button>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            
-            <!-- Сообщение "ничего не найдено" -->
-            <div id="no-results-message" style="display: none; text-align: center; padding: 3rem; background: var(--beige-light); border-radius: 20px; margin-top: 1rem;">
-                <p style="font-size: 1.2rem;">Ничего не найдено</p>
-                <p style="color: var(--text-light);">Попробуйте изменить параметры поиска</p>
-            </div>
-        </div>
+<div class="container" style="margin-top: 2rem;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+        <a href="{{ url_for('admin_stats') }}" style="background: var(--gradient-primary); color: white; padding: 2rem; border-radius: 15px; text-decoration: none; text-align: center;">
+            <h3 style="color: white;">📊 Статистика</h3>
+            <p>Просмотр статистики сайта</p>
+        </a>
+        
+        <a href="/admin/programs" style="background: var(--gradient-accent); color: white; padding: 2rem; border-radius: 15px; text-decoration: none; text-align: center;">
+            <h3 style="color: white;">📚 Программы</h3>
+            <p>Управление программами обучения</p>
+        </a>
+        
+        <a href="/admin/news" style="background: var(--gradient-primary); color: white; padding: 2rem; border-radius: 15px; text-decoration: none; text-align: center;">
+            <h3 style="color: white;">📰 Новости</h3>
+            <p>Управление новостями</p>
+        </a>
+        
+        <a href="/admin/messages" style="background: var(--gradient-accent); color: white; padding: 2rem; border-radius: 15px; text-decoration: none; text-align: center;">
+            <h3 style="color: white;">✉️ Сообщения</h3>
+            <p>Просмотр сообщений</p>
+        </a>
     </div>
-</section>
-
-<style>
-.page-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md) !important;
-}
-.btn-edit:hover, .btn-view:hover, .btn-delete:hover {
-    transform: translateY(-1px);
-    opacity: 0.9;
-}
-</style>
-
-<script>
-// Поиск и фильтрация страниц
-function filterPages() {
-    const searchText = document.getElementById('page-search-input').value.toLowerCase();
-    const templateFilter = document.getElementById('page-template-filter').value;
-    const cards = document.querySelectorAll('.page-card');
-    let visibleCount = 0;
-    
-    cards.forEach(card => {
-        const title = card.dataset.title || '';
-        const slug = card.dataset.slug || '';
-        const template = card.dataset.template || '';
-        
-        const matchesSearch = searchText === '' || title.includes(searchText) || slug.includes(searchText);
-        const matchesTemplate = templateFilter === '' || template === templateFilter;
-        
-        if (matchesSearch && matchesTemplate) {
-            card.style.display = 'flex';
-            visibleCount++;
-        } else {
-            card.style.display = 'none';
-        }
-    });
-    
-    const noResultsMsg = document.getElementById('no-results-message');
-    if (visibleCount === 0) {
-        noResultsMsg.style.display = 'block';
-    } else {
-        noResultsMsg.style.display = 'none';
-    }
-}
-
-// Сброс фильтров
-function resetFilters() {
-    document.getElementById('page-search-input').value = '';
-    document.getElementById('page-template-filter').value = '';
-    filterPages();
-}
-
-// Удаление страницы
-window.deletePage = function(pageId, pageTitle) {
-    if (confirm(`Вы уверены, что хотите удалить страницу "${pageTitle}"? Это действие необратимо!`)) {
-        fetch(`/admin/page/${pageId}/delete`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showNotification('Страница удалена', 'success');
-                setTimeout(() => location.reload(), 1000);
-            } else {
-                showNotification('Ошибка: ' + data.error, 'danger');
-            }
-        })
-        .catch(error => {
-            showNotification('Ошибка при удалении', 'danger');
-        });
-    }
-};
-
-// Уведомления
-function showNotification(message, type) {
-    const notification = document.createElement('div');
-    notification.textContent = message;
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 1rem 2rem;
-        background: ${type === 'success' ? '#28a745' : '#dc3545'};
-        color: white;
-        border-radius: 12px;
-        z-index: 10000;
-        animation: slideInRight 0.3s ease;
-        font-weight: 500;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    `;
-    document.body.appendChild(notification);
-    setTimeout(() => notification.remove(), 3000);
-}
-
-// Инициализация
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('page-search-input');
-    const filterSelect = document.getElementById('page-template-filter');
-    const resetBtn = document.getElementById('reset-filters');
-    
-    if (searchInput) searchInput.addEventListener('input', filterPages);
-    if (filterSelect) filterSelect.addEventListener('change', filterPages);
-    if (resetBtn) resetBtn.addEventListener('click', resetFilters);
-});
-</script>
-{% endblock %}
-
-{% block scripts %}
-<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</div>
 {% endblock %}
