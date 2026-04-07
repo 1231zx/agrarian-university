@@ -290,51 +290,21 @@ def create_app():
 
     @app.route('/institutes')
     def institutes_page():
-        # Используем set для уникальности по title
-        unique_institutes = {}
+        from collections import OrderedDict
+        
+        institutes_dict = OrderedDict()
         
         for slug, data in PAGES.items():
             if data['template'] == 'institute' and data['title'] != 'Без названия':
                 # Используем title как ключ для уникальности
-                if data['title'] not in unique_institutes:
-                    unique_institutes[data['title']] = {
+                if data['title'] not in institutes_dict:
+                    institutes_dict[data['title']] = {
                         'title': data['title'],
                         'slug': slug,
                         'children': []
                     }
         
-        # Собираем кафедры
-        for slug, data in PAGES.items():
-            if data['template'] == 'department':
-                # Определяем родительский институт по ключевым словам
-                parent_title = None
-                if 'агро' in data['title'].lower():
-                    parent_title = 'Институт агроэкологических технологий'
-                elif 'вет' in data['title'].lower() or 'биотех' in data['title'].lower():
-                    parent_title = 'Институт прикладной биотехнологии и ветеринарной медицины'
-                elif 'экономик' in data['title'].lower() or 'управл' in data['title'].lower():
-                    parent_title = 'Институт экономики и управления АПК'
-                elif 'инженер' in data['title'].lower() or 'механиз' in data['title'].lower() or 'энерг' in data['title'].lower():
-                    parent_title = 'Институт инженерных систем и энергетики'
-                elif 'пищев' in data['title'].lower() or 'технолог' in data['title'].lower():
-                    parent_title = 'Институт пищевых производств'
-                elif 'землеустр' in data['title'].lower() or 'кадастр' in data['title'].lower():
-                    parent_title = 'Институт землеустройства, кадастров и природообустройства'
-                elif 'юрид' in data['title'].lower() or 'прав' in data['title'].lower():
-                    parent_title = 'Юридический институт'
-                elif 'ачинск' in data['title'].lower():
-                    parent_title = 'Ачинский филиал'
-                
-                if parent_title and parent_title in unique_institutes:
-                    # Проверяем, нет ли уже такой кафедры
-                    existing = [c for c in unique_institutes[parent_title]['children'] if c['title'] == data['title']]
-                    if not existing:
-                        unique_institutes[parent_title]['children'].append({
-                            'title': data['title'],
-                            'slug': slug
-                        })
-        
-        institutes = list(unique_institutes.values())
+        institutes = list(institutes_dict.values())
         
         return render_template('dynamic/institutes_page.html', institutes=institutes)
 
@@ -893,6 +863,89 @@ def create_app():
         
         return "✅ Админ создан! Логин: admin, Пароль: admin123"
 
+    @app.route('/add-pages-to-bd')
+    def add_pages_to_bd():
+        from models import db, Page
+        
+        # Сначала проверяем, есть ли родительские страницы
+        university_main = Page.query.filter_by(slug='university_main').first()
+        applicant_main = Page.query.filter_by(slug='applicant_main').first()
+        
+        if not university_main or not applicant_main:
+            return "❌ Ошибка: Родительские страницы (university_main, applicant_main) не найдены! Сначала создайте их в админ-панели."
+        
+        pages_to_add = [
+            ('admission_regulations', 'Нормативные документы', 
+            '<h2>Основные документы приема 2026 года</h2><ul><li>Правила приема в Красноярский ГАУ на 2026 год</li><li>Перечень вступительных испытаний</li><li>Порядок учета индивидуальных достижений</li></ul>', 
+            'applicant_section', applicant_main.id),
+            
+            ('exam_schedule', 'Расписание экзаменов', 
+            '<p>Расписание вступительных испытаний будет опубликовано после завершения приема документов.</p><p>Телефон: +7 (391) 222-07-68</p>', 
+            'applicant_section', applicant_main.id),
+            
+            ('enrollment_info', 'Сведения о зачислении', 
+            '<h2>Сведения о зачислении 2026</h2><p>Даты публикации: 5 и 10 августа</p>', 
+            'applicant_section', applicant_main.id),
+            
+            ('university_popechitelskiy', 'Попечительский совет', 
+            '<h2>Попечительский совет</h2><p>Создан для содействия развитию университета</p>', 
+            'info_page', university_main.id),
+            
+            ('university_anticorruption', 'Противодействие коррупции', 
+            '<h2>Противодействие коррупции</h2><p>Телефон доверия: +7 (391) 227-09-81</p>', 
+            'info_page', university_main.id),
+            
+            ('university_parent_council', 'Совет родителей', 
+            '<h2>Совет родителей</h2><p>Email: parents@kgau.ru</p>', 
+            'info_page', university_main.id),
+            
+            ('university_vesti_archive', 'Архив журнала «Вести Красноярского ГАУ»', 
+            '<h2>Архив журнала</h2><p><a href="https://www.kgau.ru/university/nasha-pressa/archive/" target="_blank">Перейти к архиву →</a></p>', 
+            'info_page', university_main.id),
+        ]
+        
+        created = 0
+        skipped = 0
+        
+        for slug, title, content, template, parent_id in pages_to_add:
+            existing = Page.query.filter_by(slug=slug).first()
+            if existing:
+                print(f"⚠️ Пропущено: {slug} (уже существует)")
+                skipped += 1
+                continue
+            
+            page = Page(
+                slug=slug,
+                title=title,
+                content=content,
+                template=template,
+                parent_id=parent_id,
+                published=True
+            )
+            db.session.add(page)
+            created += 1
+        
+        db.session.commit()
+        
+        return f"""
+        <h2>Результат:</h2>
+        <ul>
+            <li>✅ Создано: {created} страниц</li>
+            <li>⚠️ Пропущено (уже есть): {skipped}</li>
+        </ul>
+        <p>Теперь проверьте страницы:</p>
+        <ul>
+            <li><a href="/new/admission_regulations">/new/admission_regulations</a></li>
+            <li><a href="/new/exam_schedule">/new/exam_schedule</a></li>
+            <li><a href="/new/enrollment_info">/new/enrollment_info</a></li>
+            <li><a href="/new/university_popechitelskiy">/new/university_popechitelskiy</a></li>
+            <li><a href="/new/university_anticorruption">/new/university_anticorruption</a></li>
+            <li><a href="/new/university_parent_council">/new/university_parent_council</a></li>
+            <li><a href="/new/university_vesti_archive">/new/university_vesti_archive</a></li>
+        </ul>
+        <p><strong>Важно:</strong> Теперь <a href="/admin">удалите этот маршрут</a> из кода и запушьте снова!</p>
+        """
+    
     return app
 
     
