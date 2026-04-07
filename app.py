@@ -290,7 +290,7 @@ def create_app():
 
     @app.route('/institutes')
     def institutes_page():
-    # Собираем уникальные институты
+        # Собираем уникальные институты
         institutes_dict = {}
         
         for slug, data in PAGES.items():
@@ -306,13 +306,41 @@ def create_app():
         # Собираем кафедры (department) и привязываем к институтам
         for slug, data in PAGES.items():
             if data['template'] == 'department':
-                # Определяем родительский институт по parent или по имени
+                # Пытаемся найти родительский институт
                 parent_slug = data.get('parent')
+                # Если нет parent, пробуем определить по названию
+                if not parent_slug:
+                    # Кафедры привязываем к соответствующему институту
+                    if 'агро' in data['title'].lower() or 'агро' in data['title'].lower():
+                        parent_slug = 'institute_agro'
+                    elif 'вет' in data['title'].lower() or 'биотех' in data['title'].lower():
+                        parent_slug = 'institute_biotech'
+                    elif 'экономик' in data['title'].lower() or 'управл' in data['title'].lower():
+                        parent_slug = 'institute_economy'
+                    elif 'инженер' in data['title'].lower() or 'механиз' in data['title'].lower() or 'энерг' in data['title'].lower():
+                        parent_slug = 'institute_engineering'
+                    elif 'пищев' in data['title'].lower() or 'технолог' in data['title'].lower():
+                        parent_slug = 'institute_food'
+                    elif 'землеустр' in data['title'].lower() or 'кадастр' in data['title'].lower():
+                        parent_slug = 'institute_land'
+                    elif 'юрид' in data['title'].lower() or 'прав' in data['title'].lower():
+                        parent_slug = 'institute_law'
+                    elif 'ачинск' in data['title'].lower():
+                        parent_slug = 'institute_achinsk'
+                
                 if parent_slug and parent_slug in institutes_dict:
                     institutes_dict[parent_slug]['children'].append({
                         'title': data['title'],
                         'slug': slug
                     })
+        
+        # Убираем дубликаты в children
+        for inst in institutes_dict.values():
+            unique_children = {}
+            for child in inst['children']:
+                if child['slug'] not in unique_children:
+                    unique_children[child['slug']] = child
+            inst['children'] = list(unique_children.values())
         
         institutes = list(institutes_dict.values())
         
