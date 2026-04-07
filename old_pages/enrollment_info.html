@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Сведения о зачислении - Красноярский ГАУ{% endblock %}
+
+{% block content %}
+<div class="page-content">
+    <div class="container">
+        <h1>Сведения о зачислении</h1>
+        
+        <div class="enrollment-links">
+            <div class="enrollment-card" data-url="/enrollment-orders-spo">
+                <h3>📜 Приказы о зачислении на специальности среднего профессионального образования</h3>
+                <p>СПО</p>
+            </div>
+            <div class="enrollment-card" data-url="/enrollment-info-vo">
+                <h3>📜 Сведения о зачислении на обучение по программам высшего образования</h3>
+                <p>Бакалавриат, специалитет, магистратура</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.enrollment-card').forEach(card => {
+    card.addEventListener('click', function() {
+        const url = this.dataset.url;
+        if (url) window.location.href = url;
+    });
+});
+</script>
+{% endblock %}

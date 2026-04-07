@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Редактирование страницы - {{ page }}{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>✏️ Редактирование страницы: 
+            {% if page == 'home' %}Главная
+            {% elif page == 'about' %}О нас
+            {% elif page == 'contacts' %}Контакты
+            {% endif %}
+        </h1>
+    </div>
+</section>
+
+<section class="edit-page-content">
+    <div class="container">
+        <div class="edit-page-wrapper">
+            <div class="edit-page-form">
+                <form id="page-form">
+                    <input type="hidden" id="page-id" value="{{ content.id }}">
+                    <div class="form-group">
+                        <label for="page-title">Заголовок страницы</label>
+                        <input type="text" id="page-title" name="title" value="{{ content.title }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="page-content">Содержание страницы</label>
+                        <textarea id="page-content" name="content" rows="15" required>{{ content.content }}</textarea>
+                        <small class="form-text">Поддерживается обычный текст. Для переноса строк используйте Enter. Для заголовков начинайте строку с #</small>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">💾 Сохранить изменения</button>
+                        <a href="{{ url_for('admin') }}" class="btn btn-secondary">← Назад в админ-панель</a>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="preview-section">
+                <h3>Предпросмотр</h3>
+                <div class="preview-content" id="preview">
+                    <!-- Предпросмотр будет здесь -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const titleInput = document.getElementById('page-title');
+    const contentInput = document.getElementById('page-content');
+    const preview = document.getElementById('preview');
+    const form = document.getElementById('page-form');
+    
+    function updatePreview() {
+        const content = contentInput.value;
+        const paragraphs = content.split('\n\n');
+        let html = `<h2 style="color: var(--primary-color); margin-bottom: 1rem;">${titleInput.value}</h2>`;
+        
+        paragraphs.forEach(para => {
+            if (para.trim()) {
+                if (para.startsWith('#')) {
+                    html += `<h3 style="color: var(--primary-dark); margin: 1.5rem 0 1rem;">${para.substring(1).trim()}</h3>`;
+                } else {
+                    html += `<p style="margin-bottom: 1rem; line-height: 1.8;">${para}</p>`;
+                }
+            }
+        });
+        
+        preview.innerHTML = html;
+    }
+    
+    titleInput.addEventListener('input', updatePreview);
+    contentInput.addEventListener('input', updatePreview);
+    
+    // Первоначальный предпросмотр
+    updatePreview();
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const data = {
+            title: titleInput.value,
+            content: contentInput.value
+        };
+        
+        fetch(window.location.href.replace('/edit-page', '/api/v1/page'), {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.message) {
+                showNotification(result.message, 'success');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            showNotification('Ошибка при сохранении', 'error');
+        });
+    });
+});
+
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 1.5rem 2.5rem;
+        background: ${type === 'success' ? '#28a745' : '#dc3545'};
+        color: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+        z-index: 10000;
+        animation: slideInRight 0.4s ease-out;
+        font-weight: 600;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.4s ease-out';
+        setTimeout(() => notification.remove(), 400);
+    }, 3000);
+}
+</script>
+{% endblock %}

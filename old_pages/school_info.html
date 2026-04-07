@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Школьнику - ООО Аграрный Университет{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Школьнику</h1>
+    </div>
+</section>
+
+<section class="page-content">
+    <div class="container">
+        <div class="content-block">
+            <h2>Добро пожаловать!</h2>
+            <p>Мы приглашаем школьников познакомиться с нашим университетом, принять участие в мероприятиях и подготовиться к поступлению.</p>
+            
+            <div style="background: var(--gradient-light); padding: 2rem; border-radius: 15px; margin: 2rem 0;">
+                <h3>Ближайшие события для школьников</h3>
+                <ul>
+                    <li><strong>20 апреля 2026</strong> - День открытых дверей</li>
+                    <li><strong>15 мая 2026</strong> - Олимпиада по биологии</li>
+                    <li><strong>1 июня 2026</strong> - Открытие летней агрошколы</li>
+                </ul>
+            </div>
+            
+            <h2>Для школьников</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                <div style="background: var(--white); padding: 1.5rem; border-radius: 15px; box-shadow: var(--shadow-sm);">
+                    <h3>📚 Подготовительные курсы</h3>
+                    <p>Подготовка к ЕГЭ по биологии, химии, математике, русскому языку</p>
+                </div>
+                <div style="background: var(--white); padding: 1.5rem; border-radius: 15px; box-shadow: var(--shadow-sm);">
+                    <h3>🏆 Олимпиады</h3>
+                    <p>Победа в олимпиадах дает льготы при поступлении</p>
+                </div>
+                <div style="background: var(--white); padding: 1.5rem; border-radius: 15px; box-shadow: var(--shadow-sm);">
+                    <h3>🔬 Научные конференции</h3>
+                    <p>Возможность представить свои первые исследования</p>
+                </div>
+                <div style="background: var(--white); padding: 1.5rem; border-radius: 15px; box-shadow: var(--shadow-sm);">
+                    <h3>🌾 Агроклассы</h3>
+                    <p>Профильные классы в школах-партнерах</p>
+                </div>
+            </div>
+            
+            <h2>Почему стоит выбрать нас?</h2>
+            <ul>
+                <li>Современные лаборатории и оборудование</li>
+                <li>Опытные преподаватели</li>
+                <li>Интересная студенческая жизнь</li>
+                <li>Военная кафедра</li>
+                <li>Отсрочка от армии</li>
+                <li>Стипендии и гранты</li>
+                <li>Общежитие для иногородних</li>
+            </ul>
+            
+            <h2>Контакты для школьников</h2>
+            <div style="background: var(--beige-light); padding: 1.5rem; border-radius: 15px; margin-top: 2rem;">
+                <p><strong>Ответственный за работу со школьниками:</strong> Петрова Елена Владимировна</p>
+                <p><strong>Телефон:</strong> +7 (495) 123-45-84</p>
+                <p><strong>Email:</strong> school@agrarian-uni.ru</p>
+                <p><strong>Кабинет:</strong> главный корпус, 210</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

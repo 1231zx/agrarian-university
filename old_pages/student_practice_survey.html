@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Анкета удовлетворённости качеством организации практики - Красноярский ГАУ{% endblock %}
+
+{% block content %}
+<div class="page-content">
+    <div class="container">
+        <h1>Анкета удовлетворённости обучающихся качеством организации практики</h1>
+        
+        <div class="practice-survey">
+            <p>Уважаемый студент!</p>
+            <p>Просим вас оценить качество организации и проведения практики. Ваше мнение поможет нам улучшить этот процесс.</p>
+            
+            <form action="#" method="POST" class="survey-form">
+                <div class="form-group">
+                    <label>ФИО:</label>
+                    <input type="text" name="fullname" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Институт / направление подготовки:</label>
+                    <input type="text" name="institute" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Курс:</label>
+                    <select name="course">
+                        <option>1 курс</option>
+                        <option>2 курс</option>
+                        <option>3 курс</option>
+                        <option>4 курс</option>
+                        <option>Магистратура</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Вид практики:</label>
+                    <select name="practice_type">
+                        <option>Учебная практика</option>
+                        <option>Производственная практика</option>
+                        <option>Преддипломная практика</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Оцените организацию практики (1-5):</label>
+                    <select name="organization_rating">
+                        <option>5 - отлично</option>
+                        <option>4 - хорошо</option>
+                        <option>3 - удовлетворительно</option>
+                        <option>2 - неудовлетворительно</option>
+                        <option>1 - очень плохо</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Оцените содержание программы практики (1-5):</label>
+                    <select name="content_rating">
+                        <option>5 - отлично</option>
+                        <option>4 - хорошо</option>
+                        <option>3 - удовлетворительно</option>
+                        <option>2 - неудовлетворительно</option>
+                        <option>1 - очень плохо</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Ваши предложения по улучшению организации практики:</label>
+                    <textarea name="suggestions" rows="4"></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">Отправить анкету</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Конкурсные списки - ООО Аграрный Университет{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Конкурсные списки</h1>
+    </div>
+</section>
+
+<section class="page-content">
+    <div class="container">
+        <div class="content-block">
+            <h2>Конкурсные списки поступающих на 2026/2027 учебный год</h2>
+            
+            <div style="background: var(--gradient-light); padding: 2rem; border-radius: 15px; margin: 2rem 0; text-align: center;">
+                <h3>Конкурсные списки будут опубликованы после завершения приема документов</h3>
+                <p>Дата публикации: 3 августа 2026 г.</p>
+                <p>Следите за обновлениями</p>
+            </div>
+            
+
+    <h2>Списки лиц, подавших документы на 2026/2027 учебный год</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+        <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--accent-color);">
+            <h3 style="margin-top: 0;">📘 Среднее профессиональное образование</h3>
+            <p>Списки абитуриентов, подавших документы на программы СПО</p>
+            <p><strong>Сроки подачи:</strong> 20 июня - 15 августа</p>
+            <a href="#" class="schedule-btn schedule-btn-primary" style="margin-top: 0.5rem; display: inline-block;">Смотреть список</a>
+        </div>
+        <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--accent-color);">
+            <h3 style="margin-top: 0;">🎓 Бакалавриат и специалитет</h3>
+            <p>Списки абитуриентов, подавших документы на программы высшего образования (бакалавриат, специалитет)</p>
+            <p><strong>Сроки подачи:</strong> 20 июня - 25 июля</p>
+            <a href="#" class="schedule-btn schedule-btn-primary" style="margin-top: 0.5rem; display: inline-block;">Смотреть список</a>
+        </div>
+        <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--accent-color);">
+            <h3 style="margin-top: 0;">📚 Магистратура</h3>
+            <p>Списки абитуриентов, подавших документы на программы магистратуры</p>
+            <p><strong>Сроки подачи:</strong> 20 июня - 10 августа</p>
+            <a href="#" class="schedule-btn schedule-btn-primary" style="margin-top: 0.5rem; display: inline-block;">Смотреть список</a>
+        </div>
+        <div style="background: var(--gradient-light); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--accent-color);">
+            <h3 style="margin-top: 0;">🔬 Аспирантура</h3>
+            <p>Списки поступающих в аспирантуру</p>
+            <p><strong>Сроки подачи:</strong> 20 июня - 31 июля</p>
+            <a href="#" class="schedule-btn schedule-btn-primary" style="margin-top: 0.5rem; display: inline-block;">Смотреть список</a>
+        </div>
+    </div>
+
+    <!-- Сведения о зачислении -->
+    <h2>Сведения о зачислении</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+        <div style="background: var(--beige-light); padding: 1rem; border-radius: 10px;">
+            <h4>Среднее профессиональное образование</h4>
+            <p><a href="#">Приказы о зачислении на специальности СПО</a></p>
+        </div>
+        <div style="background: var(--beige-light); padding: 1rem; border-radius: 10px;">
+            <h4>Высшее образование (бакалавриат, специалитет, магистратура)</h4>
+            <p><a href="#">Приказы о зачислении на бюджетные места</a></p>
+            <p><a href="#">Приказы о зачислении на платные места</a></p>
+        </div>
+        <div style="background: var(--beige-light); padding: 1rem; border-radius: 10px;">
+            <h4>Аспирантура</h4>
+            <p><a href="#">Приказы о зачислении в аспирантуру</a></p>
+        </div>
+    </div>
+            <h2>Архив конкурсных списков прошлых лет</h2>
+            <ul>
+                <li><a href="#">Конкурсные списки 2025 года</a></li>
+                <li><a href="#">Конкурсные списки 2024 года</a></li>
+                <li><a href="#">Конкурсные списки 2023 года</a></li>
+            </ul>
+            
+            <div style="background: var(--beige-light); padding: 1.5rem; border-radius: 15px; margin-top: 2rem;">
+                <p><strong>Телефон для справок:</strong> (391) 222-07-68</p>
+                <p><strong>Email:</strong> priem@kgau.ru</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

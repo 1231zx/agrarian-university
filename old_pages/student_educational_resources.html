@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Образовательные ресурсы - Красноярский ГАУ{% endblock %}
+
+{% block content %}
+<div class="page-content">
+    <div class="container">
+        <h1>Образовательные ресурсы</h1>
+        
+        <div class="resources-grid">
+            <div class="resource-card">
+                <h3>📚 Электронная библиотека</h3>
+                <p>Доступ к учебной и научной литературе</p>
+                <a href="/library" class="resource-link">Перейти →</a>
+            </div>
+            
+            <div class="resource-card">
+                <h3>🎓 Электронная информационно-образовательная среда</h3>
+                <p>Платформа для дистанционного обучения</p>
+                <a href="#" class="resource-link">Перейти →</a>
+            </div>
+            
+            <div class="resource-card">
+                <h3>📖 Учебные пособия</h3>
+                <p>Методические материалы по дисциплинам</p>
+                <a href="/student/textbooks" class="resource-link">Перейти →</a>
+            </div>
+            
+            <div class="resource-card">
+                <h3>📅 Расписание занятий</h3>
+                <p>Актуальное расписание по группам</p>
+                <a href="/schedule" class="resource-link">Перейти →</a>
+            </div>
+            
+            <div class="resource-card">
+                <h3>📄 Учебные планы</h3>
+                <p>Рабочие учебные планы по направлениям</p>
+                <a href="#" class="resource-link">Перейти →</a>
+            </div>
+            
+            <div class="resource-card">
+                <h3>📝 Методические указания</h3>
+                <p>Материалы для выполнения курсовых и ВКР</p>
+                <a href="#" class="resource-link">Перейти →</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

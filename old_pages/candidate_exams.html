@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Кандидатские экзамены - ООО Аграрный Университет{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Кандидатские экзамены</h1>
+    </div>
+</section>
+
+<section class="page-content">
+    <div class="container">
+        <div class="content-block">
+            <h2>Общая информация</h2>
+            <p>Кандидатские экзамены являются обязательной частью подготовки аспирантов и соискателей ученой степени кандидата наук.</p>
+            
+            <h2>Перечень кандидатских экзаменов</h2>
+            <ul>
+                <li>История и философия науки</li>
+                <li>Иностранный язык</li>
+                <li>Специальная дисциплина</li>
+            </ul>
+            
+            <h2>Программы кандидатских экзаменов</h2>
+            
+            <h3>История и философия науки</h3>
+            <ul>
+                <li><a href="#">Программа для биологических наук (PDF, 800 КБ)</a></li>
+                <li><a href="#">Программа для сельскохозяйственных наук (PDF, 750 КБ)</a></li>
+                <li><a href="#">Программа для ветеринарных наук (PDF, 780 КБ)</a></li>
+                <li><a href="#">Программа для экономических наук (PDF, 720 КБ)</a></li>
+            </ul>
+            
+            <h3>Иностранный язык</h3>
+            <ul>
+                <li><a href="#">Программа по английскому языку (PDF, 600 КБ)</a></li>
+                <li><a href="#">Программа по немецкому языку (PDF, 620 КБ)</a></li>
+                <li><a href="#">Программа по французскому языку (PDF, 610 КБ)</a></li>
+            </ul>
+            
+            <h3>Специальные дисциплины</h3>
+            <ul>
+                <li><a href="#">Программа по специальности 06.01.01 (PDF, 900 КБ)</a></li>
+                <li><a href="#">Программа по специальности 06.02.01 (PDF, 880 КБ)</a></li>
+                <li><a href="#">Программа по специальности 08.00.05 (PDF, 850 КБ)</a></li>
+            </ul>
+            
+            <h2>Расписание экзаменов</h2>
+            
+            <h3>Весенняя сессия 2026</h3>
+            <table style="width:100%; border-collapse: collapse;">
+                <tr style="background: var(--gradient-primary); color: white;">
+                    <th style="padding: 10px; text-align: left;">Дата</th>
+                    <th style="padding: 10px; text-align: left;">Экзамен</th>
+                    <th style="padding: 10px; text-align: left;">Время</th>
+                    <th style="padding: 10px; text-align: left;">Аудитория</th>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--beige-medium);">
+                    <td style="padding: 10px;">10 мая</td>
+                    <td style="padding: 10px;">История и философия науки</td>
+                    <td style="padding: 10px;">10:00</td>
+                    <td style="padding: 10px;">315</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--beige-medium);">
+                    <td style="padding: 10px;">15 мая</td>
+                    <td style="padding: 10px;">Английский язык</td>
+                    <td style="padding: 10px;">10:00</td>
+                    <td style="padding: 10px;">210</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">20 мая</td>
+                    <td style="padding: 10px;">Специальность</td>
+                    <td style="padding: 10px;">10:00</td>
+                    <td style="padding: 10px;">315</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}
