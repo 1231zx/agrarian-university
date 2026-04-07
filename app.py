@@ -290,14 +290,32 @@ def create_app():
 
     @app.route('/institutes')
     def institutes_page():
-        """Страница со списком институтов (только те, у кого template='institute')"""
-        institutes = [PAGES[slug] for slug in PAGES if PAGES[slug]['template'] == 'institute']
-        # Добавляем slug к каждому институту
-        for slug in PAGES:
-            if PAGES[slug]['template'] == 'institute':
-                for inst in institutes:
-                    if inst['title'] == PAGES[slug]['title']:
-                        inst['slug'] = slug
+    # Собираем уникальные институты
+        institutes_dict = {}
+        
+        for slug, data in PAGES.items():
+            if data['template'] == 'institute' and data['title'] != 'Без названия':
+                # Используем slug как ключ для уникальности
+                if slug not in institutes_dict:
+                    institutes_dict[slug] = {
+                        'title': data['title'],
+                        'slug': slug,
+                        'children': []
+                    }
+        
+        # Собираем кафедры (department) и привязываем к институтам
+        for slug, data in PAGES.items():
+            if data['template'] == 'department':
+                # Определяем родительский институт по parent или по имени
+                parent_slug = data.get('parent')
+                if parent_slug and parent_slug in institutes_dict:
+                    institutes_dict[parent_slug]['children'].append({
+                        'title': data['title'],
+                        'slug': slug
+                    })
+        
+        institutes = list(institutes_dict.values())
+        
         return render_template('dynamic/institutes_page.html', institutes=institutes)
 
     # ==================== МАРШРУТЫ АДМИН ПАНЕЛИ (только для программ и новостей) ====================
@@ -836,9 +854,28 @@ def create_app():
     def student_redirect():
         return redirect(url_for('dynamic_page', slug='student_main'), code=301)
 
+    @app.route('/create-admin-now')
+    def create_admin_now():
+        from models import db, User
+        
+        # Удаляем старого админа если есть
+        User.query.filter_by(username='admin').delete()
+        
+        # Создаём нового
+        admin = User(
+            username='admin',
+            email='admin@kgau.ru',
+            is_admin=True
+        )
+        admin.set_password('admin123')
+        db.session.add(admin)
+        db.session.commit()
+        
+        return "✅ Админ создан! Логин: admin, Пароль: admin123"
+
     return app
 
-
+    
 if __name__ == '__main__':
     app = create_app()
     app.run(debug=True, host='0.0.0.0', port=5000, use_reloader=False)
