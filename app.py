@@ -322,7 +322,6 @@ def create_app():
     @app.route('/new/<slug>')
     def dynamic_page(slug):
         page = Page.query.filter_by(slug=slug, published=True).first_or_404()
-        print(f"DEBUG: rendering page {slug} with template {page.template}")
         children = Page.query.filter_by(parent_id=page.id, published=True).order_by(Page.menu_order).all()
         return render_template(f'dynamic/{page.template}.html', page=page, children=children)
 
@@ -330,7 +329,6 @@ def create_app():
     def institutes_page():
         institutes = Page.query.filter_by(template='institute', published=True).all()
         return render_template('dynamic/institutes_page.html', institutes=institutes)
-
     # ==================== МАРШРУТЫ РАСПИСАНИЯ ====================
     @app.route('/rasp/<path:filename>')
     def serve_rasp_file(filename):
