@@ -10,26 +10,93 @@
 </section>
 
 <div class="container" style="margin-top: 2rem;">
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-        <a href="{{ url_for('admin_stats') }}" style="background: var(--gradient-primary); color: white; padding: 2rem; border-radius: 15px; text-decoration: none; text-align: center;">
+    <!-- Кнопки перехода -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+        <a href="{{ url_for('admin_stats') }}" style="background: var(--gradient-primary); color: white; padding: 1.5rem; border-radius: 15px; text-decoration: none; text-align: center;">
             <h3 style="color: white;">📊 Статистика</h3>
-            <p>Просмотр статистики сайта</p>
         </a>
-        
-        <a href="/admin/programs" style="background: var(--gradient-accent); color: white; padding: 2rem; border-radius: 15px; text-decoration: none; text-align: center;">
-            <h3 style="color: white;">📚 Программы</h3>
-            <p>Управление программами обучения</p>
-        </a>
-        
-        <a href="/admin/news" style="background: var(--gradient-primary); color: white; padding: 2rem; border-radius: 15px; text-decoration: none; text-align: center;">
-            <h3 style="color: white;">📰 Новости</h3>
-            <p>Управление новостями</p>
-        </a>
-        
-        <a href="/admin/messages" style="background: var(--gradient-accent); color: white; padding: 2rem; border-radius: 15px; text-decoration: none; text-align: center;">
-            <h3 style="color: white;">✉️ Сообщения</h3>
-            <p>Просмотр сообщений</p>
+        <a href="{{ url_for('admin_pages') }}" style="background: var(--gradient-accent); color: white; padding: 1.5rem; border-radius: 15px; text-decoration: none; text-align: center;">
+            <h3 style="color: white;">📄 Управление страницами</h3>
         </a>
     </div>
+
+    <!-- Вкладки -->
+    <div class="admin-tabs">
+        <button class="tab-btn active" onclick="showTab('programs')">📚 Программы</button>
+        <button class="tab-btn" onclick="showTab('news')">📰 Новости</button>
+        <button class="tab-btn" onclick="showTab('contacts')">✉️ Сообщения</button>
+    </div>
+
+    <!-- Вкладка: Программы -->
+    <div id="programs-tab" class="tab-content active">
+        <div class="admin-form">
+            <h3>Добавить новую программу</h3>
+            <form id="program-form">
+                <input type="hidden" id="program-id">
+                <div class="form-group">
+                    <label>Название программы *</label>
+                    <input type="text" id="program-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Степень (бакалавр/магистр/специалист) *</label>
+                    <input type="text" id="program-degree" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Срок обучения *</label>
+                    <input type="text" id="program-duration" class="form-control" placeholder="4 года / 2 года" required>
+                </div>
+                <div class="form-group">
+                    <label>Описание *</label>
+                    <textarea id="program-description" rows="4" class="form-control" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">💾 Сохранить</button>
+                <button type="button" class="btn btn-secondary" onclick="resetProgramForm()">🔄 Очистить</button>
+            </form>
+        </div>
+        
+        <div class="admin-list">
+            <h3>Список программ</h3>
+            <div id="programs-admin-list"></div>
+        </div>
+    </div>
+
+    <!-- Вкладка: Новости -->
+    <div id="news-tab" class="tab-content">
+        <div class="admin-form">
+            <h3>Добавить новость</h3>
+            <form id="news-form">
+                <input type="hidden" id="news-id">
+                <div class="form-group">
+                    <label>Заголовок *</label>
+                    <input type="text" id="news-title" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Автор *</label>
+                    <input type="text" id="news-author" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Содержание *</label>
+                    <textarea id="news-content" rows="6" class="form-control" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">💾 Сохранить</button>
+                <button type="button" class="btn btn-secondary" onclick="resetNewsForm()">🔄 Очистить</button>
+            </form>
+        </div>
+        
+        <div class="admin-list">
+            <h3>Список новостей</h3>
+            <div id="news-admin-list"></div>
+        </div>
+    </div>
+
+    <!-- Вкладка: Сообщения -->
+    <div id="contacts-tab" class="tab-content">
+        <div class="admin-list">
+            <h3>Сообщения от пользователей</h3>
+            <div id="contacts-admin-list"></div>
+        </div>
+    </div>
 </div>
+
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
 {% endblock %}

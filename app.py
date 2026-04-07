@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, send_from_directory
+from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, send_from_directory, abort
 from flask_cors import CORS
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_mail import Mail, Message
@@ -45,6 +45,11 @@ def create_app():
             print("✅ Подключение к PostgreSQL успешно!")
             db.create_all()
             print("✅ Таблицы созданы/проверены")
+            
+            # Создаем тестовые институты и кафедры, если их нет
+            if Page.query.filter_by(template='institute').count() == 0:
+                create_default_pages()
+                
         except Exception as e:
             print(f"❌ Ошибка подключения к PostgreSQL: {e}")
 
@@ -54,51 +59,63 @@ def create_app():
     # ==================== КОНФИГУРАЦИЯ РАСПИСАНИЯ ====================
     SCHEDULE_CONFIG = {
         'class schedule 1st year 2nd semester full-time study.pdf': {
-            'title': '1 курс (2 семестр)',
-            'description': 'Расписание занятий для 1 курса, очная форма',
-            'institute': 'Все институты'
+            'title': '1 курс (2 семестр)', 'description': 'Расписание занятий для 1 курса, очная форма', 'institute': 'Все институты'
         },
         'class schedule 2nd year 4th semester full-time study.pdf': {
-            'title': '2 курс (4 семестр)',
-            'description': 'Расписание занятий для 2 курса, очная форма',
-            'institute': 'Все институты'
+            'title': '2 курс (4 семестр)', 'description': 'Расписание занятий для 2 курса, очная форма', 'institute': 'Все институты'
         },
-        'Introductory instructions.pdf': {
-            'title': 'Вступительные испытания - инструкция',
-            'description': 'Инструкция для поступающих, правила проведения экзаменов',
-            'institute': 'Абитуриентам'
-        },
-        'Schedule of consultations for undergraduate programs and exams.pdf': {
-            'title': 'Консультации для бакалавров',
-            'description': 'Расписание консультаций по программам бакалавриата',
-            'institute': 'Бакалавриат'
-        },
-        'Schedule of consultations on Master\'s degree programs.pdf': {
-            'title': 'Консультации для магистров',
-            'description': 'Расписание консультаций по программам магистратуры',
-            'institute': 'Магистратура'
-        },
-        'Schedule of entrance examinations for Master\'s degree programs.pdf': {
-            'title': 'Вступительные экзамены - магистратура',
-            'description': 'Расписание вступительных испытаний в магистратуру',
-            'institute': 'Абитуриентам'
-        },
-        'Schedule of entrance exams for bachelor\'s and specialist programs.pdf.pdf': {
-            'title': 'Вступительные экзамены - бакалавриат и специалитет',
-            'description': 'Расписание вступительных испытаний',
-            'institute': 'Абитуриентам'
-        },
-        'CPSSZ2.xls': {'title': 'ЦПССЗ - все курсы', 'description': 'Расписание для Центра подготовки специалистов среднего звена (1-4 курсы)', 'institute': 'ЦПССЗ'},
-        'IAT2.xls': {'title': 'ИАЭТ - все курсы', 'description': 'Институт агроэкологических технологий (1-4 курсы)', 'institute': 'ИАЭТ'},
-        'IEU2.xls': {'title': 'ИЭиУ АПК - все курсы', 'description': 'Институт экономики и управления АПК (1-4 курсы)', 'institute': 'ИЭиУ АПК'},
-        'IEUv2.xls': {'title': 'ИЭиУ АПК - вечернее отделение', 'description': 'Институт экономики и управления АПК, вечерняя форма', 'institute': 'ИЭиУ АПК'},
+        'CPSSZ2.xls': {'title': 'ЦПССЗ - все курсы', 'description': 'Расписание для Центра подготовки специалистов среднего звена', 'institute': 'ЦПССЗ'},
+        'IAT2.xls': {'title': 'ИАЭТ - все курсы', 'description': 'Институт агроэкологических технологий', 'institute': 'ИАЭТ'},
+        'IEU2.xls': {'title': 'ИЭиУ АПК - все курсы', 'description': 'Институт экономики и управления АПК', 'institute': 'ИЭиУ АПК'},
         'IiSiE2.xlsx': {'title': 'ИИСиЭ - расписание', 'description': 'Институт информационных систем и инженерии', 'institute': 'ИИСиЭ'},
-        'IPBVM2.xls': {'title': 'ИПБиВМ - все курсы', 'description': 'Институт прикладной биотехнологии и ветеринарной медицины', 'institute': 'ИПБиВМ'},
+        'IPBVM2.xls': {'title': 'ИПБиВМ - все курсы', 'description': 'Институт прикладной биотехнологии', 'institute': 'ИПБиВМ'},
         'IPP2.xls': {'title': 'ИПП - все курсы', 'description': 'Институт пищевых производств', 'institute': 'ИПП'},
-        'IZKP2.xls': {'title': 'ИЗКиП - все курсы', 'description': 'Институт землеустройства, кадастров и природообустройства', 'institute': 'ИЗКиП'},
-        'UI2.xlsx': {'title': 'Юридический институт - расписание', 'description': 'Юридический институт', 'institute': 'ЮИ'},
-        'UIv2.xlsx': {'title': 'Юридический институт - вечернее отделение', 'description': 'Юридический институт, вечерняя форма', 'institute': 'ЮИ'}
+        'IZKP2.xls': {'title': 'ИЗКиП - все курсы', 'description': 'Институт землеустройства, кадастров', 'institute': 'ИЗКиП'},
+        'UI2.xlsx': {'title': 'Юридический институт', 'description': 'Юридический институт', 'institute': 'ЮИ'},
     }
+
+    # ==================== ФУНКЦИЯ ДЛЯ СОЗДАНИЯ СТРАНИЦ ПО УМОЛЧАНИЮ ====================
+    def create_default_pages():
+        # Институты
+        institutes = [
+            ('institute_iaet', 'Институт агроэкологических технологий (ИАЭТ)', 
+             '<h2>Институт агроэкологических технологий</h2><p>Ведущий институт по подготовке специалистов в области агрономии, экологии и биотехнологий.</p>'),
+            ('institute_ieiu', 'Институт экономики и управления АПК (ИЭиУ)', 
+             '<h2>Институт экономики и управления АПК</h2><p>Подготовка экономистов и управленцев для агропромышленного комплекса.</p>'),
+            ('institute_iisie', 'Институт инженерных систем и энергетики (ИИСиЭ)', 
+             '<h2>Институт инженерных систем и энергетики</h2><p>Подготовка инженеров для сельского хозяйства.</p>'),
+            ('institute_ipbivm', 'Институт прикладной биотехнологии и ветеринарной медицины (ИПБиВМ)', 
+             '<h2>Институт прикладной биотехнологии и ветеринарной медицины</h2><p>Подготовка ветеринаров и биотехнологов.</p>'),
+            ('institute_ipp', 'Институт пищевых производств (ИПП)', 
+             '<h2>Институт пищевых производств</h2><p>Подготовка специалистов пищевой промышленности.</p>'),
+            ('institute_izkip', 'Институт землеустройства, кадастров и природообустройства (ИЗКиП)', 
+             '<h2>Институт землеустройства, кадастров и природообустройства</h2><p>Подготовка специалистов по землеустройству.</p>'),
+            ('institute_ui', 'Юридический институт (ЮИ)', 
+             '<h2>Юридический институт</h2><p>Подготовка юристов для различных отраслей.</p>'),
+            ('institute_cpssz', 'Центр подготовки специалистов среднего звена (ЦПССЗ)', 
+             '<h2>Центр подготовки специалистов среднего звена</h2><p>Среднее профессиональное образование.</p>'),
+        ]
+        
+        for slug, title, content in institutes:
+            if not Page.query.filter_by(slug=slug).first():
+                page = Page(slug=slug, title=title, content=content, template='institute', published=True)
+                db.session.add(page)
+        
+        # Кафедры для ИАЭТ
+        iaet = Page.query.filter_by(slug='institute_iaet').first()
+        if iaet:
+            departments = [
+                ('dept_agronomy', 'Кафедра агрономии', '<h3>Кафедра агрономии</h3><p>Заведующий: д.с.-х.н., профессор Иванов И.И.</p>'),
+                ('dept_ecology', 'Кафедра экологии', '<h3>Кафедра экологии</h3><p>Заведующий: д.б.н., профессор Петров П.П.</p>'),
+                ('dept_biotech', 'Кафедра биотехнологии', '<h3>Кафедра биотехнологии</h3><p>Заведующий: д.б.н., профессор Сидоров С.С.</p>'),
+            ]
+            for slug, title, content in departments:
+                if not Page.query.filter_by(slug=slug).first():
+                    page = Page(slug=slug, title=title, content=content, template='department', parent_id=iaet.id, published=True)
+                    db.session.add(page)
+        
+        db.session.commit()
+        print("✅ Созданы страницы по умолчанию (институты и кафедры)")
 
     # ==================== ФУНКЦИИ ДЛЯ РАСПИСАНИЯ ====================
     def read_excel_file(filename):
@@ -106,113 +123,19 @@ def create_app():
         try:
             excel_file = pd.ExcelFile(filepath)
             html_parts = []
-            groups = {}
             for sheet_name in excel_file.sheet_names:
                 df = pd.read_excel(filepath, sheet_name=sheet_name, header=None)
-                group_name = sheet_name
-                if 'групп' in sheet_name.lower() or 'курс' in sheet_name.lower():
-                    group_name = sheet_name
-                else:
-                    for idx in range(min(5, len(df))):
-                        row_text = ' '.join([str(cell) for cell in df.iloc[idx] if pd.notna(cell)])
-                        if 'группа' in row_text.lower() or 'групп' in row_text.lower():
-                            group_name = row_text[:50].strip()
-                            break
-                lessons = []
+                html_parts.append(f'<div class="schedule-sheet"><h3 class="schedule-sheet-title">{sheet_name}</h3><div class="schedule-readable-content">')
                 for idx, row in df.iterrows():
                     if row.isna().all():
                         continue
                     cells = [str(cell).strip() for cell in row if pd.notna(cell) and str(cell).strip()]
                     if len(cells) >= 3:
                         lesson_type = 'practice'
-                        subject_lower = cells[1].lower() if len(cells) > 1 else ''
-                        if 'лекц' in subject_lower:
+                        if 'лекц' in cells[1].lower():
                             lesson_type = 'lecture'
-                        elif 'лаб' in subject_lower:
+                        elif 'лаб' in cells[1].lower():
                             lesson_type = 'lab'
-                        elif 'экзам' in subject_lower:
-                            lesson_type = 'exam'
-                        day_of_week = 'unknown'
-                        time_lower = cells[0].lower()
-                        if 'пн' in time_lower:
-                            day_of_week = 'mon'
-                        elif 'вт' in time_lower:
-                            day_of_week = 'tue'
-                        elif 'ср' in time_lower:
-                            day_of_week = 'wed'
-                        elif 'чт' in time_lower:
-                            day_of_week = 'thu'
-                        elif 'пт' in time_lower:
-                            day_of_week = 'fri'
-                        elif 'сб' in time_lower:
-                            day_of_week = 'sat'
-                        lessons.append({
-                            'time': cells[0], 'subject': cells[1], 'teacher': cells[2] if len(cells) > 2 else '',
-                            'room': cells[3] if len(cells) > 3 else '', 'type': lesson_type, 'day': day_of_week
-                        })
-                if lessons:
-                    if group_name not in groups:
-                        groups[group_name] = []
-                    groups[group_name].extend(lessons)
-            if groups:
-                unique_id = filename.replace('.', '_').replace(' ', '_').replace('-', '_')
-                html_parts.append(f'<div class="schedule-group-selector" data-unique="{unique_id}"><label>Выберите группу:</label><select id="schedule-group-select-{unique_id}" class="schedule-group-select">')
-                for i, group_name in enumerate(groups.keys()):
-                    selected = 'selected' if i == 0 else ''
-                    html_parts.append(f'<option value="{i}" {selected}>{group_name}</option>')
-                html_parts.append('</select></div>')
-                for i, (group_name, lessons) in enumerate(groups.items()):
-                    display_style = "block" if i == 0 else "none"
-                    lessons_by_day = {'mon': [], 'tue': [], 'wed': [], 'thu': [], 'fri': [], 'sat': [], 'unknown': []}
-                    for lesson in lessons:
-                        day = lesson['day']
-                        if day in lessons_by_day:
-                            lessons_by_day[day].append(lesson)
-                        else:
-                            lessons_by_day['unknown'].append(lesson)
-                    html_parts.append(f'<div id="group-{unique_id}-{i}" class="schedule-group-container" style="display: {display_style};">')
-                    html_parts.append(f'<h3 class="schedule-group-title">{group_name}</h3>')
-                    html_parts.append('<div class="schedule-day-switcher-inner">')
-                    for day_key, day_name in [('all','Все дни'),('mon','ПН'),('tue','ВТ'),('wed','СР'),('thu','ЧТ'),('fri','ПТ'),('sat','СБ')]:
-                        active = 'active' if day_key == 'all' else ''
-                        html_parts.append(f'<button class="day-btn-inner {active}" data-day="{day_key}">{day_name}</button>')
-                    html_parts.append('</div>')
-                    day_names = {'mon':'Понедельник','tue':'Вторник','wed':'Среда','thu':'Четверг','fri':'Пятница','sat':'Суббота','unknown':'Другое'}
-                    for day_key, day_name in day_names.items():
-                        if lessons_by_day.get(day_key) and len(lessons_by_day[day_key]) > 0:
-                            html_parts.append(f'<div class="schedule-day-section" data-day="{day_key}"><h4 class="schedule-day-title">{day_name}</h4><div class="schedule-lessons-list">')
-                            for lesson in lessons_by_day[day_key]:
-                                lesson_type_class = f'lesson-type-{lesson["type"]}'
-                                room_html = f'<span class="schedule-lesson-room">{lesson["room"]}</span>' if lesson['room'] else ''
-                                html_parts.append(f'<div class="schedule-lesson-card {lesson_type_class}"><div class="schedule-lesson-time">{lesson["time"]}</div><div class="schedule-lesson-details"><span class="schedule-lesson-subject">{lesson["subject"]}</span><span class="schedule-lesson-teacher">{lesson["teacher"]}</span>{room_html}</div></div>')
-                            html_parts.append('</div></div>')
-                    html_parts.append('</div>')
-                html_parts.append('<script>document.querySelectorAll(".schedule-group-select").forEach(sel=>{sel.addEventListener("change",function(){let id=this.id.replace("schedule-group-select-","");document.querySelectorAll(`[id^="group-${id}-"]`).forEach((c,i)=>{c.style.display=i==this.value?"block":"none"});let grp=document.querySelector(`#group-${id}-${this.value}`);if(grp){grp.querySelectorAll(".day-btn-inner").forEach(b=>b.classList.remove("active"));let allBtn=grp.querySelector(".day-btn-inner[data-day=\'all\']");if(allBtn)allBtn.classList.add("active");filterDaysInGroup(id,this.value,"all")}})});function filterDaysInGroup(uid,gidx,day){let grp=document.querySelector(`#group-${uid}-${gidx}`);if(!grp)return;grp.querySelectorAll(".schedule-day-section").forEach(s=>{s.style.display=(day==="all"||s.dataset.day===day)?"block":"none"});}document.querySelectorAll(".day-btn-inner").forEach(btn=>{btn.addEventListener("click",function(e){e.preventDefault();let parent=this.closest(".schedule-group-container");let gidx=parent.id.split("-").pop();let uid=parent.id.replace(`group-`,"").replace(`-${gidx}`,"");document.querySelectorAll(`#group-${uid}-${gidx} .day-btn-inner`).forEach(b=>b.classList.remove("active"));this.classList.add("active");filterDaysInGroup(uid,gidx,this.dataset.day)})});document.querySelectorAll(".schedule-group-container").forEach((c,i)=>{if(i===0)filterDaysInGroup(c.id.split("-")[1],0,"all")});</script>')
-                return "".join(html_parts)
-            return read_excel_simple(filepath)
-        except Exception as e:
-            return f"<div class='schedule-error'>Ошибка чтения Excel: {str(e)}</div>"
-    
-    def read_excel_simple(filepath):
-        try:
-            excel_file = pd.ExcelFile(filepath)
-            html_parts = []
-            for sheet_name in excel_file.sheet_names:
-                df = pd.read_excel(filepath, sheet_name=sheet_name, header=None)
-                html_parts.append(f'<div class="schedule-excel-sheet"><h3 class="schedule-sheet-title">{sheet_name}</h3><div class="schedule-readable-content">')
-                for idx, row in df.iterrows():
-                    if row.isna().all():
-                        continue
-                    cells = [str(cell).strip() for cell in row if pd.notna(cell) and str(cell).strip()]
-                    if len(cells) >= 3:
-                        lesson_type = 'practice'
-                        subject_lower = cells[1].lower() if len(cells) > 1 else ''
-                        if 'лекц' in subject_lower:
-                            lesson_type = 'lecture'
-                        elif 'лаб' in subject_lower:
-                            lesson_type = 'lab'
-                        elif 'экзам' in subject_lower:
-                            lesson_type = 'exam'
                         html_parts.append(f'<div class="schedule-lesson-card" data-type="{lesson_type}"><div class="schedule-lesson-time">{cells[0]}</div><div class="schedule-lesson-details"><span class="schedule-lesson-subject">{cells[1]}</span><span class="schedule-lesson-teacher">{cells[2]}</span>{f"<span class=\"schedule-lesson-room\">{cells[3]}</span>" if len(cells) > 3 else ""}</div></div>')
                     elif len(cells) == 2:
                         html_parts.append(f'<div class="schedule-info-row"><strong>{cells[0]}:</strong> {cells[1]}</div>')
@@ -223,29 +146,6 @@ def create_app():
         except Exception as e:
             return f"<div class='schedule-error'>Ошибка чтения Excel: {str(e)}</div>"
 
-    def get_pdf_page_count(filename):
-        filepath = os.path.join(RASP_FOLDER, filename)
-        try:
-            with pdfplumber.open(filepath) as pdf:
-                return len(pdf.pages)
-        except:
-            return 0
-
-    def get_pdf_page_text(filename, page_num):
-        filepath = os.path.join(RASP_FOLDER, filename)
-        try:
-            if not os.path.exists(filepath):
-                return f"Файл не найден: {filename}"
-            with pdfplumber.open(filepath) as pdf:
-                if page_num < len(pdf.pages):
-                    page = pdf.pages[page_num]
-                    text = page.extract_text()
-                    return text if text else "Страница пуста"
-                else:
-                    return f"Страница {page_num + 1} не существует. Всего страниц: {len(pdf.pages)}"
-        except Exception as e:
-            return f"Ошибка загрузки страницы: {str(e)}"
-
     def format_file_size(size_bytes):
         if size_bytes < 1024:
             return f"{size_bytes} Б"
@@ -255,10 +155,27 @@ def create_app():
             return f"{size_bytes/(1024*1024):.1f} МБ"
 
     def get_file_icon(ext):
-        icons = {'.pdf': '📄', '.xls': '📊', '.xlsx': '📊', '.doc': '📝', '.docx': '📝'}
+        icons = {'.pdf': '📄', '.xls': '📊', '.xlsx': '📊'}
         return icons.get(ext.lower(), '📁')
 
     # ==================== МАРШРУТЫ АДМИН ПАНЕЛИ ====================
+    @app.route('/admin')
+    @login_required
+    def admin():
+        if not current_user.is_admin:
+            flash('Нет доступа', 'danger')
+            return redirect(url_for('index'))
+        return render_template('admin.html')
+
+    @app.route('/admin/pages')
+    @login_required
+    def admin_pages():
+        if not current_user.is_admin:
+            flash('Нет доступа', 'danger')
+            return redirect(url_for('index'))
+        all_pages = Page.query.order_by(Page.template, Page.title).all()
+        return render_template('admin_pages.html', all_pages=all_pages)
+
     @app.route('/admin/page/create', methods=['GET', 'POST'])
     @login_required
     def admin_page_create():
@@ -267,26 +184,20 @@ def create_app():
             return redirect(url_for('index'))
         if request.method == 'POST':
             page = Page(
-                slug=request.form['slug'], title=request.form['title'], content=request.form['content'],
-                template=request.form['template'], parent_id=request.form.get('parent_id') or None,
-                meta_description=request.form.get('meta_description'), published='published' in request.form
+                slug=request.form['slug'],
+                title=request.form['title'],
+                content=request.form['content'],
+                template=request.form['template'],
+                parent_id=request.form.get('parent_id') or None,
+                meta_description=request.form.get('meta_description'),
+                published='published' in request.form
             )
             db.session.add(page)
             db.session.commit()
             flash(f'Страница "{page.title}" создана!', 'success')
             return redirect(url_for('admin_pages'))
         parents = Page.query.filter_by(template='institute').all()
-        templates = ['institute', 'department', 'info_page', 'student_section', 'applicant_section', 'science_section']
-        return render_template('admin_page_form.html', parents=parents, templates=templates)
-    
-    @app.route('/admin/pages')
-    @login_required
-    def admin_pages():
-        if not current_user.is_admin:
-            flash('Нет доступа', 'danger')
-            return redirect(url_for('index'))
-        all_pages = Page.query.order_by(Page.template, Page.title).all()
-        return render_template('admin.html', all_pages=all_pages)
+        return render_template('admin_page_form.html', parents=parents)
 
     @app.route('/admin/page/<int:page_id>/edit', methods=['GET', 'POST'])
     @login_required
@@ -304,27 +215,32 @@ def create_app():
             flash(f'Страница "{page.title}" сохранена!', 'success')
             return redirect(url_for('admin_pages'))
         return render_template('admin_page_edit.html', page=page)
-    
+
     @app.route('/admin/page/<int:page_id>/delete', methods=['POST'])
     @login_required
     def admin_page_delete(page_id):
         if not current_user.is_admin:
             return jsonify({'success': False, 'error': 'Нет доступа'})
         page = Page.query.get_or_404(page_id)
-        protected_slugs = ['institute_agro', 'institute_biotech', 'student_main', 'applicant_main']
-        if page.slug in protected_slugs:
-            return jsonify({'success': False, 'error': 'Нельзя удалить эту страницу'})
         db.session.delete(page)
         db.session.commit()
         return jsonify({'success': True})
 
     # ==================== ДИНАМИЧЕСКИЕ СТРАНИЦЫ ====================
-    @app.route('/new/<slug>')
+    @app.route('/page/<slug>')
     def dynamic_page(slug):
         page = Page.query.filter_by(slug=slug, published=True).first_or_404()
         children = Page.query.filter_by(parent_id=page.id, published=True).order_by(Page.menu_order).all()
-        return render_template(f'dynamic/{page.template}.html', page=page, children=children)
+        
+        # Список шаблонов, которые лежат в папке dynamic/
+        dynamic_templates = ['applicant_section', 'department', 'info_page', 'institute', 'science_section', 'student_section', 'university_section']
+        
+        if page.template in dynamic_templates:
+            return render_template(f'dynamic/{page.template}.html', page=page, children=children)
+        else:
+            return render_template(f'{page.template}.html', page=page, children=children)
 
+    # ==================== СТРАНИЦА ИНСТИТУТОВ ====================
     @app.route('/institutes')
     def institutes_page():
         institutes = Page.query.filter_by(template='institute', published=True).all()
@@ -346,8 +262,7 @@ def create_app():
                 files.append({
                     'filename': f, 'title': config['title'], 'description': config['description'],
                     'institute': config['institute'], 'size': format_file_size(os.path.getsize(filepath)),
-                    'size_bytes': os.path.getsize(filepath), 'ext': ext, 'icon': get_file_icon(ext),
-                    'url': url_for('schedule_view', filename=f)
+                    'ext': ext, 'icon': get_file_icon(ext),
                 })
         files.sort(key=lambda x: (x['institute'], x['title']))
         grouped_files = {}
@@ -371,60 +286,14 @@ def create_app():
             content = read_excel_file(filename)
             return render_template('schedule_excel.html', filename=filename, file_title=config['title'],
                                  file_description=config['description'], file_institute=config['institute'],
-                                 content=content, file_size=file_size, ext=ext)
+                                 content=content, file_size=file_size)
         elif ext == '.pdf':
-            total_pages = get_pdf_page_count(filename)
-            return render_template('schedule_pdf_improved.html', filename=filename, file_title=config['title'],
+            return render_template('schedule_pdf.html', filename=filename, file_title=config['title'],
                                  file_description=config['description'], file_institute=config['institute'],
-                                 total_pages=total_pages, file_size=file_size, ext=ext)
+                                 file_size=file_size)
         else:
             flash('Неподдерживаемый формат файла', 'warning')
             return redirect(url_for('schedule_list'))
-
-    @app.route('/api/pdf/page')
-    def api_pdf_page():
-        filename = request.args.get('file')
-        page = request.args.get('page', 0, type=int)
-        if not filename:
-            return jsonify({'error': 'No filename', 'text': '', 'success': False}), 400
-        try:
-            text = get_pdf_page_text(filename, page)
-            return jsonify({'page': page, 'text': text, 'success': True})
-        except Exception as e:
-            return jsonify({'error': str(e), 'text': f'Ошибка загрузки страницы: {str(e)}', 'success': False}), 500
-
-    @app.route('/api/schedule/<path:filename>')
-    def api_schedule_data(filename):
-        filepath = os.path.join(RASP_FOLDER, filename)
-        if not os.path.exists(filepath):
-            return jsonify({'error': 'File not found', 'lessons': []}), 404
-        ext = os.path.splitext(filename)[1].lower()
-        lessons = []
-        if ext in ['.xls', '.xlsx']:
-            try:
-                excel_file = pd.ExcelFile(filepath)
-                for sheet_name in excel_file.sheet_names:
-                    df = pd.read_excel(filepath, sheet_name=sheet_name, header=None)
-                    for idx, row in df.iterrows():
-                        if row.isna().all():
-                            continue
-                        cells = [str(cell).strip() for cell in row if pd.notna(cell) and str(cell).strip()]
-                        if len(cells) >= 3:
-                            lesson_type = 'practice'
-                            subject_lower = cells[1].lower() if len(cells) > 1 else ''
-                            if 'лекц' in subject_lower:
-                                lesson_type = 'lecture'
-                            elif 'лаб' in subject_lower:
-                                lesson_type = 'lab'
-                            elif 'экзам' in subject_lower:
-                                lesson_type = 'exam'
-                            lessons.append({
-                                'time': cells[0], 'subject': cells[1], 'teacher': cells[2],
-                                'room': cells[3] if len(cells) > 3 else '', 'type': lesson_type, 'sheet': sheet_name
-                            })
-            except Exception as e:
-                return jsonify({'error': str(e), 'lessons': []}), 500
-        return jsonify({'lessons': lessons, 'total': len(lessons)})
 
     # ==================== ДИНАМИЧЕСКИЙ ПОИСК ====================
     @app.route('/api/search')
@@ -449,17 +318,9 @@ def create_app():
             url = url_for('dynamic_page', slug=page.slug)
             if url not in seen_urls:
                 seen_urls.add(url)
-                type_ru = {
-                    'institute': 'Институт',
-                    'department': 'Кафедра',
-                    'info_page': 'Страница',
-                    'student_section': 'Раздел',
-                    'applicant_section': 'Раздел',
-                    'science_section': 'Раздел'
-                }.get(page.template, 'Страница')
                 results.append({
                     'type': page.template,
-                    'type_ru': type_ru,
+                    'type_ru': 'Страница',
                     'title': page.title,
                     'url': url,
                     'description': page.meta_description or '',
@@ -469,8 +330,7 @@ def create_app():
         programs = Program.query.filter(
             db.or_(
                 Program.name.ilike(f'%{query}%'),
-                Program.description.ilike(f'%{query}%'),
-                Program.degree.ilike(f'%{query}%')
+                Program.description.ilike(f'%{query}%')
             )
         ).limit(5).all()
         
@@ -487,44 +347,6 @@ def create_app():
                     'icon': '📚'
                 })
         
-        news = News.query.filter(
-            db.or_(
-                News.title.ilike(f'%{query}%'),
-                News.content.ilike(f'%{query}%')
-            )
-        ).order_by(News.published_at.desc()).limit(5).all()
-        
-        for n in news:
-            url = url_for('news')
-            if url not in seen_urls:
-                seen_urls.add(url)
-                date_str = n.published_at.strftime('%d.%m.%Y') if n.published_at else ''
-                results.append({
-                    'type': 'news',
-                    'type_ru': 'Новость',
-                    'title': n.title,
-                    'url': url,
-                    'description': f'{date_str} • {n.content[:100]}...',
-                    'icon': '📰'
-                })
-        
-        for f in os.listdir(RASP_FOLDER):
-            filepath = os.path.join(RASP_FOLDER, f)
-            if os.path.isfile(filepath) and query in f.lower():
-                config = SCHEDULE_CONFIG.get(f, {'title': f, 'description': 'Расписание занятий', 'institute': 'Другое'})
-                url = url_for('schedule_view', filename=f)
-                if url not in seen_urls:
-                    seen_urls.add(url)
-                    results.append({
-                        'type': 'schedule',
-                        'type_ru': 'Расписание',
-                        'title': config['title'],
-                        'url': url,
-                        'description': f"{config['institute']} • {config['description']}",
-                        'icon': '📅'
-                    })
-        
-        results = results[:25]
         return jsonify({'results': results})
 
     @app.route('/search')
@@ -539,8 +361,7 @@ def create_app():
         pages = Page.query.filter(
             db.or_(
                 Page.title.ilike(f'%{query}%'),
-                Page.content.ilike(f'%{query}%'),
-                Page.meta_description.ilike(f'%{query}%')
+                Page.content.ilike(f'%{query}%')
             ),
             Page.published == True
         ).limit(50).all()
@@ -549,80 +370,13 @@ def create_app():
             url = url_for('dynamic_page', slug=page.slug)
             if url not in seen_urls:
                 seen_urls.add(url)
-                type_ru = {
-                    'institute': 'Институт',
-                    'department': 'Кафедра',
-                    'info_page': 'Страница',
-                    'student_section': 'Раздел',
-                    'applicant_section': 'Раздел',
-                    'science_section': 'Раздел'
-                }.get(page.template, 'Страница')
                 results.append({
                     'type': page.template,
-                    'type_ru': type_ru,
+                    'type_ru': 'Страница',
                     'title': page.title,
                     'url': url,
                     'description': page.meta_description or '',
-                    'content_preview': page.content[:200] + '...' if len(page.content) > 200 else page.content
                 })
-        
-        programs = Program.query.filter(
-            db.or_(
-                Program.name.ilike(f'%{query}%'),
-                Program.description.ilike(f'%{query}%'),
-                Program.degree.ilike(f'%{query}%')
-            )
-        ).all()
-        
-        for p in programs:
-            url = url_for('program_detail', program_id=p.id)
-            if url not in seen_urls:
-                seen_urls.add(url)
-                results.append({
-                    'type': 'program',
-                    'type_ru': 'Программа',
-                    'title': p.name,
-                    'url': url,
-                    'description': f'{p.degree} • {p.duration}',
-                    'content_preview': p.description[:200] + '...' if len(p.description) > 200 else p.description
-                })
-        
-        news = News.query.filter(
-            db.or_(
-                News.title.ilike(f'%{query}%'),
-                News.content.ilike(f'%{query}%')
-            )
-        ).order_by(News.published_at.desc()).all()
-        
-        for n in news:
-            url = url_for('news')
-            if url not in seen_urls:
-                seen_urls.add(url)
-                date_str = n.published_at.strftime('%d.%m.%Y') if n.published_at else ''
-                results.append({
-                    'type': 'news',
-                    'type_ru': 'Новость',
-                    'title': n.title,
-                    'url': url,
-                    'description': f'{date_str}',
-                    'content_preview': n.content[:200] + '...' if len(n.content) > 200 else n.content
-                })
-        
-        for f in os.listdir(RASP_FOLDER):
-            filepath = os.path.join(RASP_FOLDER, f)
-            if os.path.isfile(filepath) and query.lower() in f.lower():
-                config = SCHEDULE_CONFIG.get(f, {'title': f, 'description': 'Расписание занятий', 'institute': 'Другое'})
-                url = url_for('schedule_view', filename=f)
-                if url not in seen_urls:
-                    seen_urls.add(url)
-                    results.append({
-                        'type': 'schedule',
-                        'type_ru': 'Расписание',
-                        'title': config['title'],
-                        'url': url,
-                        'description': f"{config['institute']}",
-                        'content_preview': config['description']
-                    })
         
         return render_template('search.html', query=query, all_results=results, total_results=len(results))
 
@@ -653,58 +407,6 @@ def create_app():
         program.views += 1
         db.session.commit()
         return render_template('program_detail.html', program=program)
-
-    # ==================== РЕДИРЕКТЫ ====================
-    redirect_routes = [
-        ('/university-today', 'university_today'), ('/structure', 'structure'), ('/leadership', 'leadership'),
-        ('/academic-council', 'academic_council'), ('/departments', 'departments'), ('/library', 'library'),
-        ('/educational-activity', 'educational_activity'), ('/professionalitet', 'professionalitet'),
-        ('/inclusive-education', 'inclusive_education'), ('/additional-education', 'additional_education'),
-        ('/science', 'science'), ('/science-news', 'science_news'), ('/laboratories', 'laboratories'),
-        ('/science-schools', 'science_schools'), ('/grants', 'grants'), ('/conferences', 'conferences'),
-        ('/volunteer', 'volunteer'), ('/dormitory', 'dormitory'), ('/payment', 'payment'),
-        ('/cossack', 'cossack'), ('/international-students', 'international_students'),
-        ('/school-info', 'school_info'), ('/school-news', 'school_news'), ('/school-conferences', 'school_conferences'),
-        ('/school-awards', 'school_awards'), ('/olympiads', 'olympiads'), ('/preparatory-courses', 'preparatory_courses'),
-        ('/agro-classes', 'agro_classes'), ('/career-guidance', 'career_guidance'), ('/admission-info', 'admission_info'),
-        ('/admission-addresses', 'admission_addresses'), ('/admission-faq', 'admission_faq'), ('/admission-docs', 'admission_docs'),
-        ('/admission-info-detail', 'admission_info_detail'), ('/disabled-info', 'disabled_info'),
-        ('/competition-lists', 'competition_lists'), ('/paid-education', 'paid_education'), ('/entrance-tests', 'entrance_tests'),
-        ('/enrollment-orders', 'enrollment_orders'), ('/postgraduate', 'postgraduate'), ('/doctoral', 'doctoral'),
-        ('/attestation', 'attestation'), ('/candidate-exams', 'candidate_exams'), ('/dissertations', 'dissertations'),
-        ('/science-supervisors', 'science_supervisors'), ('/employee', 'employee'), ('/employer', 'employer'),
-        ('/alumni', 'alumni'), ('/contacts-departments', 'contacts_departments'), ('/international', 'international'),
-        ('/university-life', 'university_life'), ('/institute/agro', 'institute_agro'), ('/institute/biotech', 'institute_biotech'),
-        ('/institute/economy', 'institute_economy'), ('/institute/engineering', 'institute_engineering'),
-        ('/institute/food', 'institute_food'), ('/institute/land', 'institute_land'), ('/institute/law', 'institute_law'),
-        ('/institute/achinsk', 'institute_achinsk'), ('/student/council', 'student_council'),
-        ('/student/teams', 'student_teams'), ('/student/culture', 'student_culture'), ('/student/sports', 'student_sports'),
-        ('/student/psychologist', 'student_psychologist'), ('/student/social-support', 'student_social_support'),
-        ('/student/projects', 'student_projects'), ('/student/faq', 'student_faq'), ('/student/calendar', 'student_calendar'),
-        ('/student/scholarships', 'student_scholarships'), ('/student/regulations', 'student_regulations'),
-        ('/student/educational-resources', 'student_educational_resources'), ('/student/mass-courses', 'student_mass_courses'),
-        ('/student/textbooks', 'student_textbooks'), ('/student/practice-bases', 'student_practice_bases'),
-        ('/student/practice-dates', 'student_practice_dates'), ('/student/practice-docs', 'student_practice_docs'),
-        ('/student/practice-survey', 'student_practice_survey'), ('/student/practice-instruction', 'student_practice_instruction'),
-        ('/student/practice-requests', 'student_practice_requests'), ('/student/survey', 'student_survey'),
-        ('/student/international-assoc', 'student_international_assoc'), ('/university', 'university_main'),
-        ('/university/history', 'university_history'), ('/university/association', 'university_association'),
-        ('/university/profsoyuz', 'university_profsoyuz'), ('/university/press', 'university_press'),
-        ('/university/press-center', 'university_press_center'), ('/university/brandbook', 'university_brandbook'),
-        ('/university/vesti', 'university_vesti'), ('/university/media-about-us', 'university_media_about_us'),
-        ('/university/prosecutor', 'university_prosecutor'), ('/university/quality-management', 'university_quality_management'),
-        ('/university/endowment', 'university_endowment'), ('/university/driving-school', 'university_driving_school'),
-        ('/university/jalinga', 'university_jalinga'), ('/applicant', 'applicant_main'),
-        ('/target-education', 'target_education'), ('/bonuses', 'bonuses'), ('/enrollment-info', 'enrollment_info'),
-        ('/applicant-lists', 'applicant_lists'), ('/postgraduate-admission', 'postgraduate_admission'),
-        ('/doctoral-admission', 'doctoral_admission'), ('/admission-regulations', 'admission_regulations'),
-        ('/exam-schedule', 'exam_schedule'), ('/admission-committee', 'admission_committee')
-    ]
-    
-    for route_path, slug in redirect_routes:
-        def make_redirect(slug_name):
-            return lambda: redirect(url_for('dynamic_page', slug=slug_name), code=301)
-        app.add_url_rule(route_path, f'redirect_{slug}', make_redirect(slug))
 
     # ==================== АУТЕНТИФИКАЦИЯ ====================
     @app.route('/send-message', methods=['POST'])
@@ -754,15 +456,6 @@ def create_app():
                              total_programs=total_programs, total_messages=total_messages,
                              popular_programs=popular_programs, monthly_stats=monthly_stats,
                              chart_months=months, chart_counts=counts)
-
-    @app.route('/admin')
-    @login_required
-    def admin():
-        if not current_user.is_admin:
-            flash('Нет доступа', 'danger')
-            return redirect(url_for('index'))
-        all_pages = Page.query.order_by(Page.template, Page.title).all()
-        return render_template('admin.html', all_pages=all_pages)
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
@@ -825,64 +518,9 @@ def create_app():
     def profile():
         return render_template('profile.html', user=current_user)
 
-    @app.route('/<old_slug>.html')
-    def redirect_old_pages(old_slug):
-        page = Page.query.filter_by(slug=old_slug).first()
-        if page:
-            return redirect(url_for('dynamic_page', slug=old_slug), code=301)
-        flash('Страница не найдена', 'danger')
-        return redirect(url_for('index'))
-    
-    @app.route('/student')
-    def student_redirect():
-        return redirect(url_for('dynamic_page', slug='student_main'), code=301)
-
-    # ==================== ВРЕМЕННЫЕ МАРШРУТЫ (УДАЛИТЬ ПОСЛЕ ИСПОЛЬЗОВАНИЯ) ====================
-    @app.route('/create-admin-now')
-    def create_admin_now():
-        from models import db, User
-        User.query.filter_by(username='admin').delete()
-        admin = User(username='admin', email='admin@kgau.ru', is_admin=True)
-        admin.set_password('admin123')
-        db.session.add(admin)
-        db.session.commit()
-        return "✅ Админ создан! Логин: admin, Пароль: admin123"
-
-    @app.route('/init-pages-now')
-    def init_pages_now():
-        from models import db, Page
-        
-        pages_data = [
-            ('university_main', 'Университет', '<h1>Красноярский государственный аграрный университет</h1><p>Ведущий аграрный вуз Сибири</p>', 'info_page'),
-            ('applicant_main', 'Поступающему', '<h1>Поступающему</h1><p>Информация для поступающих</p>', 'applicant_section'),
-            ('student_main', 'Студенту', '<h1>Студенту</h1><p>Информация для студентов</p>', 'student_section'),
-            ('science_main', 'Наука', '<h1>Наука и инновации</h1><p>Научная деятельность университета</p>', 'science_section'),
-            ('institute_agro', 'Институт агроэкологических технологий', '<h1>ИАЭТ</h1><p>Институт агроэкологических технологий</p>', 'institute'),
-            ('institute_biotech', 'Институт прикладной биотехнологии и ветеринарной медицины', '<h1>ИПБиВМ</h1><p>Институт биотехнологии</p>', 'institute'),
-            ('admission_regulations', 'Нормативные документы', '<h2>Нормативные документы</h2><ul><li>Правила приема</li><li>Перечень вступительных испытаний</li></ul>', 'applicant_section'),
-            ('exam_schedule', 'Расписание экзаменов', '<p>Расписание вступительных испытаний будет опубликовано</p>', 'applicant_section'),
-            ('enrollment_info', 'Сведения о зачислении', '<p>Сведения о зачислении будут опубликованы</p>', 'applicant_section'),
-            ('university_popechitelskiy', 'Попечительский совет', '<h2>Попечительский совет</h2><p>Создан для содействия развитию университета</p>', 'info_page'),
-            ('university_anticorruption', 'Противодействие коррупции', '<h2>Противодействие коррупции</h2><p>Телефон доверия: +7 (391) 227-09-81</p>', 'info_page'),
-            ('university_parent_council', 'Совет родителей', '<h2>Совет родителей</h2><p>Email: parents@kgau.ru</p>', 'info_page'),
-            ('university_vesti_archive', 'Архив журнала', '<h2>Архив журнала</h2><p><a href="https://www.kgau.ru/university/nasha-pressa/archive/" target="_blank">Перейти к архиву →</a></p>', 'info_page'),
-        ]
-        
-        created = 0
-        for slug, title, content, template in pages_data:
-            if not Page.query.filter_by(slug=slug).first():
-                page = Page(slug=slug, title=title, content=content, template=template, published=True)
-                db.session.add(page)
-                created += 1
-        
-        db.session.commit()
-        
-        html = f"<h2>✅ Создано {created} страниц</h2><ul>"
-        for slug, title, _, _ in pages_data:
-            html += f'<li><a href="/new/{slug}">{title}</a> - /new/{slug}</li>'
-        html += "</ul><p><strong>Теперь удалите эти маршруты из app.py!</strong></p>"
-        return html
-
+    @app.route('/new/<slug>')
+    def redirect_old_new(slug):
+        return redirect(url_for('dynamic_page', slug=slug), code=301)
     return app
 
 if __name__ == '__main__':

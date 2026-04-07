@@ -1,32 +1,48 @@
 {% extends "base.html" %}
 
-{% block title %}{{ page.title }} - ООО Аграрный Университет{% endblock %}
+{% block title %}{{ page.title }} - Красноярский ГАУ{% endblock %}
 
 {% block content %}
 <section class="page-header">
     <div class="container">
         <h1>{{ page.title }}</h1>
-        <p>Красноярский государственный аграрный университет</p>
     </div>
 </section>
 
 <section class="page-content">
     <div class="container">
-        <div class="content-block">
+        <div class="content-block" style="background: var(--white); border-radius: 20px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+            <!-- Полное описание института -->
             {{ page.content|safe }}
         </div>
         
-        {% if children %}
-            <h2>📚 Кафедры института</h2>
-            <div class="departments-grid">
-                {% for dept in children %}
-                    <div class="department-card" onclick="location.href='{{ url_for('dynamic_page', slug=dept.slug) }}'">
-                        <h4>{{ dept.title }}</h4>
-                        <span class="more">Подробнее →</span>
-                    </div>
-                {% endfor %}
+        <!-- Кафедры института -->
+        {% set departments = children|selectattr("template", "equalto", "department")|list %}
+        {% if departments %}
+            <div style="margin-top: 2rem; background: var(--white); border-radius: 20px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;">📚 Кафедры {{ page.title }}</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem;">
+                    {% for dept in departments %}
+                        <div style="background: var(--beige-light); border-radius: 12px; padding: 1.2rem; transition: all 0.3s; border-left: 4px solid var(--accent-color);">
+                            <a href="{{ url_for('dynamic_page', slug=dept.slug) }}" style="text-decoration: none;">
+                                <h3 style="color: var(--primary-color); margin-bottom: 0.5rem; font-size: 1.1rem;">{{ dept.title }}</h3>
+                                <p style="color: var(--text-light); font-size: 0.9rem; margin: 0;">{{ dept.content|striptags|truncate(100) }}</p>
+                                <span style="display: inline-block; margin-top: 0.5rem; color: var(--accent-color); font-size: 0.85rem;">Подробнее →</span>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div style="margin-top: 2rem; background: var(--beige-light); border-radius: 20px; padding: 2rem; text-align: center;">
+                <p style="color: var(--text-light);">Кафедры в разработке</p>
             </div>
         {% endif %}
+        
+        <!-- Кнопка назад -->
+        <div style="margin-top: 2rem;">
+            <a href="{{ url_for('institutes_page') }}" class="btn btn-secondary">← Назад к институтам</a>
+        </div>
     </div>
 </section>
 {% endblock %}
