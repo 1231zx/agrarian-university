@@ -329,6 +329,7 @@ def create_app():
     def institutes_page():
         institutes = Page.query.filter_by(template='institute', published=True).all()
         return render_template('dynamic/institutes_page.html', institutes=institutes)
+
     # ==================== МАРШРУТЫ РАСПИСАНИЯ ====================
     @app.route('/rasp/<path:filename>')
     def serve_rasp_file(filename):
@@ -448,9 +449,17 @@ def create_app():
             url = url_for('dynamic_page', slug=page.slug)
             if url not in seen_urls:
                 seen_urls.add(url)
+                type_ru = {
+                    'institute': 'Институт',
+                    'department': 'Кафедра',
+                    'info_page': 'Страница',
+                    'student_section': 'Раздел',
+                    'applicant_section': 'Раздел',
+                    'science_section': 'Раздел'
+                }.get(page.template, 'Страница')
                 results.append({
                     'type': page.template,
-                    'type_ru': 'Страница',
+                    'type_ru': type_ru,
                     'title': page.title,
                     'url': url,
                     'description': page.meta_description or '',
@@ -540,9 +549,17 @@ def create_app():
             url = url_for('dynamic_page', slug=page.slug)
             if url not in seen_urls:
                 seen_urls.add(url)
+                type_ru = {
+                    'institute': 'Институт',
+                    'department': 'Кафедра',
+                    'info_page': 'Страница',
+                    'student_section': 'Раздел',
+                    'applicant_section': 'Раздел',
+                    'science_section': 'Раздел'
+                }.get(page.template, 'Страница')
                 results.append({
                     'type': page.template,
-                    'type_ru': 'Страница',
+                    'type_ru': type_ru,
                     'title': page.title,
                     'url': url,
                     'description': page.meta_description or '',
@@ -819,6 +836,52 @@ def create_app():
     @app.route('/student')
     def student_redirect():
         return redirect(url_for('dynamic_page', slug='student_main'), code=301)
+
+    # ==================== ВРЕМЕННЫЕ МАРШРУТЫ (УДАЛИТЬ ПОСЛЕ ИСПОЛЬЗОВАНИЯ) ====================
+    @app.route('/create-admin-now')
+    def create_admin_now():
+        from models import db, User
+        User.query.filter_by(username='admin').delete()
+        admin = User(username='admin', email='admin@kgau.ru', is_admin=True)
+        admin.set_password('admin123')
+        db.session.add(admin)
+        db.session.commit()
+        return "✅ Админ создан! Логин: admin, Пароль: admin123"
+
+    @app.route('/init-pages-now')
+    def init_pages_now():
+        from models import db, Page
+        
+        pages_data = [
+            ('university_main', 'Университет', '<h1>Красноярский государственный аграрный университет</h1><p>Ведущий аграрный вуз Сибири</p>', 'info_page'),
+            ('applicant_main', 'Поступающему', '<h1>Поступающему</h1><p>Информация для поступающих</p>', 'applicant_section'),
+            ('student_main', 'Студенту', '<h1>Студенту</h1><p>Информация для студентов</p>', 'student_section'),
+            ('science_main', 'Наука', '<h1>Наука и инновации</h1><p>Научная деятельность университета</p>', 'science_section'),
+            ('institute_agro', 'Институт агроэкологических технологий', '<h1>ИАЭТ</h1><p>Институт агроэкологических технологий</p>', 'institute'),
+            ('institute_biotech', 'Институт прикладной биотехнологии и ветеринарной медицины', '<h1>ИПБиВМ</h1><p>Институт биотехнологии</p>', 'institute'),
+            ('admission_regulations', 'Нормативные документы', '<h2>Нормативные документы</h2><ul><li>Правила приема</li><li>Перечень вступительных испытаний</li></ul>', 'applicant_section'),
+            ('exam_schedule', 'Расписание экзаменов', '<p>Расписание вступительных испытаний будет опубликовано</p>', 'applicant_section'),
+            ('enrollment_info', 'Сведения о зачислении', '<p>Сведения о зачислении будут опубликованы</p>', 'applicant_section'),
+            ('university_popechitelskiy', 'Попечительский совет', '<h2>Попечительский совет</h2><p>Создан для содействия развитию университета</p>', 'info_page'),
+            ('university_anticorruption', 'Противодействие коррупции', '<h2>Противодействие коррупции</h2><p>Телефон доверия: +7 (391) 227-09-81</p>', 'info_page'),
+            ('university_parent_council', 'Совет родителей', '<h2>Совет родителей</h2><p>Email: parents@kgau.ru</p>', 'info_page'),
+            ('university_vesti_archive', 'Архив журнала', '<h2>Архив журнала</h2><p><a href="https://www.kgau.ru/university/nasha-pressa/archive/" target="_blank">Перейти к архиву →</a></p>', 'info_page'),
+        ]
+        
+        created = 0
+        for slug, title, content, template in pages_data:
+            if not Page.query.filter_by(slug=slug).first():
+                page = Page(slug=slug, title=title, content=content, template=template, published=True)
+                db.session.add(page)
+                created += 1
+        
+        db.session.commit()
+        
+        html = f"<h2>✅ Создано {created} страниц</h2><ul>"
+        for slug, title, _, _ in pages_data:
+            html += f'<li><a href="/new/{slug}">{title}</a> - /new/{slug}</li>'
+        html += "</ul><p><strong>Теперь удалите эти маршруты из app.py!</strong></p>"
+        return html
 
     return app
 
