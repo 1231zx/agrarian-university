@@ -1,58 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}Институты и кафедры - ООО Аграрный Университет{% endblock %}
+{% block title %}Институты и кафедры - Красноярский ГАУ{% endblock %}
 
 {% block content %}
-<div class="institutes-page">
-    <h1>Институты и кафедры</h1>
+<div class="institutes-page" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+    <h1 style="color: var(--primary-color); margin-bottom: 2rem;">Институты и кафедры</h1>
     
-    <!-- Вкладки институтов -->
-    <div class="institutes-tabs">
-        {% for institute in institutes %}
-        <button class="institute-tab-btn {% if loop.first %}active{% endif %}" data-institute="{{ institute.slug|replace('institute_', '') }}">
-            {{ institute.title }}
-        </button>
-        {% endfor %}
-    </div>
-    
-    <!-- Контент для каждого института -->
-    {% for institute in institutes %}
-    <div class="institute-content {% if loop.first %}active{% endif %}" id="institute-{{ institute.slug|replace('institute_', '') }}">
-        <div class="institute-header">
-            <h2>{{ institute.title }}</h2>
-            <div class="institute-info">
-                <p><strong>Директор:</strong> Информация уточняется</p>
-                <p><strong>Телефон:</strong> (391) 227-09-70</p>
-                <p><strong>Email:</strong> info@kgau.ru</p>
+    {% if institutes %}
+        <div style="display: grid; gap: 1.5rem;">
+            {% for institute in institutes %}
+            <div style="background: var(--beige-light); border-radius: 15px; padding: 1.5rem; transition: transform 0.2s;">
+                <h2 style="color: var(--primary-color); margin-top: 0;">🏛️ {{ institute.title }}</h2>
+                
+                <div style="margin-top: 1rem;">
+                    <a href="/new/{{ institute.slug }}" class="btn-institute" style="display: inline-block; background: var(--accent-color); color: white; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none;">Подробнее об институте →</a>
+                </div>
             </div>
-            <a href="{{ url_for('dynamic_page', slug=institute.slug) }}" class="btn-institute">Подробнее об институте →</a>
-        </div>
-        
-        <h3>Кафедры института</h3>
-        <div class="departments-grid">
-            {% for dept in institute.children %}
-            <div class="department-card" onclick="location.href='{{ url_for('dynamic_page', slug=dept.slug) }}'">
-                <h4>{{ dept.title }}</h4>
-                <span class="more">Подробнее →</span>
-            </div>
-            {% else %}
-            <p>Нет добавленных кафедр</p>
             {% endfor %}
         </div>
-    </div>
-    {% endfor %}
+    {% else %}
+        <p>Институты не найдены</p>
+    {% endif %}
 </div>
-<script>
-document.querySelectorAll('.institute-tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.institute-tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const instituteId = btn.getAttribute('data-institute');
-        document.querySelectorAll('.institute-content').forEach(content => {
-            content.classList.remove('active');
-        });
-        document.getElementById(`institute-${instituteId}`).classList.add('active');
-    });
-});
-</script>
 {% endblock %}

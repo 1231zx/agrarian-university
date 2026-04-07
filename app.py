@@ -290,21 +290,18 @@ def create_app():
 
     @app.route('/institutes')
     def institutes_page():
-        from collections import OrderedDict
-        
-        institutes_dict = OrderedDict()
+        # Используем словарь для уникальности по title
+        unique_institutes = {}
         
         for slug, data in PAGES.items():
             if data['template'] == 'institute' and data['title'] != 'Без названия':
-                # Используем title как ключ для уникальности
-                if data['title'] not in institutes_dict:
-                    institutes_dict[data['title']] = {
+                if data['title'] not in unique_institutes:
+                    unique_institutes[data['title']] = {
                         'title': data['title'],
-                        'slug': slug,
-                        'children': []
+                        'slug': slug
                     }
         
-        institutes = list(institutes_dict.values())
+        institutes = list(unique_institutes.values())
         
         return render_template('dynamic/institutes_page.html', institutes=institutes)
 
