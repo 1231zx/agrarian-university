@@ -14,7 +14,7 @@ import pdfplumber
 import json
 
 # Импортируем все статические страницы из сгенерированного файла
-from pages_data import PAGES
+from pages_data_fixed import PAGES
 
 def create_app():
     app = Flask(__name__)

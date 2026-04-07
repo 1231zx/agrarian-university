@@ -1,7 +1,7 @@
-# Автоматически сгенерированный файл со всеми страницами
+# Автоматически сгенерированный файл со всеми страницами (ИСПРАВЛЕННЫЙ)
 PAGES = {
     'academic_council': {
-        'title': 'Без названия',
+        'title': 'Ученый совет',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -112,7 +112,7 @@ PAGES = {
 </section>''',
     },
     'additional_education': {
-        'title': 'Без названия',
+        'title': 'Дополнительное профессиональное образование',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -229,7 +229,7 @@ PAGES = {
 </section>''',
     },
     'admission_addresses': {
-        'title': 'Без названия',
+        'title': 'Адреса приема документов',
         'template': 'applicant_section',
         'parent': 'applicant_main',
         'content': '''<section class="page-header">
@@ -280,7 +280,7 @@ PAGES = {
 </section>''',
     },
     'admission_committee': {
-        'title': 'Без названия',
+        'title': 'Приемная комиссия',
         'template': 'applicant_section',
         'parent': 'applicant_main',
         'content': '''<div class="page-content">
@@ -314,7 +314,7 @@ PAGES = {
 </div>''',
     },
     'admission_docs': {
-        'title': 'Без названия',
+        'title': 'Документы для поступления',
         'template': 'applicant_section',
         'parent': 'applicant_main',
         'content': '''<section class="page-header">
@@ -363,7 +363,7 @@ PAGES = {
 </section>''',
     },
     'admission_faq': {
-        'title': 'Без названия',
+        'title': 'Вопросы и ответы',
         'template': 'applicant_section',
         'parent': 'applicant_main',
         'content': '''<section class="page-header">
@@ -415,7 +415,7 @@ PAGES = {
 </section>''',
     },
     'admission_info': {
-        'title': 'Без названия',
+        'title': 'Информация для поступающего',
         'template': 'applicant_section',
         'parent': 'university_main',
         'content': '''<div class="admission-info-page">
@@ -532,7 +532,7 @@ PAGES = {
 </div>''',
     },
     'admission_info_detail': {
-        'title': 'Без названия',
+        'title': 'Целевое обучение',
         'template': 'applicant_section',
         'parent': 'applicant_main',
         'content': '''<section class="page-header">
@@ -581,7 +581,7 @@ PAGES = {
 </section>''',
     },
     'admission_regulations': {
-        'title': 'Без названия',
+        'title': 'Нормативные документы',
         'template': 'applicant_section',
         'parent': 'applicant_main',
         'content': '''<div class="page-content">
@@ -608,7 +608,7 @@ PAGES = {
 </div>''',
     },
     'agro_classes': {
-        'title': 'Без названия',
+        'title': 'Агроклассы',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -688,7 +688,7 @@ PAGES = {
 </section>''',
     },
     'alumni': {
-        'title': 'Без названия',
+        'title': 'Выпускникам',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -759,7 +759,7 @@ PAGES = {
 </section>''',
     },
     'applicant_lists': {
-        'title': 'Без названия',
+        'title': 'Списки лиц, подавших документы',
         'template': 'applicant_section',
         'parent': 'applicant_main',
         'content': '''<div class="page-content">
@@ -893,7 +893,7 @@ document.querySelectorAll('.list-card').forEach(card => {
 </div>''',
     },
     'applicant_main': {
-        'title': 'Без названия',
+        'title': 'Поступающему',
         'template': 'applicant_section',
         'parent': 'university_main',
         'content': '''<div class="applicant-page">
@@ -957,7 +957,7 @@ document.querySelectorAll('.applicant-card').forEach(card => {
 </script>''',
     },
     'attestation': {
-        'title': 'Без названия',
+        'title': 'Государственная научная аттестация',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -1028,7 +1028,7 @@ document.querySelectorAll('.applicant-card').forEach(card => {
 </section>''',
     },
     'bonuses': {
-        'title': 'Без названия',
+        'title': 'Индивидуальные достижения',
         'template': 'info_page',
         'parent': None,
         'content': '''<div class="page-content">
@@ -1085,7 +1085,7 @@ document.querySelectorAll('.applicant-card').forEach(card => {
 </div>''',
     },
     'candidate_exams': {
-        'title': 'Без названия',
+        'title': 'Кандидатские экзамены',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -1165,7 +1165,7 @@ document.querySelectorAll('.applicant-card').forEach(card => {
 </section>''',
     },
     'career_guidance': {
-        'title': 'Без названия',
+        'title': 'Профориентационная работа',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -1275,7 +1275,7 @@ document.querySelectorAll('.applicant-card').forEach(card => {
 </section>''',
     },
     'competition_lists': {
-        'title': 'Без названия',
+        'title': 'Конкурсные списки',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -1358,7 +1358,7 @@ document.querySelectorAll('.applicant-card').forEach(card => {
 </section>''',
     },
     'conferences': {
-        'title': 'Без названия',
+        'title': 'Научные конференции',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -1457,7 +1457,7 @@ document.querySelectorAll('.applicant-card').forEach(card => {
 </section>''',
     },
     'contacts_departments': {
-        'title': 'Без названия',
+        'title': 'Контакты подразделений',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -1662,7 +1662,7 @@ document.querySelectorAll('.applicant-card').forEach(card => {
 </section>''',
     },
     'cossack': {
-        'title': 'Без названия',
+        'title': 'Казачья сотня',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -1881,7 +1881,7 @@ document.querySelectorAll('.applicant-card').forEach(card => {
 </section>''',
     },
     'disabled_info': {
-        'title': 'Без названия',
+        'title': 'Информация для лиц с ОВЗ',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -1928,7 +1928,7 @@ document.querySelectorAll('.applicant-card').forEach(card => {
 </section>''',
     },
     'dissertations': {
-        'title': 'Без названия',
+        'title': 'Диссертационные работы',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -1975,7 +1975,7 @@ document.querySelectorAll('.applicant-card').forEach(card => {
 </section>''',
     },
     'doctoral': {
-        'title': 'Без названия',
+        'title': 'Докторантура',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -2072,7 +2072,7 @@ document.querySelectorAll('.applicant-card').forEach(card => {
 </div>''',
     },
     'dormitory': {
-        'title': 'Без названия',
+        'title': 'Общежитие',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -2260,7 +2260,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function updatePreview() {
         const content = contentInput.value;
-        const paragraphs = content.split('\n\n');
+        const paragraphs = content.split('
+
+');
         let html = `<h2 style="color: var(--primary-color); margin-bottom: 1rem;">${titleInput.value}</h2>`;
         
         paragraphs.forEach(para => {
@@ -2338,7 +2340,7 @@ function showNotification(message, type = 'success') {
 </script>''',
     },
     'educational_activity': {
-        'title': 'Без названия',
+        'title': 'Образовательная деятельность',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -2430,7 +2432,7 @@ function showNotification(message, type = 'success') {
 </section>''',
     },
     'employee': {
-        'title': 'Без названия',
+        'title': 'Сотруднику',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -2473,7 +2475,7 @@ function showNotification(message, type = 'success') {
 </section>''',
     },
     'employer': {
-        'title': 'Без названия',
+        'title': 'Работодателю',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -2534,7 +2536,7 @@ function showNotification(message, type = 'success') {
 </section>''',
     },
     'endowment': {
-        'title': 'Без названия',
+        'title': 'Эндаумент фонд',
         'template': 'info_page',
         'parent': None,
         'content': '''<div class="page-content">
@@ -2560,7 +2562,7 @@ function showNotification(message, type = 'success') {
 </div>''',
     },
     'enrollment_info': {
-        'title': 'Без названия',
+        'title': 'Сведения о зачислении',
         'template': 'info_page',
         'parent': None,
         'content': '''<div class="page-content">
@@ -2683,7 +2685,7 @@ document.querySelectorAll('.enrollment-card').forEach(card => {
 </div>''',
     },
     'entrance_tests': {
-        'title': 'Без названия',
+        'title': 'Вступительные испытания',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -2810,7 +2812,7 @@ document.querySelectorAll('.enrollment-card').forEach(card => {
 </section>''',
     },
     'exam_schedule': {
-        'title': 'Без названия',
+        'title': 'Расписание экзаменов',
         'template': 'info_page',
         'parent': None,
         'content': '''<div class="page-content">
@@ -2831,7 +2833,7 @@ document.querySelectorAll('.enrollment-card').forEach(card => {
 </div>''',
     },
     'grants': {
-        'title': 'Без названия',
+        'title': 'Гранты и конкурсы',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -2933,7 +2935,7 @@ document.querySelectorAll('.enrollment-card').forEach(card => {
 </section>''',
     },
     'inclusive_education': {
-        'title': 'Без названия',
+        'title': 'Инклюзивное образование',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -3461,7 +3463,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </script>''',
     },
     'institute_achinsk': {
-        'title': 'Без названия',
+        'title': 'Ачинский филиал',
         'template': 'institute',
         'parent': 'university_main',
         'content': '''<section class="page-header">
@@ -3644,7 +3646,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'institute_agro': {
-        'title': 'Без названия',
+        'title': 'Институт агроэкологических технологий',
         'template': 'institute',
         'parent': 'university_main',
         'content': '''<section class="page-header">
@@ -4092,7 +4094,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'institute_biotech': {
-        'title': 'Без названия',
+        'title': 'Институт прикладной биотехнологии и ветеринарной медицины',
         'template': 'institute',
         'parent': 'university_main',
         'content': '''<section class="page-header">
@@ -4439,7 +4441,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'institute_economy': {
-        'title': 'Без названия',
+        'title': 'Институт экономики и управления АПК',
         'template': 'institute',
         'parent': 'university_main',
         'content': '''<section class="page-header">
@@ -4728,7 +4730,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'institute_engineering': {
-        'title': 'Без названия',
+        'title': 'Институт инженерных систем и энергетики',
         'template': 'institute',
         'parent': 'university_main',
         'content': '''<section class="page-header">
@@ -5167,7 +5169,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'institute_food': {
-        'title': 'Без названия',
+        'title': 'Институт пищевых производств',
         'template': 'institute',
         'parent': 'university_main',
         'content': '''<section class="page-header">
@@ -5482,7 +5484,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'institute_land': {
-        'title': 'Без названия',
+        'title': 'Институт землеустройства, кадастров и природообустройства',
         'template': 'institute',
         'parent': 'university_main',
         'content': '''<section class="page-header">
@@ -5841,7 +5843,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'institute_law': {
-        'title': 'Без названия',
+        'title': 'Юридический институт',
         'template': 'institute',
         'parent': 'university_main',
         'content': '''<section class="page-header">
@@ -6328,7 +6330,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'international': {
-        'title': 'Без названия',
+        'title': 'Международное сотрудничество',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -6357,7 +6359,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'international_students': {
-        'title': 'Без названия',
+        'title': 'Ассоциация иностранных студентов',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<section class="page-header">
@@ -6481,7 +6483,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'jalinga': {
-        'title': 'Без названия',
+        'title': 'Видеостудия Jalinga',
         'template': 'info_page',
         'parent': None,
         'content': '''<div class="page-content">
@@ -6507,7 +6509,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </div>''',
     },
     'laboratories': {
-        'title': 'Без названия',
+        'title': 'Инновационные лаборатории',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -6617,7 +6619,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'leadership': {
-        'title': 'Без названия',
+        'title': 'Руководство университета',
         'template': 'info_page',
         'parent': 'university_main',
         'content': '''<section class="page-header">
@@ -6694,7 +6696,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'library': {
-        'title': 'Без названия',
+        'title': 'Научная библиотека',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -6808,7 +6810,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </div>''',
     },
     'olympiads': {
-        'title': 'Без названия',
+        'title': 'Олимпиады и конкурсы',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -6928,7 +6930,8 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
     <div class="container">
         <div class="content-block" id="page-content">
             {% if page_content %}
-                {% set paragraphs = page_content.split('\n') %}
+                {% set paragraphs = page_content.split('
+') %}
                 {% set ns = namespace(in_list=false) %}
                 
                 {% for para in paragraphs %}
@@ -7012,7 +7015,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'paid_education': {
-        'title': 'Без названия',
+        'title': 'Платное обучение',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -7065,7 +7068,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'payment': {
-        'title': 'Без названия',
+        'title': 'Оплата обучения',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -7165,7 +7168,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'postgraduate': {
-        'title': 'Без названия',
+        'title': 'Аспирантура',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -7344,7 +7347,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </div>''',
     },
     'preparatory_courses': {
-        'title': 'Без названия',
+        'title': 'Подготовительные курсы',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -7490,7 +7493,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'professionalitet': {
-        'title': 'Без названия',
+        'title': 'Проект "Профессионалитет"',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -7657,7 +7660,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </div>''',
     },
     'psychologist': {
-        'title': 'Без названия',
+        'title': 'Психолог',
         'template': 'info_page',
         'parent': None,
         'content': '''<div class="page-content">
@@ -7794,7 +7797,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'school_awards': {
-        'title': 'Без названия',
+        'title': 'Награды и достижения',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -7867,7 +7870,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'school_conferences': {
-        'title': 'Без названия',
+        'title': 'Конференции для школьников',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -7955,7 +7958,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'school_info': {
-        'title': 'Без названия',
+        'title': 'Школьнику',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -8023,7 +8026,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'school_news': {
-        'title': 'Без названия',
+        'title': 'Новости для школьников',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
@@ -8080,7 +8083,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'science': {
-        'title': 'Без названия',
+        'title': 'Научная деятельность',
         'template': 'science_section',
         'parent': 'science_main',
         'content': '''<section class="page-header">
@@ -8185,7 +8188,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'science_news': {
-        'title': 'Без названия',
+        'title': 'Новости науки',
         'template': 'science_section',
         'parent': 'science_main',
         'content': '''<section class="page-header">
@@ -8249,7 +8252,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'science_schools': {
-        'title': 'Без названия',
+        'title': 'Научные школы',
         'template': 'science_section',
         'parent': 'science_main',
         'content': '''<section class="page-header">
@@ -8348,7 +8351,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'science_supervisors': {
-        'title': 'Без названия',
+        'title': 'Научные руководители',
         'template': 'science_section',
         'parent': 'science_main',
         'content': '''<section class="page-header">
@@ -8440,7 +8443,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'social_support': {
-        'title': 'Без названия',
+        'title': 'Социальная защита',
         'template': 'info_page',
         'parent': None,
         'content': '''<div class="page-content">
@@ -8466,7 +8469,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </div>''',
     },
     'sports_life': {
-        'title': 'Без названия',
+        'title': 'Спортивная жизнь',
         'template': 'info_page',
         'parent': None,
         'content': '''<div class="page-content">
@@ -8482,7 +8485,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </div>''',
     },
     'structure': {
-        'title': 'Без названия',
+        'title': 'Структура университета',
         'template': 'info_page',
         'parent': 'university_main',
         'content': '''<section class="page-header">
@@ -8544,7 +8547,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </section>''',
     },
     'student_calendar': {
-        'title': 'Без названия',
+        'title': 'Календарный график',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<div class="page-content">
@@ -8580,7 +8583,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </div>''',
     },
     'student_council': {
-        'title': 'Без названия',
+        'title': 'Студенческий совет',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<div class="page-content">
@@ -8617,7 +8620,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </div>''',
     },
     'student_educational_resources': {
-        'title': 'Без названия',
+        'title': 'Образовательные ресурсы',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<div class="page-content">
@@ -8665,7 +8668,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </div>''',
     },
     'student_faq': {
-        'title': 'Без названия',
+        'title': 'Часто задаваемые вопросы',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<div class="page-content">
@@ -8707,7 +8710,7 @@ document.querySelectorAll('.institute-tab-btn').forEach(btn => {
 </div>''',
     },
     'student_main': {
-        'title': 'Без названия',
+        'title': 'Студенту',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<div class="student-page">
@@ -8793,7 +8796,7 @@ document.querySelectorAll('.student-card').forEach(card => {
 </script>''',
     },
     'student_mass_courses': {
-        'title': 'Без названия',
+        'title': 'Зачёт массовых онлайн-курсов',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<div class="page-content">
@@ -8837,7 +8840,7 @@ document.querySelectorAll('.student-card').forEach(card => {
 </div>''',
     },
     'student_practice_bases': {
-        'title': 'Без названия',
+        'title': 'Базы практик',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<div class="page-content">
@@ -8877,7 +8880,7 @@ document.querySelectorAll('.student-card').forEach(card => {
 </div>''',
     },
     'student_practice_dates': {
-        'title': 'Без названия',
+        'title': 'Сроки практик',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<div class="page-content">
@@ -8911,7 +8914,7 @@ document.querySelectorAll('.student-card').forEach(card => {
 </div>''',
     },
     'student_practice_docs': {
-        'title': 'Без названия',
+        'title': 'Документы по практике',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<div class="page-content">
@@ -8941,7 +8944,7 @@ document.querySelectorAll('.student-card').forEach(card => {
 </div>''',
     },
     'student_practice_instruction': {
-        'title': 'Без названия',
+        'title': 'Инструктаж перед практикой',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<div class="page-content">
@@ -8977,7 +8980,7 @@ document.querySelectorAll('.student-card').forEach(card => {
 </div>''',
     },
     'student_practice_requests': {
-        'title': 'Без названия',
+        'title': 'Заявки от работодателей',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<div class="page-content">
@@ -9016,7 +9019,7 @@ document.querySelectorAll('.student-card').forEach(card => {
 </div>''',
     },
     'student_practice_survey': {
-        'title': 'Без названия',
+        'title': 'Анкета по практике',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<div class="page-content">
@@ -9092,7 +9095,7 @@ document.querySelectorAll('.student-card').forEach(card => {
 </div>''',
     },
     'student_projects': {
-        'title': 'Без названия',
+        'title': 'Проектная деятельность',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<div class="page-content">
@@ -9128,7 +9131,7 @@ document.querySelectorAll('.student-card').forEach(card => {
 </div>''',
     },
     'student_regulations': {
-        'title': 'Без названия',
+        'title': 'Нормативные документы',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<div class="page-content">
@@ -9160,7 +9163,7 @@ document.querySelectorAll('.student-card').forEach(card => {
 </div>''',
     },
     'student_scholarships': {
-        'title': 'Без названия',
+        'title': 'Стипендии',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<div class="page-content">
@@ -9203,7 +9206,7 @@ document.querySelectorAll('.student-card').forEach(card => {
 </div>''',
     },
     'student_survey': {
-        'title': 'Без названия',
+        'title': 'Анкетирование',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<div class="page-content">
@@ -9231,7 +9234,7 @@ document.querySelectorAll('.student-card').forEach(card => {
 </div>''',
     },
     'student_teams': {
-        'title': 'Без названия',
+        'title': 'Студенческие отряды',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<section class="page-header">
@@ -9332,7 +9335,7 @@ document.querySelectorAll('.student-card').forEach(card => {
 </section>''',
     },
     'student_textbooks': {
-        'title': 'Без названия',
+        'title': 'Учебные пособия',
         'template': 'student_section',
         'parent': 'student_main',
         'content': '''<div class="page-content">
@@ -9364,7 +9367,7 @@ document.querySelectorAll('.student-card').forEach(card => {
 </div>''',
     },
     'target_education': {
-        'title': 'Без названия',
+        'title': 'Целевое обучение',
         'template': 'info_page',
         'parent': None,
         'content': '''<div class="page-content">
@@ -9400,7 +9403,7 @@ document.querySelectorAll('.student-card').forEach(card => {
 </div>''',
     },
     'university_anticorruption': {
-        'title': 'Без названия',
+        'title': 'Противодействие коррупции',
         'template': 'info_page',
         'parent': 'university_main',
         'content': '''<div class="page-content">
@@ -9529,7 +9532,7 @@ document.querySelectorAll('.student-card').forEach(card => {
 </section>''',
     },
     'university_main': {
-        'title': 'Без названия',
+        'title': 'Университет',
         'template': 'info_page',
         'parent': 'university_main',
         'content': '''<div class="university-page">
@@ -9608,7 +9611,7 @@ document.querySelectorAll('.university-card').forEach(card => {
 </script>''',
     },
     'university_parent_council': {
-        'title': 'Без названия',
+        'title': 'Совет родителей',
         'template': 'info_page',
         'parent': 'university_main',
         'content': '''<div class="page-content">
@@ -9633,7 +9636,7 @@ document.querySelectorAll('.university-card').forEach(card => {
 </div>''',
     },
     'university_popechitelskiy': {
-        'title': 'Без названия',
+        'title': 'Попечительский совет',
         'template': 'info_page',
         'parent': 'university_main',
         'content': '''<div class="page-content">
@@ -9655,7 +9658,7 @@ document.querySelectorAll('.university-card').forEach(card => {
 </div>''',
     },
     'university_press': {
-        'title': 'Без названия',
+        'title': 'Наша пресса',
         'template': 'info_page',
         'parent': 'university_main',
         'content': '''<div class="page-content">
@@ -9685,7 +9688,7 @@ document.querySelectorAll('.university-card').forEach(card => {
 </div>''',
     },
     'university_press_center': {
-        'title': 'Без названия',
+        'title': 'Пресс-центр',
         'template': 'info_page',
         'parent': 'university_main',
         'content': '''<div class="page-content">
@@ -9731,7 +9734,7 @@ document.querySelectorAll('.university-card').forEach(card => {
 </div>''',
     },
     'university_today': {
-        'title': 'Без названия',
+        'title': 'Университет сегодня',
         'template': 'info_page',
         'parent': 'university_main',
         'content': '''<section class="page-header">
@@ -9792,7 +9795,7 @@ document.querySelectorAll('.university-card').forEach(card => {
 </section>''',
     },
     'university_vesti': {
-        'title': 'Без названия',
+        'title': 'Журнал «Вести Красноярского ГАУ»',
         'template': 'info_page',
         'parent': 'university_main',
         'content': '''<div class="page-content">
@@ -9807,7 +9810,7 @@ document.querySelectorAll('.university-card').forEach(card => {
 </div>''',
     },
     'university_vesti_archive': {
-        'title': 'Без названия',
+        'title': 'Архив журнала',
         'template': 'info_page',
         'parent': 'university_main',
         'content': '''<div class="page-content">
@@ -9822,7 +9825,7 @@ document.querySelectorAll('.university-card').forEach(card => {
 </div>''',
     },
     'volunteer': {
-        'title': 'Без названия',
+        'title': 'Волонтерский центр',
         'template': 'info_page',
         'parent': None,
         'content': '''<section class="page-header">
