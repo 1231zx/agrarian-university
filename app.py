@@ -43,7 +43,6 @@ def create_app():
         try:
             db.session.execute(text('SELECT 1'))
             print("✅ Подключение к PostgreSQL успешно!")
-            # СОЗДАЁМ ТАБЛИЦЫ ПРИ ЗАПУСКЕ
             db.create_all()
             print("✅ Таблицы созданы/проверены")
         except Exception as e:
@@ -259,6 +258,93 @@ def create_app():
         icons = {'.pdf': '📄', '.xls': '📊', '.xlsx': '📊', '.doc': '📝', '.docx': '📝'}
         return icons.get(ext.lower(), '📁')
 
+    # ==================== ВРЕМЕННЫЙ МАРШРУТ ДЛЯ ИМПОРТА СТРАНИЦ ====================
+    @app.route('/create-all-pages')
+    def create_all_pages():
+        from models import db, Page
+        
+        pages_list = [
+            # Основные разделы
+            ('university_main', 'Университет', 'info_page', None),
+            ('applicant_main', 'Поступающему', 'applicant_section', None),
+            ('student_main', 'Студенту', 'student_section', None),
+            ('science_main', 'Наука', 'science_section', None),
+            
+            # Страницы Университета (родитель: university_main)
+            ('university_popechitelskiy', 'Попечительский совет', 'info_page', 'university_main'),
+            ('university_anticorruption', 'Противодействие коррупции', 'info_page', 'university_main'),
+            ('university_parent_council', 'Совет родителей', 'info_page', 'university_main'),
+            ('university_vesti_archive', 'Архив журнала «Вести Красноярского ГАУ»', 'info_page', 'university_main'),
+            
+            # Страницы Поступающему (родитель: applicant_main)
+            ('admission_regulations', 'Нормативные документы', 'applicant_section', 'applicant_main'),
+            ('exam_schedule', 'Расписание экзаменов', 'applicant_section', 'applicant_main'),
+            ('enrollment_info', 'Сведения о зачислении', 'applicant_section', 'applicant_main'),
+            
+            # Институты
+            ('institute_agro', 'Институт агроэкологических технологий', 'institute', None),
+            ('institute_biotech', 'Институт прикладной биотехнологии и ветеринарной медицины', 'institute', None),
+            ('institute_economy', 'Институт экономики и управления АПК', 'institute', None),
+            ('institute_engineering', 'Институт инженерных систем и энергетики', 'institute', None),
+            ('institute_food', 'Институт пищевых производств', 'institute', None),
+            ('institute_land', 'Институт землеустройства, кадастров и природообустройства', 'institute', None),
+            ('institute_law', 'Юридический институт', 'institute', None),
+            ('institute_achinsk', 'Ачинский филиал', 'institute', None),
+        ]
+        
+        # Контент для каждой страницы
+        contents = {
+            'university_main': '<h1>Университет</h1><p>Красноярский государственный аграрный университет</p>',
+            'applicant_main': '<h1>Поступающему</h1><p>Информация для поступающих в Красноярский ГАУ</p>',
+            'student_main': '<h1>Студенту</h1><p>Информация для студентов</p>',
+            'science_main': '<h1>Наука и инновации</h1><p>Научная деятельность университета</p>',
+            'university_popechitelskiy': '<h2>Попечительский совет</h2><p>Попечительский совет Красноярского ГАУ создан для содействия развитию университета</p>',
+            'university_anticorruption': '<h2>Противодействие коррупции</h2><p>Телефон доверия: +7 (391) 227-09-81<br>Email: anticorruption@kgau.ru</p>',
+            'university_parent_council': '<h2>Совет родителей</h2><p>Email: parents@kgau.ru</p>',
+            'university_vesti_archive': '<h2>Архив журнала «Вести Красноярского ГАУ»</h2><p><a href="https://www.kgau.ru/university/nasha-pressa/archive/" target="_blank">Перейти к архиву →</a></p>',
+            'admission_regulations': '<h2>Нормативные документы</h2><ul><li>Правила приема в Красноярский ГАУ на 2026 год</li><li>Перечень вступительных испытаний</li><li>Порядок учета индивидуальных достижений</li></ul>',
+            'exam_schedule': '<h2>Расписание экзаменов</h2><p>Расписание вступительных испытаний будет опубликовано после завершения приема документов.</p><p><strong>Телефон для справок:</strong> +7 (391) 222-07-68</p>',
+            'enrollment_info': '<h2>Сведения о зачислении</h2><p>Информация о зачислении будет опубликована после завершения вступительных испытаний.</p><p><strong>Телефон для справок:</strong> +7 (391) 222-07-68</p>',
+            'institute_agro': '<h1>Институт агроэкологических технологий</h1><p>Подготовка специалистов в области растениеводства, агрохимии, экологии и природопользования</p>',
+            'institute_biotech': '<h1>Институт прикладной биотехнологии и ветеринарной медицины</h1><p>Подготовка ветеринарных врачей, биотехнологов и зоотехников</p>',
+            'institute_economy': '<h1>Институт экономики и управления АПК</h1><p>Подготовка экономистов, менеджеров и управленцев для АПК</p>',
+            'institute_engineering': '<h1>Институт инженерных систем и энергетики</h1><p>Подготовка инженеров для сельского хозяйства</p>',
+            'institute_food': '<h1>Институт пищевых производств</h1><p>Подготовка технологов пищевой промышленности</p>',
+            'institute_land': '<h1>Институт землеустройства, кадастров и природообустройства</h1><p>Подготовка землеустроителей, кадастровых инженеров</p>',
+            'institute_law': '<h1>Юридический институт</h1><p>Подготовка юристов и судебных экспертов</p>',
+            'institute_achinsk': '<h1>Ачинский филиал</h1><p>Филиал Красноярского ГАУ в г. Ачинск</p>',
+        }
+        
+        created = 0
+        skipped = 0
+        
+        for slug, title, template, parent_slug in pages_list:
+            if Page.query.filter_by(slug=slug).first():
+                skipped += 1
+                continue
+            
+            parent_id = None
+            if parent_slug:
+                parent = Page.query.filter_by(slug=parent_slug).first()
+                if parent:
+                    parent_id = parent.id
+            
+            content = contents.get(slug, f'<h1>{title}</h1><p>Содержание страницы в разработке</p>')
+            
+            page = Page(
+                slug=slug,
+                title=title,
+                content=content,
+                template=template,
+                parent_id=parent_id,
+                published=True
+            )
+            db.session.add(page)
+            created += 1
+        
+        db.session.commit()
+        return f"✅ Создано {created} страниц. Пропущено (уже есть): {skipped}. Теперь удалите этот маршрут!"
+
     # ==================== МАРШРУТЫ АДМИН ПАНЕЛИ ====================
     @app.route('/admin/page/create', methods=['GET', 'POST'])
     @login_required
@@ -323,7 +409,6 @@ def create_app():
     @app.route('/new/<slug>')
     def dynamic_page(slug):
         page = Page.query.filter_by(slug=slug, published=True).first_or_404()
-        print(f"DEBUG: rendering page {slug} with template {page.template}")  # <-- ДОБАВЬТЕ
         children = Page.query.filter_by(parent_id=page.id, published=True).order_by(Page.menu_order).all()
         return render_template(f'dynamic/{page.template}.html', page=page, children=children)
 
@@ -438,7 +523,6 @@ def create_app():
         results = []
         seen_urls = set()
         
-        # 1. Поиск по динамическим страницам (институты, кафедры, разделы)
         pages = Page.query.filter(
             db.or_(
                 Page.title.ilike(f'%{query}%'),
@@ -452,7 +536,6 @@ def create_app():
             url = url_for('dynamic_page', slug=page.slug)
             if url not in seen_urls:
                 seen_urls.add(url)
-                # Определяем тип страницы
                 page_type = page.template
                 type_ru = {
                     'institute': 'Институт',
@@ -464,7 +547,6 @@ def create_app():
                     'science_section': 'Раздел'
                 }.get(page_type, 'Страница')
                 
-                # Находим родителя для кафедр
                 parent_name = ''
                 if page.parent_id:
                     parent = Page.query.get(page.parent_id)
@@ -480,7 +562,6 @@ def create_app():
                     'icon': get_icon_for_template(page.template)
                 })
         
-        # 2. Поиск по программам обучения
         programs = Program.query.filter(
             db.or_(
                 Program.name.ilike(f'%{query}%'),
@@ -502,7 +583,6 @@ def create_app():
                     'icon': '📚'
                 })
         
-        # 3. Поиск по новостям
         news = News.query.filter(
             db.or_(
                 News.title.ilike(f'%{query}%'),
@@ -524,7 +604,6 @@ def create_app():
                     'icon': '📰'
                 })
         
-        # 4. Поиск по расписанию (файлы)
         for f in os.listdir(RASP_FOLDER):
             filepath = os.path.join(RASP_FOLDER, f)
             if os.path.isfile(filepath) and query in f.lower():
@@ -541,7 +620,6 @@ def create_app():
                         'icon': '📅'
                     })
         
-        # Ограничиваем результаты
         results = results[:25]
         return jsonify({'results': results})
 
@@ -566,7 +644,6 @@ def create_app():
         results = []
         seen_urls = set()
         
-        # Поиск по динамическим страницам
         pages = Page.query.filter(
             db.or_(
                 Page.title.ilike(f'%{query}%'),
@@ -606,7 +683,6 @@ def create_app():
                     'content_preview': page.content[:200] + '...' if len(page.content) > 200 else page.content
                 })
         
-        # Поиск по программам
         programs = Program.query.filter(
             db.or_(
                 Program.name.ilike(f'%{query}%'),
@@ -628,7 +704,6 @@ def create_app():
                     'content_preview': p.description[:200] + '...' if len(p.description) > 200 else p.description
                 })
         
-        # Поиск по новостям
         news = News.query.filter(
             db.or_(
                 News.title.ilike(f'%{query}%'),
@@ -650,7 +725,6 @@ def create_app():
                     'content_preview': n.content[:200] + '...' if len(n.content) > 200 else n.content
                 })
         
-        # Поиск по расписанию
         for f in os.listdir(RASP_FOLDER):
             filepath = os.path.join(RASP_FOLDER, f)
             if os.path.isfile(filepath) and query.lower() in f.lower():
@@ -669,7 +743,7 @@ def create_app():
         
         return render_template('search.html', query=query, all_results=results, total_results=len(results))
 
-    # ==================== СТАТИЧЕСКИЕ СТРАНИЦЫ (ОСТАВЛЯЕМ) ====================
+    # ==================== СТАТИЧЕСКИЕ СТРАНИЦЫ ====================
     @app.route('/')
     def index():
         return render_template('index.html')
@@ -886,8 +960,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    with app.app_context():
-        from models import db
-        db.create_all()
-        print("✅ Таблицы созданы/проверены")
     app.run(debug=True, host='0.0.0.0', port=5000, use_reloader=False)
