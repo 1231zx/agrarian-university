@@ -43,6 +43,9 @@ def create_app():
         try:
             db.session.execute(text('SELECT 1'))
             print("✅ Подключение к PostgreSQL успешно!")
+            # СОЗДАЁМ ТАБЛИЦЫ ПРИ ЗАПУСКЕ
+            db.create_all()
+            print("✅ Таблицы созданы/проверены")
         except Exception as e:
             print(f"❌ Ошибка подключения к PostgreSQL: {e}")
 
