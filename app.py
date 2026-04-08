@@ -12,7 +12,7 @@ import os
 import pandas as pd
 import pdfplumber
 import json
-from pages_data import PAGES
+
 
 def create_app():
     app = Flask(__name__)
@@ -564,12 +564,6 @@ def create_app():
     def profile():
         return render_template('profile.html', user=current_user)
 
-    @app.route('/new/<slug>')
-    def dynamic_page(slug):
-        page = Page.query.filter_by(slug=slug, published=True).first_or_404()
-        # Загружаем дочерние страницы (кафедры) для институтов
-        children = Page.query.filter_by(parent_id=page.id, published=True).order_by(Page.title).all()
-        return render_template(f'dynamic/{page.template}.html', page=page, children=children)
     return app
 
 if __name__ == '__main__':
