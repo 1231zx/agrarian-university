@@ -46,11 +46,6 @@ def create_app():
             print("✅ Подключение к PostgreSQL успешно!")
             db.create_all()
             print("✅ Таблицы созданы/проверены")
-            
-            # Создаем тестовые институты и кафедры, если их нет
-            if Page.query.filter_by(template='institute').count() == 0:
-                create_default_pages()
-                
         except Exception as e:
             print(f"❌ Ошибка подключения к PostgreSQL: {e}")
 
@@ -68,127 +63,245 @@ def create_app():
         'CPSSZ2.xls': {'title': 'ЦПССЗ - все курсы', 'description': 'Расписание для Центра подготовки специалистов среднего звена', 'institute': 'ЦПССЗ'},
         'IAT2.xls': {'title': 'ИАЭТ - все курсы', 'description': 'Институт агроэкологических технологий', 'institute': 'ИАЭТ'},
         'IEU2.xls': {'title': 'ИЭиУ АПК - все курсы', 'description': 'Институт экономики и управления АПК', 'institute': 'ИЭиУ АПК'},
+        'IEUv2.xls': {'title': 'ИЭиУ АПК - вечернее отделение', 'description': 'Институт экономики и управления АПК, вечерняя форма', 'institute': 'ИЭиУ АПК'},
         'IiSiE2.xlsx': {'title': 'ИИСиЭ - расписание', 'description': 'Институт информационных систем и инженерии', 'institute': 'ИИСиЭ'},
         'IPBVM2.xls': {'title': 'ИПБиВМ - все курсы', 'description': 'Институт прикладной биотехнологии', 'institute': 'ИПБиВМ'},
         'IPP2.xls': {'title': 'ИПП - все курсы', 'description': 'Институт пищевых производств', 'institute': 'ИПП'},
         'IZKP2.xls': {'title': 'ИЗКиП - все курсы', 'description': 'Институт землеустройства, кадастров', 'institute': 'ИЗКиП'},
         'UI2.xlsx': {'title': 'Юридический институт', 'description': 'Юридический институт', 'institute': 'ЮИ'},
+        'UIv2.xlsx': {'title': 'Юридический институт - вечернее отделение', 'description': 'Юридический институт, вечерняя форма', 'institute': 'ЮИ'},
     }
 
-    # ==================== ФУНКЦИЯ ДЛЯ СОЗДАНИЯ ВСЕХ СТРАНИЦ ====================
-    def create_default_pages():
-        # Полный список всех страниц
-        all_pages = [
-            ('university_main', 'Университет', 'university_section', None, '<h2>Красноярский государственный аграрный университет</h2><p>Ведущий аграрный вуз Сибири.</p>'),
-            ('student_main', 'Студенту', 'student_section', None, '<h2>Студенческая жизнь</h2>'),
-            ('applicant_main', 'Поступающему', 'applicant_section', None, '<h2>Поступающим</h2>'),
-            ('science', 'Научная деятельность', 'science_section', None, '<h2>Научная деятельность</h2><p>Красноярский ГАУ ведет активную научную деятельность.</p>'),
-            ('laboratories', 'Инновационные лаборатории', 'science_section', None, '<h2>Инновационные лаборатории</h2>'),
-            ('science_schools', 'Научные школы', 'science_section', None, '<h2>Научные школы</h2>'),
-            ('grants', 'Гранты и конкурсы', 'science_section', None, '<h2>Гранты и конкурсы</h2>'),
-            ('conferences', 'Конференции', 'science_section', None, '<h2>Конференции</h2>'),
-            ('science_news', 'Новости науки', 'science_section', None, '<h2>Новости науки</h2>'),
-            ('school_info', 'Информация для школьников', 'info_page', None, '<h2>Информация для школьников</h2>'),
-            ('olympiads', 'Олимпиады и конкурсы', 'info_page', None, '<h2>Олимпиады</h2>'),
-            ('preparatory_courses', 'Подготовительные курсы', 'info_page', None, '<h2>Подготовительные курсы</h2>'),
-            ('agro_classes', 'Агроклассы', 'info_page', None, '<h2>Агроклассы</h2>'),
-            ('career_guidance', 'Профориентационная работа', 'info_page', None, '<h2>Профориентация</h2>'),
-            ('school_awards', 'Наши награды', 'info_page', None, '<h2>Наши награды</h2>'),
-            ('postgraduate', 'Аспирантура', 'info_page', None, '<h2>Аспирантура</h2>'),
-            ('doctoral', 'Докторантура', 'info_page', None, '<h2>Докторантура</h2>'),
-            ('attestation', 'Аттестация', 'info_page', None, '<h2>Аттестация</h2>'),
-            ('candidate_exams', 'Кандидатские экзамены', 'info_page', None, '<h2>Кандидатские экзамены</h2>'),
-            ('dissertations', 'Диссертации', 'info_page', None, '<h2>Диссертации</h2>'),
-            ('science_supervisors', 'Научные руководители', 'info_page', None, '<h2>Научные руководители</h2>'),
-            ('employee', 'Сотруднику', 'info_page', None, '<h2>Сотруднику</h2>'),
-            ('employer', 'Работодателю', 'info_page', None, '<h2>Работодателю</h2>'),
-            ('alumni', 'Выпускнику', 'info_page', None, '<h2>Выпускнику</h2>'),
-            ('contacts_departments', 'Контакты подразделений', 'info_page', None, '<h2>Контакты подразделений</h2>'),
-        ]
-        
-        for slug, title, template, parent_slug, content in all_pages:
-            page = Page.query.filter_by(slug=slug).first()
-            if not page:
-                # Создаем новую страницу
-                page = Page(
-                    slug=slug,
-                    title=title,
-                    content=content,
-                    template=template,
-                    published=True
-                )
-                db.session.add(page)
-                print(f"✅ Создана страница: {slug}")
-            else:
-                # Обновляем существующую, если контент пустой
-                if not page.content or len(page.content) < 50:
-                    page.content = content
-                    page.title = title
-                    page.template = template
-                    page.published = True
-                    print(f"🔄 Обновлена страница: {slug}")
-        
-        # Создаем институты
-        institutes = [
-            ('institute_agro', 'Институт агроэкологических технологий', '<h2>Институт агроэкологических технологий</h2>'),
-            ('institute_economy', 'Институт экономики и управления АПК', '<h2>Институт экономики и управления АПК</h2>'),
-            ('institute_engineering', 'Институт инженерных систем и энергетики', '<h2>Институт инженерных систем и энергетики</h2>'),
-            ('institute_biotech', 'Институт прикладной биотехнологии', '<h2>Институт прикладной биотехнологии</h2>'),
-            ('institute_food', 'Институт пищевых производств', '<h2>Институт пищевых производств</h2>'),
-            ('institute_land', 'Институт землеустройства', '<h2>Институт землеустройства</h2>'),
-            ('institute_law', 'Юридический институт', '<h2>Юридический институт</h2>'),
-            ('institute_achinsk', 'Ачинский филиал', '<h2>Ачинский филиал</h2>'),
-        ]
-        
-        for slug, title, content in institutes:
-            if not Page.query.filter_by(slug=slug).first():
-                page = Page(slug=slug, title=title, content=content, template='institute', published=True)
-                db.session.add(page)
-                print(f"✅ Создан институт: {slug}")
-        
-        db.session.commit()
-        print("✅ Все страницы проверены/созданы")
-
     # ==================== ФУНКЦИИ ДЛЯ РАСПИСАНИЯ ====================
+    
+    def get_pdf_page_count(filename):
+        filepath = os.path.join(RASP_FOLDER, filename)
+        try:
+            with pdfplumber.open(filepath) as pdf:
+                return len(pdf.pages)
+        except:
+            return 0
+
+    def get_pdf_page_text(filename, page_num):
+        filepath = os.path.join(RASP_FOLDER, filename)
+        try:
+            if not os.path.exists(filepath):
+                return f"Файл не найден: {filename}"
+            with pdfplumber.open(filepath) as pdf:
+                if page_num < len(pdf.pages):
+                    page = pdf.pages[page_num]
+                    text = page.extract_text()
+                    return text if text else "Страница пуста"
+                else:
+                    return f"Страница {page_num + 1} не существует. Всего страниц: {len(pdf.pages)}"
+        except Exception as e:
+            return f"Ошибка загрузки страницы: {str(e)}"
+
     def read_excel_file(filename):
         filepath = os.path.join(RASP_FOLDER, filename)
         try:
             excel_file = pd.ExcelFile(filepath)
             html_parts = []
+            groups = {}
+            
             for sheet_name in excel_file.sheet_names:
                 df = pd.read_excel(filepath, sheet_name=sheet_name, header=None)
-                html_parts.append(f'<div class="schedule-sheet"><h3 class="schedule-sheet-title">{sheet_name}</h3><div class="schedule-readable-content">')
+                group_name = sheet_name
+                
+                # Определяем название группы
+                if 'групп' in sheet_name.lower() or 'курс' in sheet_name.lower():
+                    group_name = sheet_name
+                else:
+                    for idx in range(min(5, len(df))):
+                        row_text = ' '.join([str(cell) for cell in df.iloc[idx] if pd.notna(cell)])
+                        if 'группа' in row_text.lower() or 'групп' in row_text.lower():
+                            group_name = row_text[:50].strip()
+                            break
+                
+                lessons = []
                 for idx, row in df.iterrows():
                     if row.isna().all():
                         continue
                     cells = [str(cell).strip() for cell in row if pd.notna(cell) and str(cell).strip()]
                     if len(cells) >= 3:
                         lesson_type = 'practice'
-                        if 'лекц' in cells[1].lower():
+                        subject_lower = cells[1].lower() if len(cells) > 1 else ''
+                        if 'лекц' in subject_lower:
                             lesson_type = 'lecture'
-                        elif 'лаб' in cells[1].lower():
+                        elif 'лаб' in subject_lower:
                             lesson_type = 'lab'
-                        html_parts.append(f'<div class="schedule-lesson-card" data-type="{lesson_type}"><div class="schedule-lesson-time">{cells[0]}</div><div class="schedule-lesson-details"><span class="schedule-lesson-subject">{cells[1]}</span><span class="schedule-lesson-teacher">{cells[2]}</span>{f"<span class=\"schedule-lesson-room\">{cells[3]}</span>" if len(cells) > 3 else ""}</div></div>')
-                    elif len(cells) == 2:
-                        html_parts.append(f'<div class="schedule-info-row"><strong>{cells[0]}:</strong> {cells[1]}</div>')
-                    else:
-                        html_parts.append(f"<p class='schedule-text-line'>{cells[0]}</p>")
-                html_parts.append("</div></div>")
-            return "".join(html_parts)
+                        elif 'экзам' in subject_lower:
+                            lesson_type = 'exam'
+                        
+                        day_of_week = 'unknown'
+                        time_lower = cells[0].lower()
+                        if 'пн' in time_lower:
+                            day_of_week = 'mon'
+                        elif 'вт' in time_lower:
+                            day_of_week = 'tue'
+                        elif 'ср' in time_lower:
+                            day_of_week = 'wed'
+                        elif 'чт' in time_lower:
+                            day_of_week = 'thu'
+                        elif 'пт' in time_lower:
+                            day_of_week = 'fri'
+                        elif 'сб' in time_lower:
+                            day_of_week = 'sat'
+                        
+                        lessons.append({
+                            'time': cells[0],
+                            'subject': cells[1],
+                            'teacher': cells[2] if len(cells) > 2 else '',
+                            'room': cells[3] if len(cells) > 3 else '',
+                            'type': lesson_type,
+                            'day': day_of_week
+                        })
+                
+                if lessons:
+                    if group_name not in groups:
+                        groups[group_name] = []
+                    groups[group_name].extend(lessons)
+            
+            if groups:
+                unique_id = filename.replace('.', '_').replace(' ', '_').replace('-', '_')
+                
+                # Селектор выбора группы
+                html_parts.append('<div class="schedule-group-selector" data-unique="' + unique_id + '">')
+                html_parts.append('<label>Выберите группу:</label>')
+                html_parts.append('<select id="schedule-group-select-' + unique_id + '" class="schedule-group-select">')
+                
+                for i, group_name in enumerate(groups.keys()):
+                    selected = 'selected' if i == 0 else ''
+                    html_parts.append(f'<option value="{i}" {selected}>{group_name}</option>')
+                html_parts.append('</select></div>')
+                
+                # Для каждой группы создаем контейнер с расписанием
+                for i, (group_name, lessons) in enumerate(groups.items()):
+                    display_style = "block" if i == 0 else "none"
+                    
+                    # Группировка по дням недели
+                    lessons_by_day = {'mon': [], 'tue': [], 'wed': [], 'thu': [], 'fri': [], 'sat': [], 'sun': [], 'unknown': []}
+                    for lesson in lessons:
+                        day = lesson['day']
+                        if day in lessons_by_day:
+                            lessons_by_day[day].append(lesson)
+                        else:
+                            lessons_by_day['unknown'].append(lesson)
+                    
+                    html_parts.append(f'<div id="group-{unique_id}-{i}" class="schedule-group-container" style="display: {display_style};">')
+                    html_parts.append(f'<h3 class="schedule-group-title">{group_name}</h3>')
+                    
+                    # Переключатели дней недели
+                    html_parts.append('<div class="schedule-day-switcher-inner">')
+                    day_buttons = [('all','Все дни'),('mon','ПН'),('tue','ВТ'),('wed','СР'),('thu','ЧТ'),('fri','ПТ'),('sat','СБ')]
+                    for day_key, day_name in day_buttons:
+                        active = 'active' if day_key == 'all' else ''
+                        html_parts.append(f'<button class="day-btn-inner {active}" data-day="{day_key}">{day_name}</button>')
+                    html_parts.append('</div>')
+                    
+                    # Вывод занятий по дням
+                    day_names = {'mon':'Понедельник','tue':'Вторник','wed':'Среда','thu':'Четверг','fri':'Пятница','sat':'Суббота','unknown':'Другое'}
+                    for day_key, day_name in day_names.items():
+                        if lessons_by_day.get(day_key) and len(lessons_by_day[day_key]) > 0:
+                            html_parts.append(f'<div class="schedule-day-section" data-day="{day_key}">')
+                            html_parts.append(f'<h4 class="schedule-day-title">{day_name}</h4>')
+                            html_parts.append('<div class="schedule-lessons-list">')
+                            for lesson in lessons_by_day[day_key]:
+                                lesson_type_class = f'lesson-type-{lesson["type"]}'
+                                room_html = f'<span class="schedule-lesson-room">{lesson["room"]}</span>' if lesson['room'] else ''
+                                html_parts.append('<div class="schedule-lesson-card ' + lesson_type_class + '">')
+                                html_parts.append('<div class="schedule-lesson-time">' + lesson["time"] + '</div>')
+                                html_parts.append('<div class="schedule-lesson-details">')
+                                html_parts.append('<span class="schedule-lesson-subject">' + lesson["subject"] + '</span>')
+                                html_parts.append('<span class="schedule-lesson-teacher">' + lesson["teacher"] + '</span>')
+                                html_parts.append(room_html)
+                                html_parts.append('</div></div>')
+                            html_parts.append('</div></div>')
+                    
+                    html_parts.append('</div>')
+                
+                # JavaScript для переключения групп и дней
+                html_parts.append('''
+                <script>
+                    document.querySelectorAll(".schedule-group-select").forEach(sel => {
+                        sel.addEventListener("change", function() {
+                            let id = this.id.replace("schedule-group-select-", "");
+                            document.querySelectorAll(`[id^="group-${id}-"]`).forEach((c, i) => {
+                                c.style.display = i == this.value ? "block" : "none";
+                            });
+                            let grp = document.querySelector(`#group-${id}-${this.value}`);
+                            if (grp) {
+                                grp.querySelectorAll(".day-btn-inner").forEach(b => b.classList.remove("active"));
+                                let allBtn = grp.querySelector(".day-btn-inner[data-day='all']");
+                                if (allBtn) allBtn.classList.add("active");
+                                filterDaysInGroup(id, this.value, "all");
+                            }
+                        });
+                    });
+                    function filterDaysInGroup(uid, gidx, day) {
+                        let grp = document.querySelector(`#group-${uid}-${gidx}`);
+                        if (!grp) return;
+                        grp.querySelectorAll(".schedule-day-section").forEach(s => {
+                            s.style.display = (day === "all" || s.dataset.day === day) ? "block" : "none";
+                        });
+                    }
+                    document.querySelectorAll(".day-btn-inner").forEach(btn => {
+                        btn.addEventListener("click", function(e) {
+                            e.preventDefault();
+                            let parent = this.closest(".schedule-group-container");
+                            let gidx = parent.id.split("-").pop();
+                            let uid = parent.id.replace("group-", "").replace("-" + gidx, "");
+                            document.querySelectorAll("#group-" + uid + "-" + gidx + " .day-btn-inner").forEach(b => b.classList.remove("active"));
+                            this.classList.add("active");
+                            filterDaysInGroup(uid, gidx, this.dataset.day);
+                        });
+                    });
+                    document.querySelectorAll(".schedule-group-container").forEach((c, i) => {
+                        if (i === 0) filterDaysInGroup(c.id.split("-")[1], 0, "all");
+                    });
+                </script>
+                ''')
+                return "".join(html_parts)
+            
+            return read_excel_simple(filepath)
         except Exception as e:
             return f"<div class='schedule-error'>Ошибка чтения Excel: {str(e)}</div>"
 
-    def format_file_size(size_bytes):
-        if size_bytes < 1024:
-            return f"{size_bytes} Б"
-        elif size_bytes < 1024 * 1024:
-            return f"{size_bytes/1024:.1f} КБ"
-        else:
-            return f"{size_bytes/(1024*1024):.1f} МБ"
 
-    def get_file_icon(ext):
-        icons = {'.pdf': '📄', '.xls': '📊', '.xlsx': '📊'}
-        return icons.get(ext.lower(), '📁')
+def read_excel_simple(filepath):
+    try:
+        excel_file = pd.ExcelFile(filepath)
+        html_parts = []
+        for sheet_name in excel_file.sheet_names:
+            df = pd.read_excel(filepath, sheet_name=sheet_name, header=None)
+            html_parts.append('<div class="schedule-excel-sheet"><h3 class="schedule-sheet-title">' + sheet_name + '</h3><div class="schedule-readable-content">')
+            for idx, row in df.iterrows():
+                if row.isna().all():
+                    continue
+                cells = [str(cell).strip() for cell in row if pd.notna(cell) and str(cell).strip()]
+                if len(cells) >= 3:
+                    lesson_type = 'practice'
+                    subject_lower = cells[1].lower() if len(cells) > 1 else ''
+                    if 'лекц' in subject_lower:
+                        lesson_type = 'lecture'
+                    elif 'лаб' in subject_lower:
+                        lesson_type = 'lab'
+                    room_html = f'<span class="schedule-lesson-room">{cells[3]}</span>' if len(cells) > 3 else ''
+                    html_parts.append('<div class="schedule-lesson-card" data-type="' + lesson_type + '">')
+                    html_parts.append('<div class="schedule-lesson-time">' + cells[0] + '</div>')
+                    html_parts.append('<div class="schedule-lesson-details">')
+                    html_parts.append('<span class="schedule-lesson-subject">' + cells[1] + '</span>')
+                    html_parts.append('<span class="schedule-lesson-teacher">' + cells[2] + '</span>')
+                    html_parts.append(room_html)
+                    html_parts.append('</div></div>')
+                elif len(cells) == 2:
+                    html_parts.append('<div class="schedule-info-row"><strong>' + cells[0] + ':</strong> ' + cells[1] + '</div>')
+                else:
+                    html_parts.append('<p class="schedule-text-line">' + cells[0] + '</p>')
+            html_parts.append('</div></div>')
+        return "".join(html_parts)
+    except Exception as e:
+        return f"<div class='schedule-error'>Ошибка чтения Excel: {str(e)}</div>"
 
     # ==================== МАРШРУТЫ АДМИН ПАНЕЛИ ====================
     @app.route('/admin')
@@ -264,7 +377,6 @@ def create_app():
         page = Page.query.filter_by(slug=slug, published=True).first_or_404()
         children = Page.query.filter_by(parent_id=page.id, published=True).order_by(Page.menu_order).all()
         
-        # Список шаблонов, которые лежат в папке dynamic/
         dynamic_templates = ['applicant_section', 'department', 'info_page', 'institute', 'science_section', 'student_section', 'university_section']
         
         if page.template in dynamic_templates:
@@ -272,16 +384,11 @@ def create_app():
         else:
             return render_template(f'{page.template}.html', page=page, children=children)
 
-    # ==================== СТРАНИЦА ИНСТИТУТОВ ====================
     @app.route('/institutes')
     def institutes_page():
-        # Получаем все институты
         institutes = Page.query.filter_by(template='institute', published=True).all()
-        
-        # Загружаем кафедры для каждого института
         for institute in institutes:
             institute.children = Page.query.filter_by(parent_id=institute.id, template='department', published=True).all()
-        
         return render_template('dynamic/institutes_page.html', institutes=institutes)
 
     # ==================== МАРШРУТЫ РАСПИСАНИЯ ====================
@@ -320,18 +427,32 @@ def create_app():
         ext = os.path.splitext(filename)[1].lower()
         file_size = format_file_size(os.path.getsize(filepath))
         config = SCHEDULE_CONFIG.get(filename, {'title': filename, 'description': 'Расписание занятий', 'institute': 'Другое'})
+        
         if ext in ['.xls', '.xlsx']:
             content = read_excel_file(filename)
             return render_template('schedule_excel.html', filename=filename, file_title=config['title'],
                                  file_description=config['description'], file_institute=config['institute'],
-                                 content=content, file_size=file_size)
+                                 content=content, file_size=file_size, ext=ext)
         elif ext == '.pdf':
-            return render_template('schedule_pdf.html', filename=filename, file_title=config['title'],
+            total_pages = get_pdf_page_count(filename)
+            return render_template('schedule_pdf_improved.html', filename=filename, file_title=config['title'],
                                  file_description=config['description'], file_institute=config['institute'],
-                                 file_size=file_size)
+                                 total_pages=total_pages, file_size=file_size, ext=ext)
         else:
             flash('Неподдерживаемый формат файла', 'warning')
             return redirect(url_for('schedule_list'))
+
+    @app.route('/api/pdf/page')
+    def api_pdf_page():
+        filename = request.args.get('file')
+        page = request.args.get('page', 0, type=int)
+        if not filename:
+            return jsonify({'error': 'No filename', 'text': '', 'success': False}), 400
+        try:
+            text = get_pdf_page_text(filename, page)
+            return jsonify({'page': page, 'text': text, 'success': True})
+        except Exception as e:
+            return jsonify({'error': str(e), 'text': f'Ошибка загрузки страницы: {str(e)}', 'success': False}), 500
 
     # ==================== ДИНАМИЧЕСКИЙ ПОИСК ====================
     @app.route('/api/search')
@@ -555,6 +676,17 @@ def create_app():
     @login_required
     def profile():
         return render_template('profile.html', user=current_user)
+
+    # ==================== ВРЕМЕННЫЙ МАРШРУТ ДЛЯ СОЗДАНИЯ АДМИНА ====================
+    @app.route('/create-admin-now')
+    def create_admin_now():
+        from models import db, User
+        User.query.filter_by(username='admin').delete()
+        admin = User(username='admin', email='admin@kgau.ru', is_admin=True)
+        admin.set_password('admin123')
+        db.session.add(admin)
+        db.session.commit()
+        return "✅ Админ создан! Логин: admin, Пароль: admin123"
 
     return app
 
