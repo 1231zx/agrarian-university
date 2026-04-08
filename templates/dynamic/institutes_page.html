@@ -9,27 +9,22 @@
     {% if institutes %}
         <div style="display: grid; gap: 2rem;">
             {% for institute in institutes %}
-            <div style="background: var(--white); border-radius: 20px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid var(--beige-medium); transition: transform 0.3s;">
-                <h2 style="color: var(--primary-color); margin-top: 0; font-size: 1.5rem;">🏛️ {{ institute.title }}</h2>
-                
-                <!-- Краткое описание -->
-                <div style="color: var(--text-light); margin-bottom: 1rem; line-height: 1.6;">
-                    {{ institute.content|striptags|truncate(200) }}
-                </div>
+            <div style="background: var(--white); border-radius: 20px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid var(--beige-medium);">
+                <h2 style="color: var(--primary-color); margin-top: 0;">🏛️ {{ institute.title }}</h2>
                 
                 <!-- Кнопка "Подробнее об институте" -->
-                <div style="margin-bottom: 1.5rem;">
-                    <a href="{{ url_for('dynamic_page', slug=institute.slug) }}" style="display: inline-block; background: var(--gradient-primary); color: white; padding: 0.6rem 1.5rem; border-radius: 30px; text-decoration: none; font-weight: 500; transition: all 0.3s;">Подробнее об институте →</a>
+                <div style="margin: 1rem 0;">
+                    <a href="{{ url_for('dynamic_page', slug=institute.slug) }}" style="display: inline-block; background: var(--gradient-primary); color: white; padding: 0.6rem 1.5rem; border-radius: 30px; text-decoration: none; font-weight: 500;">Подробнее об институте →</a>
                 </div>
                 
                 <!-- Кафедры института -->
-                {% set departments = institute.children|selectattr("template", "equalto", "department")|list %}
+                {% set departments = institute.children|selectattr("template", "equalto", "department")|list if institute.children else [] %}
                 {% if departments %}
                     <div style="margin-top: 1rem;">
-                        <h3 style="color: var(--primary-dark); font-size: 1.1rem; margin-bottom: 0.8rem;">📚 Кафедры института:</h3>
+                        <h3 style="color: var(--primary-dark); font-size: 1rem; margin-bottom: 0.8rem;">📚 Кафедры института:</h3>
                         <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
                             {% for dept in departments %}
-                                <a href="{{ url_for('dynamic_page', slug=dept.slug) }}" style="background: var(--beige-light); color: var(--primary-color); padding: 0.4rem 1rem; border-radius: 20px; text-decoration: none; font-size: 0.9rem; transition: all 0.2s;">{{ dept.title }}</a>
+                                <a href="{{ url_for('dynamic_page', slug=dept.slug) }}" style="background: var(--beige-light); color: var(--primary-color); padding: 0.4rem 1rem; border-radius: 20px; text-decoration: none; font-size: 0.85rem; transition: all 0.2s;">{{ dept.title }}</a>
                             {% endfor %}
                         </div>
                     </div>
@@ -44,26 +39,14 @@
     {% else %}
         <div style="text-align: center; padding: 3rem; background: var(--beige-light); border-radius: 20px;">
             <p>Институты не найдены. Добавьте их через админ-панель.</p>
-            <a href="{{ url_for('admin_page_create') }}" class="btn btn-primary">Создать институт</a>
         </div>
     {% endif %}
 </div>
 
 <style>
-    .institutes-page div[style*="border-radius: 20px"]:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-    }
     .institutes-page a[href*="department"]:hover {
         background: var(--accent-color) !important;
         color: white !important;
-    }
-    .institutes-page .btn-primary {
-        background: var(--gradient-primary);
-        color: white;
-        padding: 0.6rem 1.5rem;
-        border-radius: 30px;
-        text-decoration: none;
     }
 </style>
 {% endblock %}

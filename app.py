@@ -274,7 +274,13 @@ def create_app():
     # ==================== СТРАНИЦА ИНСТИТУТОВ ====================
     @app.route('/institutes')
     def institutes_page():
+        # Получаем все институты
         institutes = Page.query.filter_by(template='institute', published=True).all()
+        
+        # Для каждого института загружаем кафедры
+        for institute in institutes:
+            institute.children = Page.query.filter_by(parent_id=institute.id, template='department', published=True).all()
+        
         return render_template('dynamic/institutes_page.html', institutes=institutes)
 
     # ==================== МАРШРУТЫ РАСПИСАНИЯ ====================
