@@ -274,14 +274,22 @@ def create_app():
     # ==================== СТРАНИЦА ИНСТИТУТОВ ====================
     @app.route('/institutes')
     def institutes_page():
-        # Получаем уникальные институты (без дублирования)
-        institutes = Page.query.filter_by(template='institute', published=True).distinct(Page.slug).all()
+        # Получаем все институты
+        institutes = Page.query.filter_by(template='institute', published=True).all()
         
-        # Для каждого института загружаем кафедры
-        for institute in institutes:
+        # Убираем возможные дубликаты в Python (на всякий случай)
+        seen = set()
+        unique_institutes = []
+        for inst in institutes:
+            if inst.slug not in seen:
+                seen.add(inst.slug)
+                unique_institutes.append(inst)
+        
+        # Загружаем кафедры
+        for institute in unique_institutes:
             institute.children = Page.query.filter_by(parent_id=institute.id, template='department', published=True).all()
         
-        return render_template('dynamic/institutes_page.html', institutes=institutes)
+        return render_template('dynamic/institutes_page.html', institutes=unique_institutes)
 
     # ==================== МАРШРУТЫ РАСПИСАНИЯ ====================
     @app.route('/rasp/<path:filename>')

@@ -3,50 +3,26 @@
 {% block title %}Институты - Красноярский ГАУ{% endblock %}
 
 {% block content %}
-<div class="institutes-page" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
-    <h1 style="color: var(--primary-color); margin-bottom: 2rem;">Институты Красноярского ГАУ</h1>
+<div class="container">
+    <h1>Институты Красноярского ГАУ</h1>
     
-    {% if institutes %}
-        <div style="display: grid; gap: 2rem;">
-            {% for institute in institutes %}
-            <div style="background: var(--white); border-radius: 20px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid var(--beige-medium);">
-                <h2 style="color: var(--primary-color); margin-top: 0;">🏛️ {{ institute.title }}</h2>
-                
-                <!-- Кнопка "Подробнее об институте" -->
-                <div style="margin: 1rem 0;">
-                    <a href="{{ url_for('dynamic_page', slug=institute.slug) }}" style="display: inline-block; background: var(--gradient-primary); color: white; padding: 0.6rem 1.5rem; border-radius: 30px; text-decoration: none; font-weight: 500;">Подробнее об институте →</a>
+    {% for institute in institutes %}
+        <div class="institute-card">
+            <h2>{{ institute.title }}</h2>
+            <a href="/new/{{ institute.slug }}">Подробнее →</a>
+            
+            {% if institute.children %}
+                <div class="departments">
+                    <h3>Кафедры:</h3>
+                    <ul>
+                    {% for dept in institute.children %}
+                        <li><a href="/new/{{ dept.slug }}">{{ dept.title }}</a></li>
+                    {% endfor %}
+                    </ul>
                 </div>
-                
-                <!-- Кафедры института -->
-                {% set departments = institute.children|selectattr("template", "equalto", "department")|list if institute.children else [] %}
-                {% if departments %}
-                    <div style="margin-top: 1rem;">
-                        <h3 style="color: var(--primary-dark); font-size: 1rem; margin-bottom: 0.8rem;">📚 Кафедры института:</h3>
-                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                            {% for dept in departments %}
-                                <a href="{{ url_for('dynamic_page', slug=dept.slug) }}" style="background: var(--beige-light); color: var(--primary-color); padding: 0.4rem 1rem; border-radius: 20px; text-decoration: none; font-size: 0.85rem; transition: all 0.2s;">{{ dept.title }}</a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% else %}
-                    <div style="margin-top: 1rem; padding: 0.8rem; background: var(--beige-light); border-radius: 10px; color: var(--text-light); font-size: 0.9rem;">
-                        📖 Кафедры в разработке
-                    </div>
-                {% endif %}
-            </div>
-            {% endfor %}
+            {% endif %}
         </div>
-    {% else %}
-        <div style="text-align: center; padding: 3rem; background: var(--beige-light); border-radius: 20px;">
-            <p>Институты не найдены. Добавьте их через админ-панель.</p>
-        </div>
-    {% endif %}
+        <hr>
+    {% endfor %}
 </div>
-
-<style>
-    .institutes-page a[href*="department"]:hover {
-        background: var(--accent-color) !important;
-        color: white !important;
-    }
-</style>
 {% endblock %}
