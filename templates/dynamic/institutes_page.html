@@ -1,47 +1,31 @@
 {% extends "base.html" %}
 
-{% block title %}{{ page.title }} - Красноярский ГАУ{% endblock %}
+{% block title %}Институты - Красноярский ГАУ{% endblock %}
 
 {% block content %}
-<section class="page-header">
-    <div class="container">
-        <h1>{{ page.title }}</h1>
-        <p>Красноярский государственный аграрный университет</p>
-    </div>
-</section>
-
-<section class="page-content">
-    <div class="container">
-        <div class="content-block">
-            {{ page.content|safe }}
-        </div>
-        
-        {% if children %}
-            <h2>📚 Кафедры института</h2>
-            <div class="departments-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
-                {% for dept in children %}
-                    <div class="department-card" style="background: var(--beige-light); border-radius: 12px; padding: 1rem;">
-                        <h3 style="margin: 0 0 0.5rem 0;">{{ dept.title }}</h3>
-                        <a href="{{ url_for('dynamic_page', slug=dept.slug) }}" class="more-link" style="color: var(--accent-color); text-decoration: none;">Подробнее →</a>
-                    </div>
-                {% endfor %}
+<div class="container">
+    <h1>Институты Красноярского ГАУ</h1>
+    
+    {% if institutes %}
+        {% for institute in institutes %}
+            <div class="institute-card" style="margin-bottom: 2rem; padding: 1rem; border-bottom: 1px solid #ddd;">
+                <h2>{{ institute.title }}</h2>
+                <a href="/page/{{ institute.slug }}">Подробнее об институте →</a>
+                
+                {% if institute.children %}
+                    <h3>Кафедры:</h3>
+                    <ul>
+                    {% for dept in institute.children %}
+                        <li><a href="/page/{{ dept.slug }}">{{ dept.title }}</a></li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Кафедры в разработке</p>
+                {% endif %}
             </div>
-        {% endif %}
-        
-        <div style="margin-top: 2rem;">
-            <a href="{{ url_for('institutes_page') }}" class="btn btn-secondary">← Назад к институтам</a>
-        </div>
-    </div>
-</section>
-
-<style>
-    .department-card:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--shadow-md);
-        transition: all 0.2s ease;
-    }
-    .more-link:hover {
-        text-decoration: underline;
-    }
-</style>
+        {% endfor %}
+    {% else %}
+        <p>Институты не найдены. Добавьте их через админ-панель.</p>
+    {% endif %}
+</div>
 {% endblock %}
