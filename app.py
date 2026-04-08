@@ -12,6 +12,7 @@ import os
 import pandas as pd
 import pdfplumber
 import json
+from pages_data import PAGES
 
 def create_app():
     app = Flask(__name__)
