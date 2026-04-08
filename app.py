@@ -97,6 +97,18 @@ def create_app():
         except Exception as e:
             return f"Ошибка загрузки страницы: {str(e)}"
 
+    def format_file_size(size_bytes):
+        if size_bytes < 1024:
+            return f"{size_bytes} Б"
+        elif size_bytes < 1024 * 1024:
+            return f"{size_bytes/1024:.1f} КБ"
+        else:
+            return f"{size_bytes/(1024*1024):.1f} МБ"
+
+    def get_file_icon(ext):
+        icons = {'.pdf': '📄', '.xls': '📊', '.xlsx': '📊'}
+        return icons.get(ext.lower(), '📁')
+
     def read_excel_file(filename):
         filepath = os.path.join(RASP_FOLDER, filename)
         try:
@@ -108,7 +120,6 @@ def create_app():
                 df = pd.read_excel(filepath, sheet_name=sheet_name, header=None)
                 group_name = sheet_name
                 
-                # Определяем название группы
                 if 'групп' in sheet_name.lower() or 'курс' in sheet_name.lower():
                     group_name = sheet_name
                 else:
@@ -165,7 +176,6 @@ def create_app():
             if groups:
                 unique_id = filename.replace('.', '_').replace(' ', '_').replace('-', '_')
                 
-                # Селектор выбора группы
                 html_parts.append('<div class="schedule-group-selector" data-unique="' + unique_id + '">')
                 html_parts.append('<label>Выберите группу:</label>')
                 html_parts.append('<select id="schedule-group-select-' + unique_id + '" class="schedule-group-select">')
@@ -175,11 +185,8 @@ def create_app():
                     html_parts.append(f'<option value="{i}" {selected}>{group_name}</option>')
                 html_parts.append('</select></div>')
                 
-                # Для каждой группы создаем контейнер с расписанием
                 for i, (group_name, lessons) in enumerate(groups.items()):
                     display_style = "block" if i == 0 else "none"
-                    
-                    # Группировка по дням недели
                     lessons_by_day = {'mon': [], 'tue': [], 'wed': [], 'thu': [], 'fri': [], 'sat': [], 'sun': [], 'unknown': []}
                     for lesson in lessons:
                         day = lesson['day']
@@ -190,8 +197,6 @@ def create_app():
                     
                     html_parts.append(f'<div id="group-{unique_id}-{i}" class="schedule-group-container" style="display: {display_style};">')
                     html_parts.append(f'<h3 class="schedule-group-title">{group_name}</h3>')
-                    
-                    # Переключатели дней недели
                     html_parts.append('<div class="schedule-day-switcher-inner">')
                     day_buttons = [('all','Все дни'),('mon','ПН'),('tue','ВТ'),('wed','СР'),('thu','ЧТ'),('fri','ПТ'),('sat','СБ')]
                     for day_key, day_name in day_buttons:
@@ -199,7 +204,6 @@ def create_app():
                         html_parts.append(f'<button class="day-btn-inner {active}" data-day="{day_key}">{day_name}</button>')
                     html_parts.append('</div>')
                     
-                    # Вывод занятий по дням
                     day_names = {'mon':'Понедельник','tue':'Вторник','wed':'Среда','thu':'Четверг','fri':'Пятница','sat':'Суббота','unknown':'Другое'}
                     for day_key, day_name in day_names.items():
                         if lessons_by_day.get(day_key) and len(lessons_by_day[day_key]) > 0:
@@ -217,10 +221,8 @@ def create_app():
                                 html_parts.append(room_html)
                                 html_parts.append('</div></div>')
                             html_parts.append('</div></div>')
-                    
                     html_parts.append('</div>')
                 
-                # JavaScript для переключения групп и дней
                 html_parts.append('''
                 <script>
                     document.querySelectorAll(".schedule-group-select").forEach(sel => {
@@ -267,41 +269,40 @@ def create_app():
         except Exception as e:
             return f"<div class='schedule-error'>Ошибка чтения Excel: {str(e)}</div>"
 
-
-def read_excel_simple(filepath):
-    try:
-        excel_file = pd.ExcelFile(filepath)
-        html_parts = []
-        for sheet_name in excel_file.sheet_names:
-            df = pd.read_excel(filepath, sheet_name=sheet_name, header=None)
-            html_parts.append('<div class="schedule-excel-sheet"><h3 class="schedule-sheet-title">' + sheet_name + '</h3><div class="schedule-readable-content">')
-            for idx, row in df.iterrows():
-                if row.isna().all():
-                    continue
-                cells = [str(cell).strip() for cell in row if pd.notna(cell) and str(cell).strip()]
-                if len(cells) >= 3:
-                    lesson_type = 'practice'
-                    subject_lower = cells[1].lower() if len(cells) > 1 else ''
-                    if 'лекц' in subject_lower:
-                        lesson_type = 'lecture'
-                    elif 'лаб' in subject_lower:
-                        lesson_type = 'lab'
-                    room_html = f'<span class="schedule-lesson-room">{cells[3]}</span>' if len(cells) > 3 else ''
-                    html_parts.append('<div class="schedule-lesson-card" data-type="' + lesson_type + '">')
-                    html_parts.append('<div class="schedule-lesson-time">' + cells[0] + '</div>')
-                    html_parts.append('<div class="schedule-lesson-details">')
-                    html_parts.append('<span class="schedule-lesson-subject">' + cells[1] + '</span>')
-                    html_parts.append('<span class="schedule-lesson-teacher">' + cells[2] + '</span>')
-                    html_parts.append(room_html)
-                    html_parts.append('</div></div>')
-                elif len(cells) == 2:
-                    html_parts.append('<div class="schedule-info-row"><strong>' + cells[0] + ':</strong> ' + cells[1] + '</div>')
-                else:
-                    html_parts.append('<p class="schedule-text-line">' + cells[0] + '</p>')
-            html_parts.append('</div></div>')
-        return "".join(html_parts)
-    except Exception as e:
-        return f"<div class='schedule-error'>Ошибка чтения Excel: {str(e)}</div>"
+    def read_excel_simple(filepath):
+        try:
+            excel_file = pd.ExcelFile(filepath)
+            html_parts = []
+            for sheet_name in excel_file.sheet_names:
+                df = pd.read_excel(filepath, sheet_name=sheet_name, header=None)
+                html_parts.append('<div class="schedule-excel-sheet"><h3 class="schedule-sheet-title">' + sheet_name + '</h3><div class="schedule-readable-content">')
+                for idx, row in df.iterrows():
+                    if row.isna().all():
+                        continue
+                    cells = [str(cell).strip() for cell in row if pd.notna(cell) and str(cell).strip()]
+                    if len(cells) >= 3:
+                        lesson_type = 'practice'
+                        subject_lower = cells[1].lower() if len(cells) > 1 else ''
+                        if 'лекц' in subject_lower:
+                            lesson_type = 'lecture'
+                        elif 'лаб' in subject_lower:
+                            lesson_type = 'lab'
+                        room_html = f'<span class="schedule-lesson-room">{cells[3]}</span>' if len(cells) > 3 else ''
+                        html_parts.append('<div class="schedule-lesson-card" data-type="' + lesson_type + '">')
+                        html_parts.append('<div class="schedule-lesson-time">' + cells[0] + '</div>')
+                        html_parts.append('<div class="schedule-lesson-details">')
+                        html_parts.append('<span class="schedule-lesson-subject">' + cells[1] + '</span>')
+                        html_parts.append('<span class="schedule-lesson-teacher">' + cells[2] + '</span>')
+                        html_parts.append(room_html)
+                        html_parts.append('</div></div>')
+                    elif len(cells) == 2:
+                        html_parts.append('<div class="schedule-info-row"><strong>' + cells[0] + ':</strong> ' + cells[1] + '</div>')
+                    else:
+                        html_parts.append('<p class="schedule-text-line">' + cells[0] + '</p>')
+                html_parts.append('</div></div>')
+            return "".join(html_parts)
+        except Exception as e:
+            return f"<div class='schedule-error'>Ошибка чтения Excel: {str(e)}</div>"
 
     # ==================== МАРШРУТЫ АДМИН ПАНЕЛИ ====================
     @app.route('/admin')
@@ -689,6 +690,7 @@ def read_excel_simple(filepath):
         return "✅ Админ создан! Логин: admin, Пароль: admin123"
 
     return app
+
 
 if __name__ == '__main__':
     app = create_app()
