@@ -1,28 +1,47 @@
 {% extends "base.html" %}
 
-{% block title %}Институты - Красноярский ГАУ{% endblock %}
+{% block title %}{{ page.title }} - Красноярский ГАУ{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>Институты Красноярского ГАУ</h1>
-    
-    {% for institute in institutes %}
-        <div class="institute-card">
-            <h2>{{ institute.title }}</h2>
-            <a href="/new/{{ institute.slug }}">Подробнее →</a>
-            
-            {% if institute.children %}
-                <div class="departments">
-                    <h3>Кафедры:</h3>
-                    <ul>
-                    {% for dept in institute.children %}
-                        <li><a href="/new/{{ dept.slug }}">{{ dept.title }}</a></li>
-                    {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
+<section class="page-header">
+    <div class="container">
+        <h1>{{ page.title }}</h1>
+        <p>Красноярский государственный аграрный университет</p>
+    </div>
+</section>
+
+<section class="page-content">
+    <div class="container">
+        <div class="content-block">
+            {{ page.content|safe }}
         </div>
-        <hr>
-    {% endfor %}
-</div>
+        
+        {% if children %}
+            <h2>📚 Кафедры института</h2>
+            <div class="departments-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+                {% for dept in children %}
+                    <div class="department-card" style="background: var(--beige-light); border-radius: 12px; padding: 1rem;">
+                        <h3 style="margin: 0 0 0.5rem 0;">{{ dept.title }}</h3>
+                        <a href="{{ url_for('dynamic_page', slug=dept.slug) }}" class="more-link" style="color: var(--accent-color); text-decoration: none;">Подробнее →</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <div style="margin-top: 2rem;">
+            <a href="{{ url_for('institutes_page') }}" class="btn btn-secondary">← Назад к институтам</a>
+        </div>
+    </div>
+</section>
+
+<style>
+    .department-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+        transition: all 0.2s ease;
+    }
+    .more-link:hover {
+        text-decoration: underline;
+    }
+</style>
 {% endblock %}

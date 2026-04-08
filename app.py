@@ -564,8 +564,11 @@ def create_app():
         return render_template('profile.html', user=current_user)
 
     @app.route('/new/<slug>')
-    def redirect_old_new(slug):
-        return redirect(url_for('dynamic_page', slug=slug), code=301)
+    def dynamic_page(slug):
+        page = Page.query.filter_by(slug=slug, published=True).first_or_404()
+        # Загружаем дочерние страницы (кафедры) для институтов
+        children = Page.query.filter_by(parent_id=page.id, published=True).order_by(Page.title).all()
+        return render_template(f'dynamic/{page.template}.html', page=page, children=children)
     return app
 
 if __name__ == '__main__':
