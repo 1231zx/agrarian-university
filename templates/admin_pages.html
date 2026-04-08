@@ -3,23 +3,23 @@
 {% block title %}Управление страницами - Админ панель{% endblock %}
 
 {% block content %}
-<div class="container" style="max-width: 1400px; margin: 0 auto; padding: 2rem;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-        <h1 style="color: var(--primary-color);">Управление страницами</h1>
-        <a href="{{ url_for('admin_page_create') }}" class="btn btn-primary" style="background: var(--gradient-primary); color: white; padding: 0.6rem 1.5rem; border-radius: 30px; text-decoration: none;">+ Создать страницу</a>
+<div class="container" style="max-width: 1200px; margin: 0 auto; padding: 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h1 style="color: var(--primary-color); margin: 0;">Управление страницами</h1>
+        <a href="{{ url_for('admin_page_create') }}" class="btn btn-primary" style="background: var(--gradient-primary); color: white; padding: 0.5rem 1.2rem; border-radius: 30px; text-decoration: none; font-size: 0.9rem;">+ Создать страницу</a>
     </div>
     
     <!-- Панель поиска и фильтров -->
-    <div style="background: #f5f0e8; padding: 1.5rem; border-radius: 15px; margin-bottom: 2rem;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-            <div>
-                <label style="display: block; font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.3rem;">🔍 Поиск</label>
+    <div style="background: #f5f0e8; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem;">
+        <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: flex-end;">
+            <div style="flex: 2; min-width: 180px;">
+                <label style="display: block; font-size: 0.75rem; color: var(--text-light); margin-bottom: 0.2rem;">🔍 Поиск</label>
                 <input type="text" id="page-search" placeholder="По названию или slug..." 
-                       style="width: 100%; padding: 0.6rem 1rem; border: 1px solid #ddd; border-radius: 8px; font-size: 0.9rem;">
+                       style="width: 100%; padding: 0.5rem 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.85rem;">
             </div>
-            <div>
-                <label style="display: block; font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.3rem;">📁 Тип страницы</label>
-                <select id="page-type-filter" style="width: 100%; padding: 0.6rem 1rem; border: 1px solid #ddd; border-radius: 8px;">
+            <div style="flex: 1.5; min-width: 150px;">
+                <label style="display: block; font-size: 0.75rem; color: var(--text-light); margin-bottom: 0.2rem;">📁 Тип</label>
+                <select id="page-type-filter" style="width: 100%; padding: 0.5rem 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.85rem;">
                     <option value="">Все типы</option>
                     <option value="institute">Институт</option>
                     <option value="department">Кафедра</option>
@@ -30,72 +30,72 @@
                     <option value="university_section">Университет</option>
                 </select>
             </div>
-            <div>
-                <label style="display: block; font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.3rem;">📄 Статус</label>
-                <select id="page-status-filter" style="width: 100%; padding: 0.6rem 1rem; border: 1px solid #ddd; border-radius: 8px;">
+            <div style="flex: 1; min-width: 120px;">
+                <label style="display: block; font-size: 0.75rem; color: var(--text-light); margin-bottom: 0.2rem;">📄 Статус</label>
+                <select id="page-status-filter" style="width: 100%; padding: 0.5rem 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.85rem;">
                     <option value="">Все</option>
                     <option value="published">Опубликовано</option>
                     <option value="draft">Черновик</option>
                 </select>
             </div>
-            <div style="display: flex; align-items: end;">
-                <button id="reset-filters" style="background: #8B7355; color: white; border: none; padding: 0.6rem 1rem; border-radius: 8px; cursor: pointer;">Сбросить фильтры</button>
+            <div>
+                <button id="reset-filters" style="background: #8B7355; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">Сбросить</button>
             </div>
         </div>
     </div>
     
     <!-- Статистика -->
-    <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
-        <div style="background: linear-gradient(135deg, #5c3d2e 0%, #8B7355 100%); padding: 0.8rem 1.5rem; border-radius: 12px; color: white;">
-            <div style="font-size: 1.5rem; font-weight: bold;">{{ all_pages|length }}</div>
-            <div style="font-size: 0.8rem;">Всего страниц</div>
+    <div style="display: flex; gap: 0.8rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <div style="background: linear-gradient(135deg, #5c3d2e 0%, #8B7355 100%); padding: 0.5rem 1rem; border-radius: 10px; color: white;">
+            <div style="font-size: 1.3rem; font-weight: bold;">{{ all_pages|length }}</div>
+            <div style="font-size: 0.7rem;">Всего</div>
         </div>
-        <div style="background: #f5f0e8; padding: 0.8rem 1.5rem; border-radius: 12px;">
-            <div style="font-size: 1.5rem; font-weight: bold; color: #5c3d2e;">{{ all_pages|selectattr('template', 'equalto', 'institute')|list|length }}</div>
-            <div style="font-size: 0.8rem;">Институтов</div>
+        <div style="background: #f5f0e8; padding: 0.5rem 1rem; border-radius: 10px;">
+            <div style="font-size: 1.3rem; font-weight: bold; color: #5c3d2e;">{{ all_pages|selectattr('template', 'equalto', 'institute')|list|length }}</div>
+            <div style="font-size: 0.7rem;">Институтов</div>
         </div>
-        <div style="background: #f5f0e8; padding: 0.8rem 1.5rem; border-radius: 12px;">
-            <div style="font-size: 1.5rem; font-weight: bold; color: #5c3d2e;">{{ all_pages|selectattr('template', 'equalto', 'department')|list|length }}</div>
-            <div style="font-size: 0.8rem;">Кафедр</div>
+        <div style="background: #f5f0e8; padding: 0.5rem 1rem; border-radius: 10px;">
+            <div style="font-size: 1.3rem; font-weight: bold; color: #5c3d2e;">{{ all_pages|selectattr('template', 'equalto', 'department')|list|length }}</div>
+            <div style="font-size: 0.7rem;">Кафедр</div>
         </div>
-        <div style="background: #f5f0e8; padding: 0.8rem 1.5rem; border-radius: 12px;">
-            <div style="font-size: 1.5rem; font-weight: bold; color: #5c3d2e;">{{ all_pages|selectattr('published', 'equalto', true)|list|length }}</div>
-            <div style="font-size: 0.8rem;">Опубликовано</div>
+        <div style="background: #f5f0e8; padding: 0.5rem 1rem; border-radius: 10px;">
+            <div style="font-size: 1.3rem; font-weight: bold; color: #5c3d2e;">{{ all_pages|selectattr('published', 'equalto', true)|list|length }}</div>
+            <div style="font-size: 0.7rem;">Опубликовано</div>
         </div>
     </div>
     
-    <!-- Таблица страниц -->
-    <div style="background: white; border-radius: 15px; overflow-x: auto; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-        <table style="width:100%; border-collapse: collapse;">
+    <!-- Таблица страниц с горизонтальной прокруткой -->
+    <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 1px 5px rgba(0,0,0,0.05);">
+        <table style="width: 100%; min-width: 700px; border-collapse: collapse; font-size: 0.85rem;">
             <thead>
                 <tr style="background: #5c3d2e; color: white;">
-                    <th style="padding: 12px 15px; text-align: left;">Slug</th>
-                    <th style="padding: 12px 15px; text-align: left;">Название</th>
-                    <th style="padding: 12px 15px; text-align: left;">Шаблон</th>
-                    <th style="padding: 12px 15px; text-align: left;">Родитель</th>
-                    <th style="padding: 12px 15px; text-align: left;">Статус</th>
-                    <th style="padding: 12px 15px; text-align: left;">Действия</th>
+                    <th style="padding: 10px 12px; text-align: left;">Slug</th>
+                    <th style="padding: 10px 12px; text-align: left;">Название</th>
+                    <th style="padding: 10px 12px; text-align: left;">Тип</th>
+                    <th style="padding: 10px 12px; text-align: left;">Родитель</th>
+                    <th style="padding: 10px 12px; text-align: left;">Статус</th>
+                    <th style="padding: 10px 12px; text-align: left;">Действия</th>
                 </tr>
             </thead>
             <tbody id="pages-table-body">
                 {% for page in all_pages %}
                 <tr class="page-row" data-title="{{ page.title|lower }}" data-slug="{{ page.slug|lower }}" data-template="{{ page.template }}" data-published="{{ page.published|lower }}" data-parent="{{ page.parent.title|lower if page.parent else '' }}">
-                    <td style="padding: 12px 15px; border-bottom: 1px solid #eee;"><code style="background: #f5f0e8; padding: 2px 6px; border-radius: 4px;">{{ page.slug }}</code></td>
-                    <td style="padding: 12px 15px; border-bottom: 1px solid #eee;"><strong>{{ page.title }}</strong></td>
-                    <td style="padding: 12px 15px; border-bottom: 1px solid #eee;">
-                        <span style="background: #e8e0d5; padding: 2px 8px; border-radius: 20px; font-size: 0.8rem;">{{ page.template }}</span>
+                    <td style="padding: 8px 12px; border-bottom: 1px solid #eee;"><code style="background: #f5f0e8; padding: 2px 5px; border-radius: 4px; font-size: 0.75rem;">{{ page.slug[:25] }}{% if page.slug|length > 25 %}...{% endif %}</code></td>
+                    <td style="padding: 8px 12px; border-bottom: 1px solid #eee;"><strong>{{ page.title[:35] }}{% if page.title|length > 35 %}...{% endif %}</strong></td>
+                    <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">
+                        <span style="background: #e8e0d5; padding: 2px 6px; border-radius: 15px; font-size: 0.7rem;">{{ page.template }}</span>
                     </td>
-                    <td style="padding: 12px 15px; border-bottom: 1px solid #eee;">{{ page.parent.title if page.parent else '—' }}</td>
-                    <td style="padding: 12px 15px; border-bottom: 1px solid #eee;">
+                    <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">{{ page.parent.title[:20] if page.parent else '—' }}</td>
+                    <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">
                         {% if page.published %}
-                            <span style="background: #28a74520; color: #28a745; padding: 2px 8px; border-radius: 20px; font-size: 0.75rem;">Опубликовано</span>
+                            <span style="background: #28a74520; color: #28a745; padding: 2px 6px; border-radius: 15px; font-size: 0.7rem;">Опубликовано</span>
                         {% else %}
-                            <span style="background: #dc354520; color: #dc3545; padding: 2px 8px; border-radius: 20px; font-size: 0.75rem;">Черновик</span>
+                            <span style="background: #dc354520; color: #dc3545; padding: 2px 6px; border-radius: 15px; font-size: 0.7rem;">Черновик</span>
                         {% endif %}
                     </td>
-                    <td style="padding: 12px 15px; border-bottom: 1px solid #eee;">
-                        <a href="{{ url_for('admin_page_edit', page_id=page.id) }}" style="background: #c9a03d; color: white; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 0.8rem; margin-right: 5px;">Редактировать</a>
-                        <button onclick="deletePage({{ page.id }}, '{{ page.title }}')" style="background: #dc3545; color: white; border: none; padding: 4px 12px; border-radius: 20px; cursor: pointer; font-size: 0.8rem;">Удалить</button>
+                    <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">
+                        <a href="{{ url_for('admin_page_edit', page_id=page.id) }}" style="background: #c9a03d; color: white; padding: 3px 10px; border-radius: 15px; text-decoration: none; font-size: 0.75rem; margin-right: 5px; display: inline-block;">Ред.</a>
+                        <button onclick="deletePage({{ page.id }}, '{{ page.title }}')" style="background: #dc3545; color: white; border: none; padding: 3px 10px; border-radius: 15px; cursor: pointer; font-size: 0.75rem;">Уд.</button>
                     </td>
                 </tr>
                 {% endfor %}
@@ -103,9 +103,9 @@
         </table>
     </div>
     
-    <div id="no-results" style="display: none; text-align: center; padding: 3rem; background: #f5f0e8; border-radius: 15px; margin-top: 1rem;">
-        <p style="font-size: 1.2rem;">🔍 Ничего не найдено</p>
-        <p style="color: var(--text-light);">Попробуйте изменить параметры поиска</p>
+    <div id="no-results" style="display: none; text-align: center; padding: 2rem; background: #f5f0e8; border-radius: 12px; margin-top: 1rem;">
+        <p>🔍 Ничего не найдено</p>
+        <p style="color: var(--text-light); font-size: 0.85rem;">Попробуйте изменить параметры поиска</p>
     </div>
 </div>
 
