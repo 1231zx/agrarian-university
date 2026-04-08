@@ -274,8 +274,8 @@ def create_app():
     # ==================== СТРАНИЦА ИНСТИТУТОВ ====================
     @app.route('/institutes')
     def institutes_page():
-        # Получаем все институты
-        institutes = Page.query.filter_by(template='institute', published=True).all()
+        # Получаем уникальные институты (без дублирования)
+        institutes = Page.query.filter_by(template='institute', published=True).distinct(Page.slug).all()
         
         # Для каждого института загружаем кафедры
         for institute in institutes:
