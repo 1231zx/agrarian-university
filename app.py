@@ -568,6 +568,144 @@ def create_app():
         db.session.commit()
         return render_template('program_detail.html', program=program)
 
+    # ==================== ВСЕ РЕДИРЕКТЫ ====================
+    redirect_routes = [
+        # Основные
+        ('/about', 'about'),
+        ('/contacts', 'contacts'),
+        ('/news', 'news'),
+        ('/programs', 'programs'),
+        ('/schedule', 'schedule'),
+        
+        # Университет
+        ('/university', 'university_main'),
+        ('/university-today', 'university_today'),
+        ('/university/history', 'university_history'),
+        ('/university/association', 'university_association'),
+        ('/university/profsoyuz', 'university_profsoyuz'),
+        ('/university/press', 'university_press'),
+        ('/university/press-center', 'university_press_center'),
+        ('/university/brandbook', 'university_brandbook'),
+        ('/university/vesti', 'university_vesti'),
+        ('/university/media-about-us', 'university_media_about_us'),
+        ('/university/prosecutor', 'university_prosecutor'),
+        ('/university/quality-management', 'university_quality_management'),
+        ('/university/endowment', 'university_endowment'),
+        ('/university/driving-school', 'university_driving_school'),
+        ('/university/jalinga', 'university_jalinga'),
+        ('/structure', 'structure'),
+        ('/leadership', 'leadership'),
+        ('/academic-council', 'academic_council'),
+        ('/departments', 'departments'),
+        ('/library', 'library'),
+        
+        # Наука
+        ('/science', 'science'),
+        ('/science-news', 'science_news'),
+        ('/laboratories', 'laboratories'),
+        ('/science-schools', 'science_schools'),
+        ('/grants', 'grants'),
+        ('/conferences', 'conferences'),
+        
+        # Студенту
+        ('/student', 'student_main'),
+        ('/student/council', 'student_council'),
+        ('/student/teams', 'student_teams'),
+        ('/student/culture', 'student_culture'),
+        ('/student/sports', 'student_sports'),
+        ('/student/psychologist', 'student_psychologist'),
+        ('/student/social-support', 'student_social_support'),
+        ('/student/projects', 'student_projects'),
+        ('/student/faq', 'student_faq'),
+        ('/student/calendar', 'student_calendar'),
+        ('/student/scholarships', 'student_scholarships'),
+        ('/student/regulations', 'student_regulations'),
+        ('/student/educational-resources', 'student_educational_resources'),
+        ('/student/mass-courses', 'student_mass_courses'),
+        ('/student/textbooks', 'student_textbooks'),
+        ('/student/practice-bases', 'student_practice_bases'),
+        ('/student/practice-dates', 'student_practice_dates'),
+        ('/student/practice-docs', 'student_practice_docs'),
+        ('/student/practice-survey', 'student_practice_survey'),
+        ('/student/practice-instruction', 'student_practice_instruction'),
+        ('/student/practice-requests', 'student_practice_requests'),
+        ('/student/survey', 'student_survey'),
+        ('/student/international-assoc', 'student_international_assoc'),
+        
+        # Поступающему
+        ('/applicant', 'applicant_main'),
+        ('/admission-info', 'admission_info'),
+        ('/admission-addresses', 'admission_addresses'),
+        ('/admission-faq', 'admission_faq'),
+        ('/admission-docs', 'admission_docs'),
+        ('/admission-committee', 'admission_committee'),
+        ('/entrance-tests', 'entrance_tests'),
+        ('/exam-schedule', 'exam_schedule'),
+        ('/competition-lists', 'competition_lists'),
+        ('/applicant-lists', 'applicant_lists'),
+        ('/enrollment-info', 'enrollment_info'),
+        ('/target-education', 'target_education'),
+        ('/paid-education', 'paid_education'),
+        ('/bonuses', 'bonuses'),
+        ('/disabled-info', 'disabled_info'),
+        ('/postgraduate-admission', 'postgraduate_admission'),
+        ('/doctoral-admission', 'doctoral_admission'),
+        ('/admission-regulations', 'admission_regulations'),
+        
+        # Школьнику
+        ('/school-info', 'school_info'),
+        ('/school-news', 'school_news'),
+        ('/school-conferences', 'school_conferences'),
+        ('/school-awards', 'school_awards'),
+        ('/olympiads', 'olympiads'),
+        ('/preparatory-courses', 'preparatory_courses'),
+        ('/agro-classes', 'agro_classes'),
+        ('/career-guidance', 'career_guidance'),
+        
+        # Аспиранту
+        ('/postgraduate', 'postgraduate'),
+        ('/doctoral', 'doctoral'),
+        ('/attestation', 'attestation'),
+        ('/candidate-exams', 'candidate_exams'),
+        ('/dissertations', 'dissertations'),
+        ('/science-supervisors', 'science_supervisors'),
+        
+        # Институты
+        ('/institute/agro', 'institute_agro'),
+        ('/institute/biotech', 'institute_biotech'),
+        ('/institute/economy', 'institute_economy'),
+        ('/institute/engineering', 'institute_engineering'),
+        ('/institute/food', 'institute_food'),
+        ('/institute/land', 'institute_land'),
+        ('/institute/law', 'institute_law'),
+        ('/institute/achinsk', 'institute_achinsk'),
+        
+        # Другие
+        ('/international', 'international'),
+        ('/university-life', 'university_life'),
+        ('/contacts-departments', 'contacts_departments'),
+        ('/employee', 'employee'),
+        ('/employer', 'employer'),
+        ('/alumni', 'alumni'),
+        ('/volunteer', 'volunteer'),
+        ('/dormitory', 'dormitory'),
+        ('/payment', 'payment'),
+        ('/cossack', 'cossack'),
+        ('/educational-activity', 'educational_activity'),
+        ('/professionalitet', 'professionalitet'),
+        ('/inclusive-education', 'inclusive_education'),
+        ('/additional-education', 'additional_education'),
+        ('/university/popechitelskiy', 'university_popechitelskiy'),
+        ('/university/anticorruption', 'university_anticorruption'),
+        ('/student/news', 'student_news'),
+        ('/student/foreign', 'international_students'),
+        ('/university/parent-council', 'university_parent_council'),
+        ('/university/vesti-archive', 'university_vesti_archive'),
+    ]
+    
+    for old_url, new_slug in redirect_routes:
+        app.add_url_rule(old_url, f'redirect_{new_slug}', lambda slug=new_slug: redirect(url_for('dynamic_page', slug=slug), code=301))
+        
     # ==================== АУТЕНТИФИКАЦИЯ ====================
     @app.route('/send-message', methods=['POST'])
     def send_message():
@@ -677,19 +815,6 @@ def create_app():
     @login_required
     def profile():
         return render_template('profile.html', user=current_user)
-
-    # ==================== ВРЕМЕННЫЙ МАРШРУТ ДЛЯ СОЗДАНИЯ АДМИНА ====================
-    @app.route('/create-admin-now')
-    def create_admin_now():
-        from models import db, User
-        User.query.filter_by(username='admin').delete()
-        admin = User(username='admin', email='admin@kgau.ru', is_admin=True)
-        admin.set_password('admin123')
-        db.session.add(admin)
-        db.session.commit()
-        return "✅ Админ создан! Логин: admin, Пароль: admin123"
-
-    return app
 
 
 if __name__ == '__main__':

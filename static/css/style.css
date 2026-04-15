@@ -49,7 +49,6 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0 20px;
 }
 
-/* ===== ANIMATIONS ===== */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -136,7 +135,6 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-/* ===== HEADER & NAVIGATION ===== */
 header {
     background: var(--gradient-primary);
     color: var(--white);
@@ -243,14 +241,12 @@ nav {
     text-shadow: 0 0 8px var(--neon-white);
 }
 
-/* Специальные стили для кнопок в навигации */
 .nav-menu .auth-link,
 .nav-menu .admin-link {
     margin: 0 0.1rem;
     display: inline-block;
 }
 
-/* ===== AUTH BUTTONS STYLES ===== */
 .auth-link {
     background: white !important;
     color: var(--primary-color) !important;
@@ -281,7 +277,6 @@ nav {
     border-color: #dc3545 !important;
 }
 
-/* Стили для админ кнопки */
 .admin-link {
     background: var(--gradient-accent) !important;
     color: white !important;
@@ -302,12 +297,10 @@ nav {
     animation: neonPulse 2s infinite;
 }
 
-/* Убираем псевдоэлемент для админ кнопки */
 .admin-link::before {
     display: none !important;
 }
 
-/* ===== DROPDOWN MENU STYLES ===== */
 .dropdown {
     position: relative;
 }
@@ -360,7 +353,6 @@ nav {
     transform: translateX(5px);
 }
 
-/* ===== HERO SECTION ===== */
 .hero {
     background: var(--gradient-primary);
     position: relative;
@@ -415,7 +407,6 @@ nav {
     letter-spacing: 0.5px;
 }
 
-/* ===== BUTTONS ===== */
 .btn {
     display: inline-block;
     padding: 1.2rem 3rem;
@@ -474,7 +465,6 @@ nav {
     transform: translateY(-3px);
 }
 
-/* ===== FEATURES SECTION ===== */
 .features {
     padding: 8rem 0;
     background: var(--beige-light);
@@ -595,7 +585,6 @@ nav {
     line-height: 1.8;
 }
 
-/* ===== STATS SECTION ===== */
 .stats {
     padding: 6rem 0;
     background: var(--gradient-primary);
@@ -665,7 +654,6 @@ nav {
     letter-spacing: 0.5px;
 }
 
-/* ===== PAGE HEADER ===== */
 .page-header {
     background: var(--gradient-primary);
     color: var(--white);
@@ -697,7 +685,6 @@ nav {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* ===== ABOUT CONTENT ===== */
 .about-content {
     padding: 6rem 0;
     background: var(--beige-light);
@@ -767,7 +754,6 @@ nav {
     font-size: 1.15rem;
 }
 
-/* ===== PROGRAMS ===== */
 .programs-content {
     padding: 6rem 0;
     background: var(--cream);
@@ -858,7 +844,6 @@ nav {
     margin-top: 1.2rem;
 }
 
-/* ===== NEWS ===== */
 .news-content {
     padding: 2rem 0;
     padding-left: 32px;
@@ -921,7 +906,6 @@ nav {
     border-radius: 10px;
 }
 
-/* ===== CONTACTS ===== */
 .contacts-content {
     padding: 6rem 0;
     background: var(--cream);
@@ -978,7 +962,6 @@ nav {
     line-height: 1.8;
 }
 
-/* ===== FORMS ===== */
 .contact-form-wrapper, .admin-form {
     background: var(--white);
     padding: 3.5rem;
@@ -1051,7 +1034,6 @@ nav {
     font-weight: 600;
 }
 
-/* ===== ADMIN PANEL ===== */
 .admin-content {
     padding: 6rem 0;
     background: var(--beige-light);
@@ -1215,7 +1197,6 @@ nav {
     box-shadow: var(--shadow-md);
 }
 
-/* ===== FOOTER ===== */
 footer {
     background: var(--gradient-primary);
     color: var(--white);
@@ -1270,7 +1251,6 @@ footer::before {
     opacity: 0.85;
 }
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 968px) {
     .navbar .container {
         flex-direction: column;
@@ -1328,18 +1308,15 @@ footer::before {
     }
 }
 
-/* ===== SMOOTH SCROLL ===== */
 html {
     scroll-behavior: smooth;
 }
 
-/* ===== SELECTION ===== */
 ::selection {
     background: var(--accent-color);
     color: var(--white);
 }
 
-/* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar {
     width: 12px;
 }
@@ -1357,7 +1334,7 @@ html {
     background: var(--primary-dark);
 }
 
-/*ПРОФИЛЬ*/
+
 .profile-content {
     padding: 6rem 0;
     background: var(--beige-light);
@@ -1438,7 +1415,7 @@ html {
     min-width: 150px;
 }
 
-/* Flash messages */
+
 .flash-messages {
     position: fixed;
     top: 100px;
@@ -1481,7 +1458,7 @@ html {
     border-left-color: #ffc107;
 }
 
-/* Login and Register pages */
+
 .login-content, .register-content {
     padding: 6rem 0;
     background: var(--beige-light);
@@ -1576,7 +1553,7 @@ html {
     text-decoration: underline;
 }
 
-/* Profile page */
+
 .profile-content {
     padding: 6rem 0;
     background: var(--beige-light);
@@ -1657,12 +1634,12 @@ html {
     min-width: 150px;
 }
 
-/* Register form specific */
+
 .register-form-wrapper {
     max-width: 500px;
 }
 
-/* ===== EDIT PAGE STYLES ===== */
+
 .edit-page-content {
     padding: 4rem 0;
     background: var(--beige-light);
@@ -1752,7 +1729,7 @@ html {
     margin-bottom: 1rem;
 }
 
-/* ===== PAGE EDIT CARDS ===== */
+
 .pages-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -1794,7 +1771,7 @@ html {
     color: var(--text-light);
 }
 
-/* ===== PROFILE PAGE STYLES ===== */
+
 .profile-content {
     padding: 6rem 0;
     background: var(--beige-light);
@@ -1875,7 +1852,7 @@ html {
     min-width: 150px;
 }
 
-/* ===== LOGIN & REGISTER STYLES ===== */
+
 .login-content, .register-content {
     padding: 6rem 0;
     background: var(--beige-light);
@@ -1970,7 +1947,7 @@ html {
     text-decoration: underline;
 }
 
-/* ===== MEDIA QUERIES ===== */
+
 @media (max-width: 968px) {
     .edit-page-wrapper {
         grid-template-columns: 1fr;
@@ -2003,7 +1980,7 @@ html {
     }
 }
 
-/* ===== AUTH BUTTONS STYLES ===== */
+
 .auth-link {
     background: white !important;
     color: var(--primary-color) !important;
@@ -2037,7 +2014,7 @@ html {
     border-color: #dc3545 !important;
 }
 
-/* Для мобильной версии */
+
 @media (max-width: 768px) {
     .auth-link {
         padding: 0.5rem 1.2rem !important;
@@ -2045,7 +2022,7 @@ html {
     }
 }
 
-/* ===== DROPDOWN MENU STYLES ===== */
+
 .dropdown {
     position: relative;
 }
@@ -2098,7 +2075,7 @@ html {
     transform: translateX(5px);
 }
 
-/* Адаптация для мобильных */
+
 @media (max-width: 968px) {
     .dropdown {
         position: static;
@@ -2127,7 +2104,7 @@ html {
     }
 }
 
-/* ===== NEW PAGE STYLES ===== */
+
 .science-content,
 .applicants-content,
 .international-content,
@@ -2205,7 +2182,7 @@ html {
     background: var(--beige-light);
 }
 
-/* ===== SCHEDULE PAGE STYLES ===== */
+
 .schedule-content {
     padding: 4rem 0;
     background: transparent;
@@ -2303,7 +2280,7 @@ html {
     }
 }
 
-/* Адаптация для мобильных устройств */
+
 @media (max-width: 768px) {
     .schedule-tabs {
         flex-direction: column;
@@ -2324,7 +2301,7 @@ html {
         padding: 0.8rem 0.5rem;
     }
     
-    /* Делаем таблицу горизонтально прокручиваемой на очень маленьких экранах */
+    
     .schedule-table {
         overflow-x: auto;
     }
@@ -2342,7 +2319,7 @@ html {
     }
 }
 
-/* ===== ADDITIONAL STYLES FOR ABOUT PAGE ===== */
+
 .about-text h2 {
     color: var(--primary-color);
     margin-top: 2rem;
@@ -2390,7 +2367,7 @@ html {
     font-size: 1.1rem;
 }
 
-/* ===== NEW PAGE STYLES ===== */
+
 .institute-content,
 .page-content {
     padding: 4rem 0;
@@ -2437,7 +2414,7 @@ html {
     margin-bottom: 1rem;
 }
 
-/* ===== MEGA MENU STYLES ===== */
+
 .mega-menu {
     position: absolute;
     top: 100%;
@@ -2507,7 +2484,7 @@ html {
     transform: translateX(5px);
 }
 
-/* Адаптация для разных экранов */
+
 @media (max-width: 1200px) {
     .logo h1 {
         font-size: 1rem;
@@ -2563,7 +2540,7 @@ html {
         padding: 0.3rem 0.5rem;
     }
     
-    /* Адаптация mega menu для мобильных */
+    
     .mega-menu {
         position: static;
         min-width: 100%;
@@ -2609,7 +2586,7 @@ html {
     }
 }
 
-/* ===== TOP BAR STYLES ===== */
+
 .top-bar {
     background: var(--gradient-primary);
     color: var(--white);
@@ -2685,7 +2662,7 @@ html {
     border-color: #dc3545 !important;
 }
 
-/* ===== LAYOUT STYLES ===== */
+
 .layout {
     display: flex;
     min-height: calc(100vh - 150px);
@@ -2695,7 +2672,7 @@ html {
     gap: 20px;
 }
 
-/* Левое меню */
+
 .sidebar {
     width: 280px;
     flex-shrink: 0;
@@ -2742,7 +2719,7 @@ html {
     color: var(--primary-color);
 }
 
-/* Выпадающее меню в сайдбаре */
+
 .sidebar-menu .dropdown > a::after {
     content: '▼';
     font-size: 0.7rem;
@@ -2784,14 +2761,14 @@ html {
     padding-left: 2.3rem;
 }
 
-/* Основной контент */
+
 .main-content {
     flex: 1;
     background: transparent;
     min-height: 500px;
 }
 
-/* Адаптация для мобильных */
+
 @media (max-width: 968px) {
     .layout {
         flex-direction: column;
@@ -2830,7 +2807,7 @@ html {
 
 
 
-/* ===== FOOTER STYLES ===== */
+
 footer {
     background: var(--gradient-primary);
     color: var(--white);
@@ -2989,7 +2966,7 @@ footer::before {
     font-size: 0.85rem;
 }
 
-/* Адаптация для мобильных */
+
 @media (max-width: 768px) {
     .footer-content {
         grid-template-columns: 1fr;
@@ -3089,7 +3066,7 @@ footer::before {
     }
 }
 
-/* ===== FOOTER LINK STYLES ===== */
+
 .footer-links-compact {
     list-style: none;
     padding: 0;
@@ -3113,7 +3090,7 @@ footer::before {
     border-bottom: 1px solid transparent;
 }
 
-/* Эффект 1: Подчеркивание с анимацией */
+
 .footer-links-compact a::after {
     content: '';
     position: absolute;
@@ -3135,7 +3112,7 @@ footer::before {
     transform: translateX(5px);
 }
 
-/* Эффект 3: Подсветка фона при наведении */
+
 .footer-links-compact a {
     padding: 0.3rem 0.8rem;
     border-radius: 20px;
@@ -3148,7 +3125,7 @@ footer::before {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Для мобильных устройств */
+
 @media (max-width: 768px) {
     .footer-links-compact {
         text-align: center;
@@ -3163,7 +3140,7 @@ footer::before {
     }
 }
 
-/* Для главных ссылок (крупнее) */
+
 .footer-main-links {
     display: flex;
     gap: 2rem;
@@ -3191,7 +3168,7 @@ footer::before {
     border-color: var(--white);
 }
 
-/* Компактные ссылки для колонок */
+
 .footer-column-links {
     list-style: none;
     padding: 0;
@@ -3216,7 +3193,7 @@ footer::before {
     padding-left: 8px;
 }
 
-/* ===== CONTACTS PAGE STYLES ===== */
+
 .contacts-extra {
     margin-top: 3rem;
     padding-top: 2rem;
@@ -3248,7 +3225,7 @@ footer::before {
         grid-template-columns: 1fr;
     }
 }
-/* Стили для поиска */
+
 .search-suggestion {
     display: flex;
     align-items: center;
@@ -3289,7 +3266,7 @@ footer::before {
     margin-top: 0.3rem;
 }    
 
-/* ===== SCHEDULE PDF STYLES ===== */
+
 .schedule-nav {
     margin-bottom: 2rem;
     display: flex;
@@ -3366,7 +3343,7 @@ footer::before {
     text-align: right;
 }
 
-/* ===== SCHEDULE MAIN PAGE STYLES ===== */
+
 .schedule-institutes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -3426,7 +3403,7 @@ footer::before {
     color: var(--text-light);
 }
 
-/* ===== SCHEDULE STYLES ===== */
+
 .schedule-search {
     margin-bottom: 2rem;
 }
@@ -3582,9 +3559,9 @@ footer::before {
     margin: 0.3rem 0;
 }
 
-/* ===== УЛУЧШЕННЫЕ СТИЛИ ДЛЯ РАСПИСАНИЯ ===== */
 
-/* Контейнер для Excel таблиц */
+
+
 .schedule-excel-container {
     background: white;
     padding: 1rem;
@@ -3595,7 +3572,7 @@ footer::before {
     -webkit-overflow-scrolling: touch;
 }
 
-/* Обертка для таблицы с горизонтальной прокруткой */
+
 .schedule-table-wrapper {
     width: 100%;
     overflow-x: auto;
@@ -3604,7 +3581,7 @@ footer::before {
     border: 1px solid var(--beige-medium);
 }
 
-/* Стили для самой таблицы */
+
 .schedule-excel-table {
     border-collapse: collapse;
     width: 100%;
@@ -3612,21 +3589,21 @@ footer::before {
     background: white;
 }
 
-/* Ячейки таблицы */
+
 .schedule-excel-table td,
 .schedule-excel-table th {
     border: 1px solid var(--beige-medium);
     padding: 0.8rem;
     text-align: left;
     vertical-align: top;
-    min-width: 150px; /* Минимальная ширина для читаемости */
+    min-width: 150px; 
     max-width: 300px;
     word-wrap: break-word;
-    white-space: normal; /* Текст переносится */
+    white-space: normal; 
     line-height: 1.4;
 }
 
-/* Заголовки таблицы */
+
 .schedule-excel-table th {
     background: var(--gradient-primary);
     color: white;
@@ -3636,29 +3613,29 @@ footer::before {
     z-index: 10;
 }
 
-/* Чередование строк */
+
 .schedule-excel-table tr:nth-child(even) {
     background: var(--beige-light);
 }
 
-/* Подсветка при наведении */
+
 .schedule-excel-table tr:hover {
     background: rgba(212, 175, 55, 0.1);
 }
 
-/* Ячейки с предметами - жирный шрифт */
+
 .schedule-excel-table td:first-child {
     font-weight: 600;
     background: rgba(139, 115, 85, 0.05);
 }
 
-/* Ячейки с преподавателями - курсив */
+
 .schedule-excel-table td:last-child {
     font-style: italic;
     color: var(--text-light);
 }
 
-/* Заголовки листов Excel */
+
 .schedule-sheet-title {
     color: var(--primary-color);
     margin: 2rem 0 1rem 0;
@@ -3672,7 +3649,7 @@ footer::before {
     margin-top: 0;
 }
 
-/* PDF контент */
+
 .schedule-pdf-container {
     background: white;
     padding: 2rem;
@@ -3705,7 +3682,7 @@ footer::before {
     background: rgba(212, 175, 55, 0.05);
 }
 
-/* Информационный блок о файле */
+
 .schedule-file-info-box {
     background: var(--beige-light);
     padding: 1.5rem 2rem;
@@ -3726,7 +3703,7 @@ footer::before {
     margin-right: 0.5rem;
 }
 
-/* Кнопки навигации */
+
 .schedule-nav {
     display: flex;
     gap: 1rem;
@@ -3770,7 +3747,7 @@ footer::before {
     transform: translateY(-2px);
 }
 
-/* Список файлов на главной странице */
+
 .schedule-institute-section {
     margin-bottom: 3rem;
 }
@@ -3855,7 +3832,7 @@ footer::before {
     gap: 1rem;
 }
 
-/* Поиск */
+
 .schedule-search {
     margin-bottom: 2rem;
 }
@@ -3875,7 +3852,7 @@ footer::before {
     box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
 }
 
-/* Ошибки и пустые состояния */
+
 .schedule-error {
     color: #dc3545;
     padding: 2rem;
@@ -3899,9 +3876,9 @@ footer::before {
     margin: 0.5rem 0;
 }
 
-/* ===== МЕДИА ЗАПРОСЫ ДЛЯ РАЗНЫХ ЭКРАНОВ ===== */
 
-/* Планшеты */
+
+
 @media (max-width: 1024px) {
     .schedule-files-grid {
         grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -3918,7 +3895,7 @@ footer::before {
     }
 }
 
-/* Мобильные устройства */
+
 @media (max-width: 768px) {
     .schedule-files-grid {
         grid-template-columns: 1fr;
@@ -3967,7 +3944,7 @@ footer::before {
     }
 }
 
-/* Очень маленькие экраны */
+
 @media (max-width: 480px) {
     .schedule-excel-table {
         font-size: 0.75rem;
@@ -3993,7 +3970,7 @@ footer::before {
     }
 }
 
-/* Для очень больших таблиц - добавляем подсказку */
+
 .schedule-table-wrapper::before {
     content: '←→ Горизонтальная прокрутка';
     display: none;
@@ -4009,14 +3986,14 @@ footer::before {
     position: relative;
 }
 
-/* Показываем подсказку о прокрутке на мобильных */
+
 @media (max-width: 768px) {
     .schedule-table-wrapper::before {
         display: block;
     }
 }
 
-/* ===== ЧИТАЕМОЕ РАСПИСАНИЕ ===== */
+
 
 .schedule-readable-content {
     display: flex;
@@ -4024,7 +4001,7 @@ footer::before {
     gap: 0.5rem;
 }
 
-/* Карточка занятия */
+
 .schedule-lesson-card {
     display: flex;
     background: white;
@@ -4072,7 +4049,7 @@ footer::before {
     margin-left: auto;
 }
 
-/* Информационные строки */
+
 .schedule-info-row {
     padding: 0.5rem 1rem;
     background: var(--beige-light);
@@ -4085,7 +4062,7 @@ footer::before {
     color: var(--primary-color);
 }
 
-/* Текстовые строки */
+
 .schedule-text-line {
     padding: 0.3rem 1rem;
     margin: 0;
@@ -4097,7 +4074,7 @@ footer::before {
     border-bottom: none;
 }
 
-/* Списки */
+
 .schedule-list-item {
     padding: 0.3rem 1rem;
     margin: 0;
@@ -4114,7 +4091,7 @@ footer::before {
     left: 0.8rem;
 }
 
-/* Заголовки секций */
+
 .schedule-section-title {
     color: var(--primary-color);
     font-size: 1.2rem;
@@ -4129,7 +4106,7 @@ footer::before {
     margin-top: 0;
 }
 
-/* Заголовки листов */
+
 .schedule-sheet-title {
     color: var(--primary-dark);
     font-size: 1.5rem;
@@ -4138,7 +4115,7 @@ footer::before {
     border-bottom: 3px solid var(--accent-color);
 }
 
-/* PDF контейнер */
+
 .schedule-pdf-container {
     background: white;
     padding: 2rem;
@@ -4146,7 +4123,7 @@ footer::before {
     box-shadow: var(--shadow-md);
 }
 
-/* Адаптация для мобильных */
+
 @media (max-width: 768px) {
     .schedule-lesson-card {
         flex-direction: column;
@@ -4190,7 +4167,7 @@ footer::before {
     }
 }
 
-/* ===== СТИЛИ ДЛЯ СПИСКА ФАЙЛОВ ===== */
+
 .schedule-search {
     margin-bottom: 2rem;
 }
@@ -4430,7 +4407,7 @@ footer::before {
     }
 }
 
-/* Компактные кнопки навигации */
+
 .schedule-nav-simple {
     display: flex;
     gap: 0.5rem;
@@ -4460,7 +4437,7 @@ footer::before {
     border: none;
 }
 
-/* Компактная информация о файле */
+
 .schedule-file-info-compact {
     display: flex;
     gap: 0.5rem;
@@ -4475,7 +4452,7 @@ footer::before {
     color: var(--text-light);
 }
 
-/* PDF ридер */
+
 .pdf-reader-container {
     background: #f5f5f5;
     border-radius: 12px;
@@ -4627,7 +4604,7 @@ footer::before {
     padding: 2rem;
 }
 
-/* Адаптация для мобильных */
+
 @media (max-width: 768px) {
     .pdf-controls {
         flex-wrap: wrap;
@@ -4650,9 +4627,9 @@ footer::before {
     }
 }
 
-/* ===== УЛУЧШЕННЫЕ СТИЛИ ДЛЯ РАСПИСАНИЯ (С ЦВЕТОВОЙ ИНДИКАЦИЕЙ) ===== */
 
-/* Фильтры на странице списка */
+
+
 .schedule-filters {
     display: flex;
     gap: 1.5rem;
@@ -4695,7 +4672,7 @@ footer::before {
     box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
 }
 
-/* Карточка файла с улучшенным дизайном */
+
 .schedule-file-card {
     display: flex;
     background: var(--white);
@@ -4769,7 +4746,7 @@ footer::before {
     flex-wrap: wrap;
 }
 
-/* Кнопки */
+
 .schedule-btn {
     display: inline-block;
     padding: 0.6rem 1.2rem;
@@ -4804,7 +4781,7 @@ footer::before {
     transform: translateY(-2px);
 }
 
-/* Переключатель недель и дней */
+
 .schedule-week-nav {
     margin-bottom: 2rem;
     background: var(--white);
@@ -4886,7 +4863,7 @@ footer::before {
     transform: translateY(-1px);
 }
 
-/* Карточка занятия (цветная индикация) */
+
 .schedule-lesson-card {
     display: flex;
     background: var(--white);
@@ -4898,7 +4875,7 @@ footer::before {
     border-left: 4px solid var(--accent-color);
 }
 
-/* Цветовая индикация по типу занятия */
+
 .schedule-lesson-card[data-type="lecture"] {
     border-left-color: #4a90e2;
 }
@@ -4955,7 +4932,7 @@ footer::before {
     margin-left: auto;
 }
 
-/* Информационные строки */
+
 .schedule-info-row {
     padding: 0.6rem 1rem;
     background: var(--beige-light);
@@ -4968,7 +4945,7 @@ footer::before {
     color: var(--primary-color);
 }
 
-/* Текстовые строки */
+
 .schedule-text-line {
     padding: 0.4rem 0.8rem;
     margin: 0;
@@ -4976,7 +4953,7 @@ footer::before {
     border-bottom: 1px dotted var(--beige-medium);
 }
 
-/* Заголовки листов */
+
 .schedule-sheet-title {
     color: var(--primary-color);
     margin: 1.5rem 0 1rem 0;
@@ -4990,7 +4967,7 @@ footer::before {
     margin-top: 0;
 }
 
-/* Пустые состояния */
+
 .schedule-empty {
     text-align: center;
     padding: 3rem;
@@ -5013,7 +4990,7 @@ footer::before {
     background: #fff8f8;
 }
 
-/* Адаптация для мобильных */
+
 @media (max-width: 768px) {
     .schedule-filters {
         flex-direction: column;
@@ -5083,10 +5060,10 @@ footer::before {
     }
 }
 
-/* ===== СТИЛИ ДЛЯ РАСПИСАНИЯ С ГРУППИРОВКОЙ ПО ГРУППАМ ===== */
-/* ===== СТИЛИ ДЛЯ РАСПИСАНИЯ ===== */
 
-/* Выбор группы */
+
+
+
 .schedule-group-selector {
     display: flex;
     align-items: center;
@@ -5120,7 +5097,7 @@ footer::before {
     border-color: var(--accent-color);
 }
 
-/* Группа расписания */
+
 .schedule-group-container {
     animation: fadeIn 0.3s ease-out;
 }
@@ -5133,7 +5110,7 @@ footer::before {
     border-bottom: 3px solid var(--accent-color);
 }
 
-/* Переключатель дней внутри группы */
+
 .schedule-day-switcher-inner {
     display: flex;
     gap: 0.5rem;
@@ -5167,7 +5144,7 @@ footer::before {
     transform: translateY(-2px);
 }
 
-/* Секция дня */
+
 .schedule-day-section {
     margin-bottom: 1.5rem;
     background: var(--white);
@@ -5190,7 +5167,7 @@ footer::before {
     padding: 0.3rem;
 }
 
-/* Карточка занятия */
+
 .schedule-lesson-card {
     display: flex;
     align-items: center;
@@ -5267,7 +5244,7 @@ footer::before {
     margin-left: auto;
 }
 
-/* Адаптация для мобильных */
+
 @media (max-width: 768px) {
     .schedule-group-selector {
         flex-direction: column;
@@ -5306,9 +5283,9 @@ footer::before {
     }
 }
 
-/* ===== СТИЛИ ДЛЯ СТРАНИЦ КАФЕДР ===== */
 
-/* Основной контейнер страницы кафедры */
+
+
 .page-content {
     padding: 2rem 0;
 }
@@ -5325,7 +5302,7 @@ footer::before {
     box-shadow: var(--shadow-lg);
 }
 
-/* Заголовки кафедр */
+
 .content-block h1 {
     font-size: 2.2rem;
     color: var(--primary-color);
@@ -5354,14 +5331,14 @@ footer::before {
     margin: 1rem 0 0.5rem 0;
 }
 
-/* Абзацы */
+
 .content-block p {
     line-height: 1.8;
     color: var(--text-color);
     margin-bottom: 1rem;
 }
 
-/* Списки */
+
 .content-block ul {
     margin: 1rem 0;
     padding-left: 1.5rem;
@@ -5377,7 +5354,7 @@ footer::before {
     margin: 0.5rem 0;
 }
 
-/* Сетка для кафедр (главная страница института) */
+
 .departments-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -5411,7 +5388,7 @@ footer::before {
     margin-bottom: 0;
 }
 
-/* Информационные блоки */
+
 .info-block {
     background: var(--beige-light);
     padding: 1.5rem;
@@ -5424,7 +5401,7 @@ footer::before {
     margin-bottom: 1rem;
 }
 
-/* Таблицы */
+
 .content-block table {
     width: 100%;
     border-collapse: collapse;
@@ -5452,7 +5429,7 @@ footer::before {
     background: rgba(212, 175, 55, 0.05);
 }
 
-/* Блок с контактами */
+
 .contact-block {
     background: var(--beige-light);
     padding: 1.5rem;
@@ -5464,7 +5441,7 @@ footer::before {
     margin-bottom: 0.5rem;
 }
 
-/* Ссылки */
+
 .content-block a {
     color: var(--accent-color);
     text-decoration: none;
@@ -5476,7 +5453,7 @@ footer::before {
     text-decoration: underline;
 }
 
-/* Выделенные элементы */
+
 .content-block strong {
     color: var(--primary-color);
 }
@@ -5486,7 +5463,7 @@ footer::before {
     font-style: italic;
 }
 
-/* Блок с цитатой или важной информацией */
+
 .highlight-block {
     background: var(--gradient-light);
     border-left: 4px solid var(--accent-color);
@@ -5495,7 +5472,7 @@ footer::before {
     border-radius: 0 12px 12px 0;
 }
 
-/* Стили для истории кафедры (с датами и именами) */
+
 .history-item {
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
@@ -5513,7 +5490,7 @@ footer::before {
     min-width: 80px;
 }
 
-/* Адаптация для мобильных */
+
 @media (max-width: 768px) {
     .content-block {
         padding: 1.5rem;
@@ -5559,7 +5536,7 @@ footer::before {
     }
 }
 
-/* Логотип */
+
 .logo img {
     height: 50px;
     width: auto;
@@ -5570,14 +5547,14 @@ footer::before {
     transform: scale(1.05);
 }
 
-/* Для мобильных */
+
 @media (max-width: 768px) {
     .logo img {
         height: 40px;
     }
 }
 
-/* ========== СТРАНИЦА ИНСТИТУТОВ ========== */
+
 .institutes-page {
     max-width: 1200px;
     margin: 0 auto;
@@ -5591,7 +5568,7 @@ footer::before {
     font-size: 2rem;
 }
 
-/* Вкладки институтов */
+
 .institutes-tabs {
     display: flex;
     flex-wrap: wrap;
@@ -5623,7 +5600,7 @@ footer::before {
     color: white;
 }
 
-/* Контент института */
+
 .institute-content {
     display: none;
     animation: fadeIn 0.3s ease;
@@ -5633,7 +5610,7 @@ footer::before {
     display: block;
 }
 
-/* Шапка института */
+
 .institute-header {
     background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
     padding: 25px;
@@ -5676,7 +5653,7 @@ footer::before {
     color: white;
 }
 
-/* Сетка кафедр */
+
 .departments-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -5712,7 +5689,7 @@ footer::before {
     display: inline-block;
 }
 
-/* Заголовок h3 */
+
 .institute-content h3 {
     color: #2c3e50;
     margin-bottom: 20px;
@@ -5721,7 +5698,7 @@ footer::before {
     padding-left: 15px;
 }
 
-/* Анимация */
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -5733,7 +5710,7 @@ footer::before {
     }
 }
 
-/* Адаптивность */
+
 @media (max-width: 768px) {
     .institutes-tabs {
         flex-direction: column;
@@ -5759,7 +5736,7 @@ footer::before {
 }
 
 
-/* ========== СТРАНИЦА СТУДЕНТУ (ГЛАВНАЯ) ========== */
+
 .student-page {
     max-width: 1200px;
     margin: 0 auto;
@@ -5813,7 +5790,7 @@ footer::before {
     border-color: #D4AF37;
 }
 
-/* ========== ОБЪЕДИНЁННЫЙ СОВЕТ ОБУЧАЮЩИХСЯ ========== */
+
 .council-info, .council-text, .council-contact {
     margin-bottom: 25px;
     line-height: 1.6;
@@ -5828,7 +5805,7 @@ footer::before {
     text-decoration: underline;
 }
 
-/* ========== ШТАБ СТУДЕНЧЕСКИХ ОТРЯДОВ ========== */
+
 .teams-buttons {
     display: flex;
     gap: 20px;
@@ -5852,7 +5829,7 @@ footer::before {
     color: white;
 }
 
-/* ========== КУЛЬТУРНО-ДОСУГОВЫЙ ЦЕНТР ========== */
+
 .culture-buttons {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -5878,7 +5855,7 @@ footer::before {
     border-color: #D4AF37;
 }
 
-/* ========== СПОРТИВНАЯ ЖИЗНЬ ========== */
+
 .sports-buttons {
     display: flex;
     gap: 20px;
@@ -5902,7 +5879,7 @@ footer::before {
     color: white;
 }
 
-/* ========== ПСИХОЛОГ ========== */
+
 .psychologist-info {
     background: #f9f9f9;
     padding: 20px;
@@ -5930,7 +5907,7 @@ footer::before {
     border-bottom: 1px solid #eee;
 }
 
-/* ========== СОЦИАЛЬНАЯ ЗАЩИТА ========== */
+
 .social-info {
     line-height: 1.8;
 }
@@ -5940,7 +5917,7 @@ footer::before {
     margin: 25px 0 15px;
 }
 
-/* ========== АДАПТИВНОСТЬ ========== */
+
 @media (max-width: 768px) {
     .student-cards-grid,
     .culture-buttons {
@@ -5959,7 +5936,7 @@ footer::before {
     }
 }
 
-/* ========== ПРОЕКТНАЯ ДЕЯТЕЛЬНОСТЬ ========== */
+
 .projects-info ul, .projects-info ol {
     margin: 15px 0 20px 25px;
 }
@@ -5970,7 +5947,7 @@ footer::before {
     margin-top: 25px;
 }
 
-/* ========== FAQ ========== */
+
 .faq-list {
     margin-top: 20px;
 }
@@ -5994,7 +5971,7 @@ footer::before {
     display: block;
 }
 
-/* ========== КАЛЕНДАРНЫЙ ГРАФИК ========== */
+
 .calendar-info ul, .calendar-info ol {
     margin: 15px 0 20px 25px;
 }
@@ -6004,7 +5981,7 @@ footer::before {
     margin-top: 25px;
 }
 
-/* ========== СТИПЕНДИИ ========== */
+
 .scholarships-info ul, .scholarships-info ol {
     margin: 15px 0 20px 25px;
 }
@@ -6015,7 +5992,7 @@ footer::before {
     margin-top: 25px;
 }
 
-/* ========== НОРМАТИВНЫЕ ДОКУМЕНТЫ ========== */
+
 .regulations-list ul {
     margin: 15px 0 20px 25px;
 }
@@ -6032,7 +6009,7 @@ footer::before {
     margin-top: 25px;
 }
 
-/* ========== ОБРАЗОВАТЕЛЬНЫЕ РЕСУРСЫ ========== */
+
 .resources-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -6064,7 +6041,7 @@ footer::before {
     font-weight: 500;
 }
 
-/* ========== МАССОВЫЕ ОНЛАЙН-КУРСЫ ========== */
+
 .mass-courses-info ul, .mass-courses-info ol {
     margin: 15px 0 20px 25px;
 }
@@ -6075,7 +6052,7 @@ footer::before {
     margin-top: 25px;
 }
 
-/* ========== УЧЕБНЫЕ ПОСОБИЯ ========== */
+
 .textbooks-info ul {
     margin: 15px 0 20px 25px;
 }
@@ -6087,7 +6064,7 @@ footer::before {
     text-decoration: underline;
 }
 
-/* ========== БАЗЫ ПРАКТИК ========== */
+
 .practice-bases-info ul, .practice-bases-info ol {
     margin: 15px 0 20px 25px;
 }
@@ -6098,7 +6075,7 @@ footer::before {
     margin-top: 25px;
 }
 
-/* ========== СРОКИ ПРАКТИК ========== */
+
 .practice-dates-info ul, .practice-dates-info ol {
     margin: 15px 0 20px 25px;
 }
@@ -6108,12 +6085,12 @@ footer::before {
     margin-top: 25px;
 }
 
-/* ========== ДОКУМЕНТЫ ПО ПРАКТИКЕ ========== */
+
 .practice-docs-list ul {
     margin: 15px 0 20px 25px;
 }
 
-/* ========== АНКЕТА УДОВЛЕТВОРЁННОСТИ ========== */
+
 .survey-form {
     max-width: 600px;
     margin: 25px 0;
@@ -6146,7 +6123,7 @@ footer::before {
     background: #D4AF37;
 }
 
-/* ========== ИНСТРУКТАЖ ========== */
+
 .practice-instruction ol {
     margin: 15px 0 20px 25px;
 }
@@ -6176,7 +6153,7 @@ footer::before {
     background: #D4AF37;
 }
 
-/* ========== ЗАЯВКИ ОТ РАБОТОДАТЕЛЕЙ ========== */
+
 .requests-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -6202,7 +6179,7 @@ footer::before {
     color: #888;
 }
 
-/* ========== АНКЕТИРОВАНИЕ ========== */
+
 .survey-links {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -6241,7 +6218,7 @@ footer::before {
     margin-top: 20px;
 }
 
-/* ========== АДАПТИВНОСТЬ ========== */
+
 @media (max-width: 768px) {
     .resources-grid,
     .requests-list,
@@ -6250,7 +6227,7 @@ footer::before {
     }
 }
 
-/* ========== СТРАНИЦА УНИВЕРСИТЕТ (ГЛАВНАЯ) ========== */
+
 .university-page {
     max-width: 1200px;
     margin: 0 auto;
@@ -6304,7 +6281,7 @@ footer::before {
     border-color: #D4AF37;
 }
 
-/* ========== ИСТОРИЯ ========== */
+
 .history-text {
     line-height: 1.6;
 }
@@ -6314,7 +6291,7 @@ footer::before {
     margin: 25px 0 15px;
 }
 
-/* ========== АССОЦИАЦИЯ ВЫПУСКНИКОВ ========== */
+
 .association-info ul {
     margin: 15px 0 20px 25px;
     list-style: none;
@@ -6326,7 +6303,7 @@ footer::before {
     border-bottom: 1px solid #eee;
 }
 
-/* ========== НАША ПРЕССА ========== */
+
 .press-links {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -6366,7 +6343,7 @@ footer::before {
     background: #D4AF37;
 }
 
-/* ========== СМИ О НАС ========== */
+
 .media-list {
     margin-top: 25px;
 }
@@ -6387,7 +6364,7 @@ footer::before {
     margin-bottom: 8px;
 }
 
-/* ========== ПРОКУРОР РАЗЪЯСНЯЕТ ========== */
+
 .prosecutor-table {
     margin: 25px 0;
     border: 1px solid #e0e0e0;
@@ -6423,12 +6400,12 @@ footer::before {
     margin-top: 8px;
 }
 
-/* ========== АВТОШКОЛА ========== */
+
 .driving-school-info ul {
     margin: 15px 0 20px 25px;
 }
 
-/* ========== ВИДЕОСТУДИЯ JALINGA ========== */
+
 .jalinga-info ul {
     margin: 15px 0 20px 25px;
     list-style: none;
@@ -6439,7 +6416,7 @@ footer::before {
     padding: 5px 0;
 }
 
-/* ========== АДАПТИВНОСТЬ ========== */
+
 @media (max-width: 768px) {
     .university-cards-grid,
     .press-links {
@@ -6457,7 +6434,7 @@ footer::before {
 }
 
 
-/* ========== СТРАНИЦА ПОСТУПАЮЩЕМУ (ГЛАВНАЯ) ========== */
+
 .applicant-page {
     max-width: 1200px;
     margin: 0 auto;
@@ -6510,7 +6487,7 @@ footer::before {
     border-color: #D4AF37;
 }
 
-/* ========== ЦЕЛЕВОЕ ОБУЧЕНИЕ ========== */
+
 .bonuses-table {
     width: 100%;
     border-collapse: collapse;
@@ -6531,7 +6508,7 @@ footer::before {
     margin-top: 10px;
 }
 
-/* ========== СВЕДЕНИЯ О ЗАЧИСЛЕНИИ ========== */
+
 .enrollment-links {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -6560,7 +6537,7 @@ footer::before {
     color: #666;
 }
 
-/* ========== СПИСКИ ЛИЦ ========== */
+
 .applicant-lists-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -6589,7 +6566,7 @@ footer::before {
     color: #666;
 }
 
-/* ========== АДАПТИВНОСТЬ ========== */
+
 @media (max-width: 768px) {
     .applicant-cards-grid,
     .enrollment-links,
@@ -6598,7 +6575,7 @@ footer::before {
     }
 }
 
-/* ========== СТРАНИЦА "ИНФОРМАЦИЯ ДЛЯ ПОСТУПАЮЩЕГО" ========== */
+
 .admission-info-page {
     max-width: 1000px;
     margin: 0 auto;
@@ -6618,7 +6595,7 @@ footer::before {
     margin-bottom: 40px;
 }
 
-/* Секции */
+
 .info-section {
     margin-bottom: 40px;
     background: #fff;
@@ -6641,7 +6618,7 @@ footer::before {
     margin: 20px 0 15px;
 }
 
-/* Председатель и секретарь */
+
 .committee-leaders {
     display: flex;
     flex-wrap: wrap;
@@ -6681,7 +6658,7 @@ footer::before {
     color: #6c757d;
 }
 
-/* Таблица институтов */
+
 .institutes-table {
     width: 100%;
     border-collapse: collapse;
@@ -6719,7 +6696,7 @@ footer::before {
     color: #6c757d;
 }
 
-/* Контакты */
+
 .contacts-row {
     display: flex;
     flex-wrap: wrap;
@@ -6750,7 +6727,7 @@ footer::before {
     color: #495057;
 }
 
-/* Нормативные документы */
+
 .docs-list {
     list-style: none;
     padding: 0;
@@ -6795,7 +6772,7 @@ footer::before {
     text-align: center;
 }
 
-/* Адаптивность */
+
 @media (max-width: 768px) {
     .admission-info-page {
         padding: 20px;
@@ -6839,7 +6816,7 @@ footer::before {
         padding-bottom: 7px;
     }
     
-/* ===== СТИЛИ ДЛЯ СТРАНИЦ ИНСТИТУТОВ ===== */
+
 
 .container {
     max-width: 1200px;
@@ -6942,7 +6919,7 @@ footer::before {
     text-decoration: underline;
 }
 
-/* Стили для карточек кафедр */
+
 .departments-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

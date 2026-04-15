@@ -3,118 +3,27 @@
 {% block title %}Институты - Красноярский ГАУ{% endblock %}
 
 {% block content %}
-<style>
-    .institutes-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem 1rem;
-    }
+<div class="container" style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+    <h1 style="color: #5c3d2e; margin-bottom: 30px;">Институты Красноярского ГАУ</h1>
     
-    .institutes-title {
-        color: #5c3d2e;
-        font-size: 2rem;
-        margin-bottom: 2rem;
-        border-left: 4px solid #c9a03d;
-        padding-left: 1rem;
-    }
-    
-    .institute-card {
-        background: white;
-        border-radius: 16px;
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        border: 1px solid #e0d5c0;
-    }
-    
-    .institute-title {
-        color: #5c3d2e;
-        font-size: 1.5rem;
-        margin: 0 0 1rem 0;
-    }
-    
-    .institute-link {
-        display: inline-block;
-        background: linear-gradient(135deg, #5c3d2e 0%, #8B7355 100%);
-        color: white;
-        padding: 0.5rem 1.5rem;
-        border-radius: 30px;
-        text-decoration: none;
-        margin-bottom: 1rem;
-        transition: opacity 0.3s;
-    }
-    
-    .institute-link:hover {
-        opacity: 0.9;
-    }
-    
-    .departments-title {
-        color: #5c3d2e;
-        font-size: 1rem;
-        margin: 1rem 0 0.5rem 0;
-    }
-    
-    .departments-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    
-    .department-item {
-        background: #f5f0e8;
-        padding: 0.3rem 0.8rem;
-        border-radius: 20px;
-        font-size: 0.85rem;
-    }
-    
-    .department-item a {
-        color: #5c3d2e;
-        text-decoration: none;
-    }
-    
-    .department-item a:hover {
-        color: #c9a03d;
-    }
-    
-    .no-departments {
-        background: #f5f0e8;
-        padding: 0.5rem 1rem;
-        border-radius: 10px;
-        color: #8B7355;
-        font-size: 0.9rem;
-        display: inline-block;
-    }
-</style>
-
-<div class="institutes-container">
-    <h1 class="institutes-title">Институты Красноярского ГАУ</h1>
-    
-    {% if institutes %}
-        {% for institute in institutes %}
-            <div class="institute-card">
-                <h2 class="institute-title">{{ institute.title }}</h2>
-                
-                <a href="/page/{{ institute.slug }}" class="institute-link">Подробнее об институте →</a>
-                
-                {% if institute.children %}
-                    <h3 class="departments-title">📚 Кафедры:</h3>
-                    <ul class="departments-list">
-                        {% for dept in institute.children %}
-                            <li class="department-item">
-                                <a href="/page/{{ dept.slug }}">{{ dept.title }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <div class="no-departments">Кафедры в разработке</div>
-                {% endif %}
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>Институты не найдены</p>
-    {% endif %}
+    {% for institute in institutes %}
+        <div style="background: white; border-radius: 15px; padding: 20px; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 style="color: #5c3d2e; margin-top: 0;">{{ institute.title }}</h2>
+            <a href="/page/{{ institute.slug }}" style="display: inline-block; background: #5c3d2e; color: white; padding: 8px 20px; border-radius: 25px; text-decoration: none; margin-bottom: 15px;">Подробнее об институте →</a>
+            
+            {% if institute.children %}
+                <h3 style="color: #5c3d2e; font-size: 1.1rem;">📚 Кафедры:</h3>
+                <ul style="display: flex; flex-wrap: wrap; gap: 10px; list-style: none; padding: 0;">
+                    {% for dept in institute.children %}
+                        <li style="background: #f5f0e8; padding: 5px 15px; border-radius: 20px;">
+                            <a href="/page/{{ dept.slug }}" style="color: #5c3d2e; text-decoration: none;">{{ dept.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p style="color: #999;">Кафедры в разработке</p>
+            {% endif %}
+        </div>
+    {% endfor %}
 </div>
 {% endblock %}
