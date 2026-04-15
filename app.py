@@ -816,6 +816,7 @@ def create_app():
     def profile():
         return render_template('profile.html', user=current_user)
 
+    return app
 
 if __name__ == '__main__':
     app = create_app()
