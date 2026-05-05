@@ -2,10 +2,9 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>{% block title %}Красноярский ГАУ{% endblock %}</title>
     
-    <!-- Логотип на вкладке -->
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/favicon.png') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
     
@@ -15,58 +14,46 @@
     <header>
         <div class="top-bar">
             <div class="container">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">☰ Меню</button>
+                
                 <div class="logo">
                     <a href="{{ url_for('index') }}">
-                        <h1>🌾 Аграрный Университет</h1>
+                        <h1>Аграрный Университет</h1>
                     </a>
                 </div>
                 
-                <!-- ПОЛЕ ПОИСКА С АВТОПОДСКАЗКАМИ -->
-                <div style="flex: 1; max-width: 400px; margin: 0 2rem; position: relative;">
-                    <form action="{{ url_for('search') }}" method="GET" style="display: flex;" autocomplete="off">
+                <div class="search-wrapper">
+                    <form action="{{ url_for('search') }}" method="GET" class="search-form" autocomplete="off">
                         <input type="text" 
                                id="search-input"
                                name="q" 
-                               placeholder="🔍 Поиск по сайту..." 
-                               style="flex: 1; padding: 0.5rem 1rem; border: none; border-radius: 20px 0 0 20px; outline: none;">
-                        <button type="submit" 
-                                style="background: var(--accent-color); border: none; border-radius: 0 20px 20px 0; padding: 0.5rem 1rem; cursor: pointer; color: white;">
-                            Найти
-                        </button>
+                               placeholder="Поиск..." 
+                               class="search-input">
+                        <button type="submit" class="search-btn">Найти</button>
                     </form>
-                    
-                    <!-- Контейнер для подсказок -->
                     <div id="search-suggestions" class="suggestions-container"></div>
                 </div>
                 
                 <div class="auth-top-menu">
-                    {% if current_user.is_authenticated %}
-                        {% if current_user.is_admin %}
-                            <a href="{{ url_for('admin') }}" class="auth-link admin-link">Админ</a>
-                        {% endif %}
-                        <a href="{{ url_for('profile') }}" class="auth-link profile-link">👤 {{ current_user.username }}</a>
+                    {% if current_user.is_authenticated and current_user.is_admin %}
+                        <a href="{{ url_for('admin_dashboard') }}" class="auth-link admin-link">Админ</a>
                         <a href="{{ url_for('logout') }}" class="auth-link logout-link">Выйти</a>
-                    {% else %}
-                        <a href="{{ url_for('login') }}" class="auth-link login-link">Войти</a>
-                        <a href="{{ url_for('register') }}" class="auth-link register-link">Регистрация</a>
                     {% endif %}
                 </div>
             </div>
         </div>
     </header>
 
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <div class="layout">
-        <!-- Левое вертикальное меню -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
+            <button class="sidebar-close" id="sidebarClose">Закрыть</button>
             <nav class="sidebar-nav">
                 <ul class="sidebar-menu">
-                    <!-- ИНСТИТУТЫ -->
                     <li><a href="{{ url_for('institutes_page') }}">Институты</a></li>
-                    
-                    <!-- Университет -->
                     <li><a href="{{ url_for('dynamic_page', slug='university_main') }}">Университет</a></li>
                     
-                    <!-- Наука и инновации -->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle">Наука и инновации</a>
                         <ul class="sidebar-dropdown">
@@ -79,13 +66,9 @@
                         </ul>
                     </li>
                     
-                    <!-- Студенту -->
                     <li><a href="{{ url_for('dynamic_page', slug='student_main') }}">Студенту</a></li>
-                    
-                    <!-- Поступающему -->
                     <li><a href="{{ url_for('dynamic_page', slug='applicant_main') }}">Поступающему</a></li>
                     
-                    <!-- Школьнику -->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle">Школьнику</a>
                         <ul class="sidebar-dropdown">
@@ -94,12 +77,9 @@
                             <li><a href="{{ url_for('dynamic_page', slug='preparatory_courses') }}">Подготовительные курсы</a></li>
                             <li><a href="{{ url_for('dynamic_page', slug='agro_classes') }}">Агроклассы</a></li>
                             <li><a href="{{ url_for('dynamic_page', slug='career_guidance') }}">Профориентационная работа</a></li>
-                            <li><a href="{{ url_for('dynamic_page', slug='conferences') }}">Конференции</a></li>
-                            <li><a href="{{ url_for('dynamic_page', slug='school_awards') }}">Наши награды</a></li>
                         </ul>
                     </li>
                     
-                    <!-- Аспиранту -->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle">Аспиранту</a>
                         <ul class="sidebar-dropdown">
@@ -138,7 +118,6 @@
 
     <footer>
         <div class="container">
-            <!-- Основные ссылки в одну строку -->
             <div class="footer-main-links">
                 <a href="{{ url_for('about') }}">О нас</a>
                 <a href="{{ url_for('programs') }}">Программы</a>
@@ -148,25 +127,58 @@
             
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>🌾 Аграрный Университет</h3>
+                    <h3>Аграрный Университет</h3>
                     <p class="footer-about">Ведущее учебное заведение в области сельского хозяйства.</p>
                     <div class="footer-social">
                         <a href="#" class="social-icon">ВК</a>
-                        <a href="#" class="social-icon">TG</a>
-                        <a href="#" class="social-icon">YT</a>
+                        <a href="#" class="social-icon">ТГ</a>
                     </div>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2024-2026 ООО Аграрный Университет</p>
+                <p> 2024-2026 Аграрный Университет</p>
             </div>
         </div>
     </footer>
 
-   <!-- <script src="{{ url_for('static', filename='js/main.js') }}"></script>-->
     <script>
-        // Динамический поиск
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const sidebarClose = document.getElementById('sidebarClose');
+
+        function openSidebar() {
+            sidebar.classList.add('open');
+            sidebarOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', openSidebar);
+        }
+        if (sidebarClose) {
+            sidebarClose.addEventListener('click', closeSidebar);
+        }
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', closeSidebar);
+        }
+
+        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                const parent = this.parentElement;
+                parent.classList.toggle('active');
+            });
+        });
+
         const searchInput = document.getElementById('search-input');
         const suggestionsDiv = document.getElementById('search-suggestions');
         let timeoutId;
@@ -176,9 +188,7 @@
                 'program': 'Программа',
                 'news': 'Новость',
                 'schedule_main': 'Расписание',
-                'schedule': 'Расписание',
-                'schedule_content': 'В расписании',
-                'user': 'Пользователь'
+                'schedule': 'Расписание'
             };
             return types[type] || type;
         }
@@ -189,73 +199,65 @@
             return text.replace(regex, '<span class="search-highlight">$1</span>');
         }
 
-        searchInput.addEventListener('input', function() {
-            const query = this.value.trim();
-            
-            clearTimeout(timeoutId);
-            
-            if (query.length < 2) {
-                suggestionsDiv.style.display = 'none';
-                return;
-            }
-            
-            timeoutId = setTimeout(() => {
-                fetch(`/api/search?q=${encodeURIComponent(query)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.results.length > 0) {
-                            let html = '';
-                            
-                            data.results.forEach(result => {
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const query = this.value.trim();
+                
+                clearTimeout(timeoutId);
+                
+                if (query.length < 2) {
+                    suggestionsDiv.style.display = 'none';
+                    return;
+                }
+                
+                timeoutId = setTimeout(() => {
+                    fetch(`/api/search?q=${encodeURIComponent(query)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.results && data.results.length > 0) {
+                                let html = '';
+                                data.results.forEach(result => {
+                                    html += `
+                                        <a href="${result.url}" class="search-suggestion">
+                                            <span class="search-suggestion-icon">${result.icon || ''}</span>
+                                            <div class="search-suggestion-content">
+                                                <div class="search-suggestion-title">${highlightText(result.title, query)}</div>
+                                                <div class="search-suggestion-desc">${result.description || ''}</div>
+                                            </div>
+                                            <span class="search-suggestion-type">${getTypeName(result.type)}</span>
+                                        </a>
+                                    `;
+                                });
                                 html += `
-                                    <a href="${result.url}" class="search-suggestion">
-                                        <span style="font-size: 1.2rem;">${result.icon || '📄'}</span>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600; font-size: 0.95rem;">${highlightText(result.title, query)}</div>
-                                            <div style="font-size: 0.8rem; color: var(--text-light);">${result.description || ''}</div>
-                                        </div>
-                                        <span class="search-suggestion-type">${getTypeName(result.type)}</span>
+                                    <a href="/search?q=${encodeURIComponent(query)}" class="search-suggestion-all">
+                                        Все результаты (${data.results.length}) 
                                     </a>
                                 `;
-                            });
-                            
-                            html += `
-                                <a href="/search?q=${encodeURIComponent(query)}" style="display: block; padding: 0.8rem; text-align: center; background: var(--beige-light); color: var(--primary-color); text-decoration: none; font-weight: 600; border-radius: 0 0 10px 10px;">
-                                    Все результаты (${data.results.length}) →
-                                </a>
-                            `;
-                            
-                            suggestionsDiv.innerHTML = html;
-                            suggestionsDiv.style.display = 'block';
-                        } else {
-                            suggestionsDiv.innerHTML = '<div style="padding: 1rem; text-align: center; color: #666;">Ничего не найдено</div>';
-                            suggestionsDiv.style.display = 'block';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Ошибка поиска:', error);
-                    });
-            }, 300);
-        });
+                                suggestionsDiv.innerHTML = html;
+                                suggestionsDiv.style.display = 'block';
+                            } else {
+                                suggestionsDiv.innerHTML = '<div class="search-suggestion-empty">Ничего не найдено</div>';
+                                suggestionsDiv.style.display = 'block';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Ошибка поиска:', error);
+                        });
+                }, 300);
+            });
+        }
 
-        // Закрывать подсказки при клике вне
         document.addEventListener('click', function(event) {
-            if (!searchInput.contains(event.target) && !suggestionsDiv.contains(event.target)) {
+            if (searchInput && !searchInput.contains(event.target) && suggestionsDiv && !suggestionsDiv.contains(event.target)) {
                 suggestionsDiv.style.display = 'none';
             }
         });
 
-        // JavaScript для выпадающих меню
-        document.addEventListener('DOMContentLoaded', function() {
-            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-            
-            dropdownToggles.forEach(toggle => {
-                toggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const dropdown = this.parentElement;
-                    dropdown.classList.toggle('active');
-                });
-            });
+        document.querySelectorAll('.flash-message').forEach(msg => {
+            setTimeout(() => {
+                msg.style.opacity = '0';
+                setTimeout(() => msg.remove(), 300);
+            }, 5000);
         });
     </script>
     {% block scripts %}{% endblock %}

@@ -13,6 +13,8 @@ import pandas as pd
 import pdfplumber
 import json
 
+ADMIN_SECRET_URL = '/kgau-dashboard'
+
 
 def create_app():
     app = Flask(__name__)
@@ -43,16 +45,15 @@ def create_app():
     with app.app_context():
         try:
             db.session.execute(text('SELECT 1'))
-            print("✅ Подключение к PostgreSQL успешно!")
+            print("Подключение к PostgreSQL успешно!")
             db.create_all()
-            print("✅ Таблицы созданы/проверены")
+            print("Таблицы созданы/проверены")
         except Exception as e:
-            print(f"❌ Ошибка подключения к PostgreSQL: {e}")
+            print(f"Ошибка подключения к PostgreSQL: {e}")
 
     RASP_FOLDER = os.path.join(os.path.dirname(__file__), 'rasp')
     os.makedirs(RASP_FOLDER, exist_ok=True)
 
-    # ==================== КОНФИГУРАЦИЯ РАСПИСАНИЯ ====================
     SCHEDULE_CONFIG = {
         'class schedule 1st year 2nd semester full-time study.pdf': {
             'title': '1 курс (2 семестр)', 'description': 'Расписание занятий для 1 курса, очная форма', 'institute': 'Все институты'
@@ -72,7 +73,6 @@ def create_app():
         'UIv2.xlsx': {'title': 'Юридический институт - вечернее отделение', 'description': 'Юридический институт, вечерняя форма', 'institute': 'ЮИ'},
     }
 
-    # ==================== ФУНКЦИИ ДЛЯ РАСПИСАНИЯ ====================
     
     def get_pdf_page_count(filename):
         filepath = os.path.join(RASP_FOLDER, filename)
@@ -303,11 +303,11 @@ def create_app():
             return "".join(html_parts)
         except Exception as e:
             return f"<div class='schedule-error'>Ошибка чтения Excel: {str(e)}</div>"
-
-    # ==================== МАРШРУТЫ АДМИН ПАНЕЛИ ====================
-    @app.route('/admin')
+    
+    # Скрытый URL для админ-панели
+    @app.route(ADMIN_SECRET_URL)
     @login_required
-    def admin():
+    def admin_dashboard():
         if not current_user.is_admin:
             flash('Нет доступа', 'danger')
             return redirect(url_for('index'))
@@ -372,7 +372,6 @@ def create_app():
         db.session.commit()
         return jsonify({'success': True})
 
-    # ==================== ДИНАМИЧЕСКИЕ СТРАНИЦЫ ====================
     @app.route('/page/<slug>')
     def dynamic_page(slug):
         page = Page.query.filter_by(slug=slug, published=True).first_or_404()
@@ -392,7 +391,6 @@ def create_app():
             institute.children = Page.query.filter_by(parent_id=institute.id, template='department', published=True).all()
         return render_template('dynamic/institutes_page.html', institutes=institutes)
 
-    # ==================== МАРШРУТЫ РАСПИСАНИЯ ====================
     @app.route('/rasp/<path:filename>')
     def serve_rasp_file(filename):
         return send_from_directory(RASP_FOLDER, filename, as_attachment=True)
@@ -455,7 +453,6 @@ def create_app():
         except Exception as e:
             return jsonify({'error': str(e), 'text': f'Ошибка загрузки страницы: {str(e)}', 'success': False}), 500
 
-    # ==================== ДИНАМИЧЕСКИЙ ПОИСК ====================
     @app.route('/api/search')
     def api_search():
         query = request.args.get('q', '').strip().lower()
@@ -540,7 +537,6 @@ def create_app():
         
         return render_template('search.html', query=query, all_results=results, total_results=len(results))
 
-    # ==================== СТАТИЧЕСКИЕ СТРАНИЦЫ ====================
     @app.route('/')
     def index():
         return render_template('index.html')
@@ -568,16 +564,12 @@ def create_app():
         db.session.commit()
         return render_template('program_detail.html', program=program)
 
-    # ==================== ВСЕ РЕДИРЕКТЫ ====================
     redirect_routes = [
-        # Основные
         ('/about', 'about'),
         ('/contacts', 'contacts'),
         ('/news', 'news'),
         ('/programs', 'programs'),
         ('/schedule', 'schedule'),
-        
-        # Университет
         ('/university', 'university_main'),
         ('/university-today', 'university_today'),
         ('/university/history', 'university_history'),
@@ -598,16 +590,12 @@ def create_app():
         ('/academic-council', 'academic_council'),
         ('/departments', 'departments'),
         ('/library', 'library'),
-        
-        # Наука
         ('/science', 'science'),
         ('/science-news', 'science_news'),
         ('/laboratories', 'laboratories'),
         ('/science-schools', 'science_schools'),
         ('/grants', 'grants'),
         ('/conferences', 'conferences'),
-        
-        # Студенту
         ('/student', 'student_main'),
         ('/student/council', 'student_council'),
         ('/student/teams', 'student_teams'),
@@ -631,8 +619,6 @@ def create_app():
         ('/student/practice-requests', 'student_practice_requests'),
         ('/student/survey', 'student_survey'),
         ('/student/international-assoc', 'student_international_assoc'),
-        
-        # Поступающему
         ('/applicant', 'applicant_main'),
         ('/admission-info', 'admission_info'),
         ('/admission-addresses', 'admission_addresses'),
@@ -651,8 +637,6 @@ def create_app():
         ('/postgraduate-admission', 'postgraduate_admission'),
         ('/doctoral-admission', 'doctoral_admission'),
         ('/admission-regulations', 'admission_regulations'),
-        
-        # Школьнику
         ('/school-info', 'school_info'),
         ('/school-news', 'school_news'),
         ('/school-conferences', 'school_conferences'),
@@ -661,16 +645,12 @@ def create_app():
         ('/preparatory-courses', 'preparatory_courses'),
         ('/agro-classes', 'agro_classes'),
         ('/career-guidance', 'career_guidance'),
-        
-        # Аспиранту
         ('/postgraduate', 'postgraduate'),
         ('/doctoral', 'doctoral'),
         ('/attestation', 'attestation'),
         ('/candidate-exams', 'candidate_exams'),
         ('/dissertations', 'dissertations'),
         ('/science-supervisors', 'science_supervisors'),
-        
-        # Институты
         ('/institute/agro', 'institute_agro'),
         ('/institute/biotech', 'institute_biotech'),
         ('/institute/economy', 'institute_economy'),
@@ -679,8 +659,6 @@ def create_app():
         ('/institute/land', 'institute_land'),
         ('/institute/law', 'institute_law'),
         ('/institute/achinsk', 'institute_achinsk'),
-        
-        # Другие
         ('/international', 'international'),
         ('/university-life', 'university_life'),
         ('/contacts-departments', 'contacts_departments'),
@@ -706,7 +684,6 @@ def create_app():
     for old_url, new_slug in redirect_routes:
         app.add_url_rule(old_url, f'redirect_{new_slug}', lambda slug=new_slug: redirect(url_for('dynamic_page', slug=slug), code=301))
         
-    # ==================== АУТЕНТИФИКАЦИЯ ====================
     @app.route('/send-message', methods=['POST'])
     def send_message():
         name = request.form.get('name')
@@ -767,42 +744,14 @@ def create_app():
                 login_user(user)
                 flash('Вы успешно вошли в систему!', 'success')
                 next_page = request.args.get('next')
-                return redirect(next_page) if next_page else redirect(url_for('index'))
+                if next_page:
+                    return redirect(next_page)
+                if user.is_admin:
+                    return redirect(url_for('admin_dashboard'))
+                return redirect(url_for('index'))
             else:
                 flash('Неверное имя пользователя или пароль', 'danger')
         return render_template('login.html')
-
-    @app.route('/register', methods=['GET', 'POST'])
-    def register():
-        if current_user.is_authenticated:
-            return redirect(url_for('index'))
-        if request.method == 'POST':
-            username = request.form.get('username')
-            email = request.form.get('email')
-            password = request.form.get('password')
-            confirm_password = request.form.get('confirm_password')
-            if not username or not email or not password:
-                flash('Пожалуйста, заполните все поля', 'danger')
-                return render_template('register.html')
-            if password != confirm_password:
-                flash('Пароли не совпадают', 'danger')
-                return render_template('register.html')
-            if len(password) < 6:
-                flash('Пароль должен быть не менее 6 символов', 'danger')
-                return render_template('register.html')
-            if User.query.filter_by(username=username).first():
-                flash('Пользователь с таким именем уже существует', 'danger')
-                return render_template('register.html')
-            if User.query.filter_by(email=email).first():
-                flash('Пользователь с таким email уже существует', 'danger')
-                return render_template('register.html')
-            user = User(username=username, email=email, is_admin=False)
-            user.set_password(password)
-            db.session.add(user)
-            db.session.commit()
-            flash('Регистрация прошла успешно! Теперь вы можете войти.', 'success')
-            return redirect(url_for('login'))
-        return render_template('register.html')
 
     @app.route('/logout')
     @login_required
@@ -811,12 +760,17 @@ def create_app():
         flash('Вы вышли из системы', 'success')
         return redirect(url_for('index'))
 
+    @app.route('/register')
+    def register_removed():
+        abort(404)
+    
     @app.route('/profile')
     @login_required
-    def profile():
-        return render_template('profile.html', user=current_user)
+    def profile_removed():
+        abort(404)
 
     return app
+
 
 if __name__ == '__main__':
     app = create_app()
